@@ -1,0 +1,6 @@
+{
+  "name": "Fútbol en la Piel — Camisetas actuales y retros en Uruguay",
+  "description": "Camisetas actuales y retros de selecciones y clubes en Uruguay (@futbolenlapieluy1). Envíos a todo el país. Consultas por WhatsApp al +598 092 864 559.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,234 @@
+'use client';
+
+import { useEffect, useRef } from 'react';
+import { INSTAGRAM_HANDLE, WHATSAPP_DISPLAY, WHATSAPP_NUMBER_RAW } from '@/lib/futbolenlapiel-data';
+
+interface WordmarkFooterProps {
+  paused: boolean;
+  reducedMotion: boolean;
+  footRef: React.RefObject<HTMLElement | null>;
+}
+
+const WORDMARK = 'FUTBOL EN LA PIEL'.split('');
+
+export default function WordmarkFooter({
+  paused,
+  reducedMotion,
+  footRef,
+}: WordmarkFooterProps) {
+  const wmRef = useRef<HTMLParagraphElement>(null);
+  const letterRefs = useRef<Array<HTMLSpanElement | null>>([]);
+  const centersRef = useRef<number[]>([]);
+  const lastWRef = useRef<number[]>([]);
+  const wmXRef = useRef<number | null>(null);
+  const footInRef = useRef(false);
+  const wavingRef = useRef(false);
+  const touchRef = useRef(false);
+
+  useEffect(() => {
+    touchRef.current = window.matchMedia('(hover: none)').matches;
+    const wm = wmRef.current;
+    if (!wm) return;
+
+    const measureLetters = () => {
+      centersRef.current = letterRefs.current.map((s) => {
+        if (!s) return 0;
+        const r = s.getBoundingClientRect();
+        return r.left + r.width / 2;
+      });
+    };
+
+    const setW = (i: number, w: number) => {
+      const cap = i === WORDMARK.length - 1 ? 800 : 900;
+      const rounded = Math.min(cap, Math.round(w / 100) * 100);
+      if (lastWRef.current[i] !== rounded) {
+        const el = letterRefs.current[i];
+        if (el) el.style.setProperty('--w', String(rounded));
+        lastWRef.current[i] = rounded;
+      }
+    };
+
+    const still = () => {
+      WORDMARK.forEach((_, i) => {
+        setW(i, 300 + 600 * Math.exp(-Math.pow((i - 8) / 4.2, 2)));
+      });
+    };
+
+    const weights = (now: number) => {
+      if (!centersRef.current.length) measureLetters();
+      const vw = window.innerWidth;
+      const x = wmXRef.current ?? vw / 2 + Math.sin(now / 1400) * vw * 0.42;
+      WORDMARK.forEach((_, i) => {
+        setW(
+          i,
+          250 + 650 * Math.exp(-Math.pow((centersRef.current[i] - x) / (vw * 0.12), 2))
+        );
+      });
+    };
+
+    const wave = (now: number) => {
+      if (footInRef.current && !reducedMotion && !touchRef.current && !paused) {
+        weights(now);
+        requestAnimationFrame(wave);
+      } else {
+        wavingRef.current = false;
+      }
+    };
+
+    const kickWave = () => {
+      if (!wavingRef.current && footInRef.current && !reducedMotion && !touchRef.current && !paused) {
+        wavingRef.current = true;
+        requestAnimationFrame(wave);
+      }
+    };
+
+    if (reducedMotion || touchRef.current) {
+      still();
+    }
+
+    if (!reducedMotion) {
+      letterRefs.current.forEach((s) => s?.style.setProperty('--y', '70%'));
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (!entry) return;
+        footInRef.current = entry.isIntersecting;
+        if (!reducedMotion) {
+          letterRefs.current.forEach((s) =>
+            s?.style.setProperty('--y', entry.isIntersecting ? '0%' : '70%')
+          );
+        }
+        if (entry.isIntersecting) {
+          measureLetters();
+          kickWave();
+        }
+      },
+      { threshold: 0.25 }
+    );
+    io.observe(wm);
+
+    const parent = wm.parentElement;
+    const onPointerMove = (e: PointerEvent) => {
+      if (e.pointerType === 'mouse') {
+        wmXRef.current = e.clientX;
+        kickWave();
+      }
+    };
+    const onPointerLeave = () => {
+      wmXRef.current = null;
+    };
+    const onResize = () => {
+      centersRef.current = [];
+    };
+
+    parent?.addEventListener('pointermove', onPointerMove);
+    parent?.addEventListener('pointerleave', onPointerLeave);
+    window.addEventListener('resize', onResize);
+
+    if (footInRef.current) {
+      kickWave();
+    }
+
+    return () => {
+      io.disconnect();
+      parent?.removeEventListener('pointermove', onPointerMove);
+      parent?.removeEventListener('pointerleave', onPointerLeave);
+      window.removeEventListener('resize', onResize);
+      wavingRef.current = false;
+    };
+  }, [paused, reducedMotion]);
+
+  return (
+    <footer
+      ref={footRef}
+      id="contacto"
+      className="relative z-[2] overflow-x-clip bg-[#F5EAD6] text-[#0A1B33] pt-[12vh] px-[var(--pad)] pb-7 overflow-hidden"
+    >
+      <p
+        ref={wmRef}
+        aria-label="Fútbol en la Piel"
+        className="cl-wm-big font-disp text-[8.8vw] max-md:text-[8.6vw] leading-[0.9] tracking-[-0.03em] text-[#0A1B33] flex justify-center whitespace-nowrap select-none"
+      >
+        {WORDMARK.map((ch, i) => (
+          <span
+            key={i}
+            ref={(el) => {
+              letterRefs.current[i] = el;
+            }}
+            aria-hidden="true"
+            style={{ transitionDelay: `${i * 30}ms` }}
+          >
+            {ch === ' ' ? '\u00A0' : ch}
+          </span>
+        ))}
+      </p>
+
+      <div className="grid grid-cols-4 max-md:grid-cols-2 gap-7 max-md:gap-[22px] mt-[8vh] pt-7 border-t-2 border-[#0A1B33]">
+        <div>
+          <p className="font-mono-cl text-[12px] font-bold text-[#1E5AA8] mb-2">INSTAGRAM</p>
+          <p className="text-[15px] max-md:text-[14px] leading-[1.5]">
+            {INSTAGRAM_HANDLE} — Publicaciones de camisetas actuales, retros y ediciones
+            especiales. Consultas al privado.
+          </p>
+        </div>
+        <div>
+          <p className="font-mono-cl text-[12px] font-bold text-[#1E5AA8] mb-2">WHATSAPP</p>
+          <p className="text-[15px] max-md:text-[14px] leading-[1.5]">
+            WhatsApp directo:{' '}
+            <a
+              href={`https://wa.me/${WHATSAPP_NUMBER_RAW}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold underline decoration-[#1E5AA8]/50 hover:text-[#1E5AA8]"
+            >
+              {WHATSAPP_DISPLAY}
+            </a>
+            . Consultá stock, talles y precios.
+          </p>
+        </div>
+        <div>
+          <p className="font-mono-cl text-[12px] font-bold text-[#1E5AA8] mb-2">ENVÍOS</p>
+          <p className="text-[15px] max-md:text-[14px] leading-[1.5]">
+            Envíos a todo Uruguay. Versiones Jugador y Fan según publicación, talles S a XL según
+            modelo. Costo y plazo a confirmar.
+          </p>
+        </div>
+        <nav aria-label="Pie de página">
+          <p className="font-mono-cl text-[12px] font-bold text-[#1E5AA8] mb-2">IR A</p>
+          <a
+            href="#inicio"
+            className="block no-underline font-semibold py-1 transition-all duration-200 hover:text-[#1E5AA8] hover:translate-x-1"
+          >
+            Talles
+          </a>
+          <a
+            href="#modelos"
+            className="block no-underline font-semibold py-1 transition-all duration-200 hover:text-[#1E5AA8] hover:translate-x-1"
+          >
+            Modelos
+          </a>
+          <a
+            href="#pedido"
+            className="block no-underline font-semibold py-1 transition-all duration-200 hover:text-[#1E5AA8] hover:translate-x-1"
+          >
+            Pedir
+          </a>
+          <a
+            href="#inicio"
+            className="block no-underline font-semibold py-1 transition-all duration-200 hover:text-[#1E5AA8] hover:translate-x-1"
+          >
+            Volver arriba
+          </a>
+        </nav>
+      </div>
+
+      <p className="mt-10 text-[13px] opacity-75">
+        Fútbol en la Piel ({INSTAGRAM_HANDLE}) · Uruguay. Catálogo basado en las publicaciones de
+        la cuenta oficial. Precios y disponibilidad sujetos a confirmación por WhatsApp. Nada en
+        esta página cobra ni reserva stock.
+      </p>
+    </footer>
+  );
+}

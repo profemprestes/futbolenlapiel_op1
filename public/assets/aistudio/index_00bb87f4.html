@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Courtline, Limited Sneaker Drops in Chicago, IL</title>
+<meta name="description" content="Courtline runs one numbered sneaker drop at a time out of the West Loop in Chicago. Drop 014 is the West Loop Low: 312 pairs in pebbled leather, three colorways, $185. Enter the draw before Friday at 10 AM.">
+<meta name="theme-color" content="#1E3FFF">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Unbounded:wght@200..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="ticker" aria-label="Drop ticker">
+  <a class="tk-wm" href="#lace" aria-label="Courtline, back to the top">COURTLINE</a>
+  <span class="tk-drop"><b>DROP 014</b> The West Loop Low <i>$185</i></span>
+  <nav class="tk-nav" aria-label="Chapters">
+    <a href="#shoe">Shoe</a>
+    <a href="#color">Colors</a>
+    <a href="#draw">Draw</a>
+  </nav>
+  <span class="tk-count" aria-label="Time left until the draw closes">
+    <span class="tk-lbl">Closes in</span>
+    <span class="cd" data-cd="ticker"><span data-u="d">00</span><em>d</em><span data-u="h">00</span><em>h</em><span data-u="m">00</span><em>m</em><span data-u="s" class="sec">00</span><em>s</em></span>
+  </span>
+  <button class="tk-motion" type="button" aria-pressed="false" aria-label="Pause motion"><span class="ico" aria-hidden="true"></span><span class="txt">Pause</span></button>
+  <a class="tk-enter" href="#draw">Enter<span class="tk-long"> the draw</span></a>
+</header>
+
+<!-- One fixed stage behind the first two chapters: cobalt field, the type ring and the sneaker -->
+<div class="stage" aria-hidden="true">
+  <div class="field"></div>
+  <div class="ring ring-back"><div class="ring-tilt"><div class="ring-line"></div></div></div>
+  <div class="shoe">
+    <div class="shadow"></div>
+    <img class="poster" width="1200" height="713" alt="" fetchpriority="high" decoding="async">
+  </div>
+  <canvas class="gl"></canvas>
+  <div class="ring ring-front"><div class="ring-tilt"><div class="ring-line"></div></div></div>
+  <div class="grain"></div>
+</div>
+
+<main>
+  <!-- C0: the type ring -->
+  <section id="lace" class="hero" aria-labelledby="hero-h">
+    <h1 id="hero-h" class="sr">Lace. Line. Leave. Courtline Drop 014, the West Loop Low.</h1>
+    <div class="hero-kick">
+      <p class="mono">CHICAGO, IL <span>/</span> WEST LOOP</p>
+      <p>One numbered sneaker drop at a time. Enter the draw, win a pair, pick it up at the counter.</p>
+    </div>
+
+    <div class="drag-zone" tabindex="0" role="slider" aria-label="Turn the sneaker" aria-valuemin="0" aria-valuemax="359" aria-valuenow="0" aria-valuetext="Front view"></div>
+
+    <div class="badge" aria-hidden="true">
+      <svg viewBox="0 0 120 120"><defs><path id="bp" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0"/></defs><text><textPath href="#bp" textLength="284" lengthAdjust="spacing">DRAG TO TURN &#183; DRAG TO TURN &#183; </textPath></text></svg>
+      <span class="badge-arrow">&#8596;</span>
+    </div>
+
+    <fieldset class="picker glass">
+      <legend>Size <span>US men's</span></legend>
+      <div class="chips" role="radiogroup" aria-label="Pick your size"></div>
+      <p class="pick-note"><b data-size-label>Pick a size</b> <span data-size-stock>and the ring brings it to the front</span></p>
+    </fieldset>
+
+    <aside class="droptag glass" aria-label="Drop details">
+      <p class="dt-n mono">DROP 014</p>
+      <p class="dt-name">The West Loop Low</p>
+      <dl>
+        <div><dt>Price</dt><dd>$185</dd></div>
+        <div><dt>Pairs</dt><dd>312, numbered</dd></div>
+        <div><dt>Colorway</dt><dd><span class="cw-dot" data-cw-dot="midnight" aria-hidden="true"></span><span data-cw-label>Midnight</span></dd></div>
+      </dl>
+    </aside>
+
+    <a class="scroll-cue" href="#shoe"><span class="mono">01 / 04</span> Scroll</a>
+  </section>
+
+  <!-- C1: one shoe, giant words, push-in -->
+  <section id="shoe" class="c1" aria-label="The shoe">
+    <div class="kw-row r1"><h2 class="kw" data-kw>ONE</h2><p class="kw-cap">Pebbled navy leather on the upper, glove-soft leather on the lining. No logos, no tabs, nothing to peel.</p></div>
+    <div class="kw-row r2"><p class="kw" data-kw>SHOE.</p><p class="kw-cap">A stitched cupsole with a 34 mm stack, cut in Chicago from our own last.</p></div>
+    <div class="kw-row r3"><p class="kw num" data-kw>312</p><p class="kw-cap">Each pair is numbered inside the tongue, 001 to 312. When they are gone, the last stays retired.</p></div>
+    <div class="kw-row r4"><p class="kw" data-kw>PAIRS.</p><p class="kw-cap">US 7 to 13 with half sizes. Pick yours above and the ring turns to it.</p></div>
+  </section>
+
+  <!-- C2: three colorways on an ice field that wipes in -->
+  <section id="color" class="c2" aria-labelledby="color-h">
+    <div class="c2-pin">
+      <div class="wipe"></div>
+      <h2 id="color-h" class="c2-head"><span>PICK</span><span>YOUR</span><span>COLOR.</span></h2>
+      <p class="c2-sub">Same last, same leather, three ways. 104 pairs of each.</p>
+    </div>
+    <div class="cards" role="radiogroup" aria-label="Colorway">
+      <button class="card is-on" type="button" role="radio" aria-checked="true" data-cw="midnight">
+        <span class="card-n mono">01</span>
+        <span class="card-img"><img data-cw-img="midnight" alt="Midnight colorway: navy pebbled leather, cream cupsole" width="1200" height="713" loading="lazy" decoding="async"></span>
+        <span class="card-name"><span class="cw-dot" aria-hidden="true"></span>Midnight</span>
+        <span class="card-desc">Navy pebbled leather, cream cupsole, white laces</span>
+        <span class="card-row"><b>$185</b><i class="mono">104 / 312</i></span>
+        <span class="card-pick">On the turntable</span>
+      </button>
+      <button class="card" type="button" role="radio" aria-checked="false" data-cw="ember">
+        <span class="card-n mono">02</span>
+        <span class="card-img"><img data-cw-img="ember" alt="Ember colorway: court orange leather, cream cupsole" width="1200" height="713" loading="lazy" decoding="async"></span>
+        <span class="card-name"><span class="cw-dot" aria-hidden="true"></span>Ember</span>
+        <span class="card-desc">Court orange leather, cream cupsole, white laces</span>
+        <span class="card-row"><b>$185</b><i class="mono">104 / 312</i></span>
+        <span class="card-pick">Put it on the turntable</span>
+      </button>
+      <button class="card" type="button" role="radio" aria-checked="false" data-cw="chalk">
+        <span class="card-n mono">03</span>
+        <span class="card-img"><img data-cw-img="chalk" alt="Chalk colorway: pale gray pebbled leather, cream cupsole, white laces" width="1200" height="713" loading="lazy" decoding="async"></span>
+        <span class="card-name"><span class="cw-dot" aria-hidden="true"></span>Chalk</span>
+        <span class="card-desc">Pale gray pebbled leather, cream cupsole, white laces</span>
+        <span class="card-row"><b>$185</b><i class="mono">104 / 312</i></span>
+        <span class="card-pick">Put it on the turntable</span>
+      </button>
+    </div>
+    <p class="cw-toast" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- C3: the drop, giant countdown and the draw -->
+  <section id="draw" class="c3" aria-labelledby="draw-h">
+    <h2 id="draw-h" class="sr">Friday. 10 AM. Chicago. Enter the draw.</h2>
+    <div class="slide-words" aria-hidden="true">
+      <p class="sw sw1">FRIDAY.</p>
+      <p class="sw sw2">10 AM.</p>
+      <p class="sw sw3">CHICAGO.</p>
+    </div>
+
+    <div class="big-cd" aria-label="Time left until the draw closes">
+      <div class="cd" data-cd="big">
+        <div class="u"><span data-u="d">00</span><small>days</small></div>
+        <div class="u"><span data-u="h">00</span><small>hours</small></div>
+        <div class="u"><span data-u="m">00</span><small>min</small></div>
+        <div class="u"><span data-u="s" class="sec">00</span><small>sec</small></div>
+      </div>
+      <p class="cd-when mono" data-cd-when>The draw closes Friday at 10:00 AM Central</p>
+    </div>
+
+    <div class="draw-grid">
+      <ol class="rules">
+        <li><b>One entry per person.</b> Duplicates come out before the draw, and bots never make it in.</li>
+        <li><b>Win, then pay.</b> Entering is free. Winners get a 24-hour checkout link by 10:15 AM.</li>
+        <li><b>Pick up or ship.</b> Collect at the West Loop counter on the weekend, or ship in 2 days for $12.</li>
+      </ol>
+
+      <form class="draw glass" novalidate>
+        <p class="form-h">Enter Drop 014</p>
+        <div class="f2">
+          <label><span>Full name</span><input name="name" type="text" autocomplete="name" placeholder="Alex Rivera" required></label>
+          <label><span>Email</span><input name="email" type="email" autocomplete="email" placeholder="alex@example.com" required></label>
+        </div>
+        <div class="f2">
+          <label><span>Size (US men's)</span><select name="size" required></select></label>
+          <label><span>Colorway</span>
+            <select name="colorway" required>
+              <option value="midnight">Midnight</option>
+              <option value="ember">Ember</option>
+              <option value="chalk">Chalk</option>
+            </select>
+          </label>
+        </div>
+        <div class="seg" role="radiogroup" aria-label="Pickup or ship">
+          <label><input type="radio" name="fulfil" value="pickup" required checked><span>Pick up, West Loop</span></label>
+          <label><input type="radio" name="fulfil" value="ship"><span>Ship, 2 days, $12</span></label>
+        </div>
+        <label class="zip" hidden><span>Shipping ZIP</span><input name="zip" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code" placeholder="60607"></label>
+        <label class="agree"><input type="checkbox" name="agree" required><span>I am 16 or older and agree to the draw rules. One entry per person.</span></label>
+        <button class="go" type="submit">Enter the draw <span aria-hidden="true">&#8599;</span></button>
+        <p class="form-err" role="alert"></p>
+      </form>
+      <div class="entered glass" hidden tabindex="-1">
+        <p class="mono">ENTRY RECEIVED</p>
+        <p class="ent-h">You are in, <span data-ent-name></span>.</p>
+        <p class="ent-id mono" data-ent-id></p>
+        <p data-ent-sum></p>
+        <button class="again" type="button">Enter someone else</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- C4: the wordmark -->
+<footer id="club" class="c4">
+  <p class="wm-big" aria-label="Courtline"></p>
+  <div class="foot-cols">
+    <div><p class="mono">COUNTER</p><p>Fulton Market, West Loop, Chicago, IL. Saturday and Sunday, 11 AM to 6 PM. Pickups only, no walk-in sales on drop weekends.</p></div>
+    <div><p class="mono">SHIPPING</p><p>Two days anywhere in the lower 48 for $12, free on two pairs. Returns within 14 days, unworn.</p></div>
+    <div><p class="mono">DROPS</p><p>One shoe at a time, about every six weeks. Drop 015 is already on the last.</p></div>
+    <nav aria-label="Footer"><p class="mono">JUMP</p><a href="#lace">Sizes</a><a href="#color">Colorways</a><a href="#draw">Draw rules</a><a href="#lace">Back to top</a></nav>
+  </div>
+  <p class="foot-note">A demo store. Courtline, its drops and its people are invented, and forms here send nothing.</p>
+</footer>
+
+<script src="script.js" defer></script>
+</body>
+</html>
