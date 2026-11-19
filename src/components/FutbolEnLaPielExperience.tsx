@@ -315,12 +315,10 @@ export default function FutbolEnLaPielExperience() {
 
       <main className="relative z-[2] overflow-x-clip">
         <HeroSection
-          selectedSize={selectedSize}
           selectedModelo={selectedModelo}
           isDragging={isDragging}
           sliderDeg={sliderDeg}
           sliderText={sliderText}
-          onSelectSize={handleSelectSize}
           onPointerDown={(e) => stageRef.current?.handlePointerDown(e)}
           onPointerMove={(e) => stageRef.current?.handlePointerMove(e)}
           onPointerEnd={() => stageRef.current?.handlePointerEnd()}
