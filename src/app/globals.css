@@ -139,7 +139,7 @@
 
 .cl-camiseta {
   left: calc(var(--cx) - var(--sw) / 2);
-  top: calc(var(--cy) - var(--sw) * 0.297);
+  top: calc(var(--cy) - var(--sw) / 2);
   width: var(--sw);
 }
 

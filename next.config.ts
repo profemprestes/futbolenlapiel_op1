@@ -8,7 +8,14 @@ const nextConfig: NextConfig = {
   turbopack: {},
   // Allow access to remote image placeholder.
   images: {
+    dangerouslyAllowSVG: true,
     remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'ynqvddgxxtmflpouursq.supabase.co',
+        port: '',
+        pathname: '/storage/v1/object/public/**',
+      },
       {
         protocol: 'https',
         hostname: 'picsum.photos',

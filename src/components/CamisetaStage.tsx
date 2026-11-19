@@ -1,13 +1,9 @@
 'use client';
 
+import Image from 'next/image';
 import { useEffect, useImperativeHandle, useRef, useState } from 'react';
-import {
-  renderCamisetaDataURL,
-  renderCamisetaDepthDataURL,
-} from '@/lib/camiseta-assets';
 import type { ModeloId } from '@/lib/futbolenlapiel-data';
-import { SIZES } from '@/lib/futbolenlapiel-data';
-import CamisetaImage from './CamisetaImage';
+import { BRAND_LOGOS, SIZES } from '@/lib/futbolenlapiel-data';
 
 export interface StageController {
   markSize: (size: string) => void;
@@ -116,7 +112,6 @@ void main(){
 }`;
 
 export default function CamisetaStage({
-  modelo,
   reducedMotion,
   onDraggingChange,
   onAriaUpdate,
@@ -248,7 +243,7 @@ export default function CamisetaStage({
       );
       stage.style.setProperty('--persp', `${phone ? 820 : 1700}px`);
       const sw = camisetaEl.offsetWidth;
-      const sh = (sw * 713) / 1200;
+      const sh = sw;
       glBox.layout = {
         cx: camisetaEl.offsetLeft + sw / 2,
         cy: camisetaEl.offsetTop + sh / 2,
@@ -298,22 +293,86 @@ export default function CamisetaStage({
       }
     };
 
-    const loadDataImg = (dataUrl: string) =>
-      new Promise<HTMLImageElement>((res, rej) => {
-        const img = new Image();
-        img.onload = () => res(img);
+    const loadSvgCanvas = (url: string) =>
+      new Promise<HTMLCanvasElement>((res, rej) => {
+        const img = new window.Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => {
+          const size = 1024;
+          const off = document.createElement('canvas');
+          off.width = size;
+          off.height = size;
+          const ctx = off.getContext('2d');
+          if (!ctx) {
+            rej(new Error('2D context unavailable'));
+            return;
+          }
+          ctx.beginPath();
+          ctx.arc(size / 2, size / 2, size * 0.49, 0, Math.PI * 2);
+          ctx.clip();
+          ctx.drawImage(img, 0, 0, size, size);
+          res(off);
+        };
         img.onerror = rej;
-        img.src = dataUrl;
+        img.src = url;
       });
 
-    const upload = (gl: WebGL2RenderingContext, img: HTMLImageElement, unit: number) => {
+    const uploadCanvas = (
+      gl: WebGL2RenderingContext,
+      source: HTMLCanvasElement,
+      unit: number
+    ) => {
       const t = gl.createTexture();
       gl.activeTexture(gl.TEXTURE0 + unit);
       gl.bindTexture(gl.TEXTURE_2D, t);
       gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, source);
       gl.generateMipmap(gl.TEXTURE_2D);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      return t;
+    };
+
+    const createLogoDepthTexture = (gl: WebGL2RenderingContext, unit: number) => {
+      const size = 256;
+      const pixels = new Uint8Array(size * size * 4);
+      for (let y = 0; y < size; y++) {
+        for (let x = 0; x < size; x++) {
+          const nx = (x / (size - 1)) * 2 - 1;
+          const ny = (y / (size - 1)) * 2 - 1;
+          const r = Math.hypot(nx, ny);
+          let depth = 0;
+          if (r <= 1) {
+            const dome = Math.sqrt(Math.max(0, 1 - r * r * 0.85)) * 0.65;
+            const rim = Math.exp(-Math.pow((r - 0.88) / 0.075, 2)) * 0.35;
+            const bevel = Math.min(1, Math.max(0, (1 - r) / 0.08));
+            depth = (dome + rim) * bevel;
+          }
+          const v = Math.max(0, Math.min(255, Math.round(depth * 255)));
+          const i = (y * size + x) * 4;
+          pixels[i] = v;
+          pixels[i + 1] = v;
+          pixels[i + 2] = v;
+          pixels[i + 3] = 255;
+        }
+      }
+      const t = gl.createTexture();
+      gl.activeTexture(gl.TEXTURE0 + unit);
+      gl.bindTexture(gl.TEXTURE_2D, t);
+      gl.texImage2D(
+        gl.TEXTURE_2D,
+        0,
+        gl.RGBA,
+        size,
+        size,
+        0,
+        gl.RGBA,
+        gl.UNSIGNED_BYTE,
+        pixels
+      );
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
@@ -399,14 +458,11 @@ export default function CamisetaStage({
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ib);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(idx), gl.STATIC_DRAW);
 
-        const [dImg, aImg] = await Promise.all([
-          loadDataImg(renderCamisetaDepthDataURL()),
-          loadDataImg(renderCamisetaDataURL('uruguay')),
-        ]);
+        const logoCanvas = await loadSvgCanvas(BRAND_LOGOS.emblem3d);
         if (cancelled) return;
 
-        const dTex = upload(gl, dImg, 2);
-        const uTex = upload(gl, aImg, 0);
+        const dTex = createLogoDepthTexture(gl, 2);
+        const uTex = uploadCanvas(gl, logoCanvas, 0);
         if (!dTex || !uTex) return;
 
         glBox.gl = gl;
@@ -473,11 +529,15 @@ export default function CamisetaStage({
       gl.uniform1f(U.uAlpha, alpha);
       gl.uniform1f(U.uMirror, mirror);
       gl.uniform1f(U.uSquash, squash);
-      gl.uniform1f(U.uDz, 0.16);
+      gl.uniform1f(U.uDz, 0.22);
       gl.uniform1f(U.uCam, 2.4);
-      gl.uniform1f(U.uAsp, 713 / 1200);
+      gl.uniform1f(U.uAsp, 1);
       gl.uniform2f(U.uC, (layout.cx / W) * 2 - 1, 1 - (layout.cy / H) * 2);
-      gl.uniform2f(U.uK, layout.sw / (W / 2), layout.sw / (H / 2));
+      gl.uniform2f(
+        U.uK,
+        (layout.sw * 0.72) / (W / 2),
+        (layout.sw * 0.72) / (H / 2)
+      );
       gl.uniform1f(U.uSweep, 0.5 + 0.9 * Math.sin((S.theta + S.extraYaw * 3) * RAD));
       gl.uniform1f(
         U.uRim,
@@ -611,44 +671,16 @@ export default function CamisetaStage({
       S.dirty = true;
     },
 
-    setModelo: async (nextModelo: ModeloId) => {
+    setModelo: (nextModelo: ModeloId) => {
       const S = stateRef.current;
       if (nextModelo === S.modelo) return;
       S.modelo = nextModelo;
-      const glBox = glCtxRef.current;
-      if (!glBox.gl) return;
-      try {
-        if (!glBox.tex[nextModelo]) {
-          const img = await new Promise<HTMLImageElement>((res, rej) => {
-            const i = new Image();
-            i.onload = () => res(i);
-            i.onerror = rej;
-            i.src = renderCamisetaDataURL(nextModelo);
-          });
-          const gl = glBox.gl;
-          if (!gl) return;
-          const t = gl.createTexture();
-          gl.activeTexture(gl.TEXTURE1);
-          gl.bindTexture(gl.TEXTURE_2D, t);
-          gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
-          gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
-          gl.generateMipmap(gl.TEXTURE_2D);
-          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
-          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-          if (t) glBox.tex[nextModelo] = t;
-        }
-        const nextTex = glBox.tex[nextModelo];
-        if (nextTex) {
-          S.texA = S.texB;
-          S.texB = nextTex;
-          S.mix = reducedMotion ? 1 : 0;
-          S.dirty = true;
-        }
-      } catch {
-        // Keep current texture on error
+      S.swayAmp = 0;
+      if (!reducedMotion) {
+        S.target = nextRest(S.theta, 1);
       }
+      S.last = performance.now();
+      S.dirty = true;
     },
 
     setPaused: (paused: boolean) => {
@@ -760,17 +792,19 @@ export default function CamisetaStage({
         </div>
       </div>
 
-      {/* Camiseta de respaldo + sombra */}
+      {/* Logo 3D de respaldo + sombra */}
       <div ref={camisetaRef} className="cl-camiseta absolute">
         <div
           ref={shadowRef}
-          className="absolute left-[14%] right-[14%] -bottom-[10%] h-[14%] rounded-full bg-[radial-gradient(closest-side,rgba(0,0,0,0.58),rgba(0,0,0,0))] blur-[6px] origin-center"
+          className="absolute left-[22%] right-[22%] -bottom-[6%] h-[12%] rounded-full bg-[radial-gradient(closest-side,rgba(0,0,0,0.58),rgba(0,0,0,0))] blur-[6px] origin-center"
         />
-        <CamisetaImage
-          modelo={modelo}
+        <Image
+          src={BRAND_LOGOS.emblem3d}
           alt=""
+          width={512}
+          height={512}
           priority
-          className={`block w-full h-auto -rotate-2 transition-opacity duration-500 drop-shadow-[18px_0_30px_rgba(142,203,245,0.22)] ${
+          className={`block w-[72%] h-auto mx-auto rounded-full -rotate-2 transition-opacity duration-500 drop-shadow-[18px_0_30px_rgba(142,203,245,0.22)] ${
             glOn ? 'opacity-0' : 'opacity-100'
           }`}
         />

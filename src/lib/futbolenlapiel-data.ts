@@ -97,6 +97,8 @@ export const INSTAGRAM_HANDLE = '@futbolenlapieluy1';
 export const BRAND_LOGOS = {
   horizontal: '/logos/futbolenlapiel_horizontal_transparente.png',
   emblem: '/logos/futbol_logo_mejorado_v2.png',
+  emblem3d:
+    'https://ynqvddgxxtmflpouursq.supabase.co/storage/v1/object/public/marifertiendauy/futbol_logo_mejorado_v2.svg',
 } as const;
 
 export type CatalogCategoryId = 'actuales' | 'retros' | 'uruguay' | 'clubes';
