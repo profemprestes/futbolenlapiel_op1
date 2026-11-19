@@ -1,10 +1,11 @@
 'use client';
 
 import Image from 'next/image';
-import { ArrowUpRight, ChevronDown } from 'lucide-react';
+import Link from 'next/link';
+import { ArrowUpRight, ChevronDown, Truck } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useRef, useState } from 'react';
-import type { CountdownState, ModeloId } from '@/lib/futbolenlapiel-data';
+import type { ModeloId } from '@/lib/futbolenlapiel-data';
 import {
   BRAND_LOGOS,
   COMMERCIAL_INFO,
@@ -17,7 +18,6 @@ import {
 } from '@/lib/futbolenlapiel-data';
 
 interface PedidoChapterProps {
-  countdown: CountdownState;
   selectedSize: string;
   selectedModelo: ModeloId;
   camiseta: string;
@@ -44,7 +44,6 @@ const SLIDE_WORDS = [
 ];
 
 export default function PedidoChapter({
-  countdown,
   selectedSize,
   camiseta,
   camisetaPlaceholder,
@@ -214,39 +213,41 @@ export default function PedidoChapter({
         ))}
       </div>
 
-      {/* Contador monumental (A CONFIRMAR) */}
-      <div
-        aria-label="Cierre de despachos"
-        className="relative mt-[10vh] mb-[8vh]"
+      {/* Aviso compacto de despachos y stock */}
+      <article
+        aria-label="Estado de despachos y stock"
+        className="relative mt-[6vh] mb-[6vh] max-w-[1180px] mx-auto glass-panel px-6 py-5 flex flex-col md:flex-row md:items-center justify-between gap-4"
       >
-        <div className="flex justify-between gap-[2vw] font-mono-cl font-bold">
-          {[
-            { val: countdown.d, label: 'días', isSec: false },
-            { val: countdown.h, label: 'horas', isSec: false },
-            { val: countdown.m, label: 'min', isSec: false },
-            { val: countdown.s, label: 'seg', isSec: true },
-          ].map((u) => (
-            <div
-              key={u.label}
-              className="flex flex-col items-start [perspective:600px] overflow-hidden"
-            >
-              <span
-                className={`block text-[clamp(64px,15vw,240px)] max-md:text-[17vw] leading-[0.92] tracking-[-0.06em] ${
-                  u.isSec ? 'text-[#A8D6F0]' : ''
-                }`}
-              >
-                {u.val}
-              </span>
-              <small className="text-[13px] max-md:text-[11px] tracking-[0.14em] uppercase opacity-75 mt-2">
-                {u.label}
-              </small>
-            </div>
-          ))}
+        <div className="flex flex-col gap-1">
+          <header className="flex items-center gap-2 text-[#A8D6F0]">
+            <Truck className="w-4 h-4 shrink-0" aria-hidden="true" />
+            <span className="font-mono-cl text-[12px] font-bold uppercase tracking-[0.08em]">
+              Despachos a todo Uruguay
+            </span>
+          </header>
+          <p className="text-[15px] text-[#F5EAD6]/90 leading-relaxed">
+            Confirmamos stock, talle y plazo de entrega directo por WhatsApp antes de coordinar el
+            pago.
+          </p>
         </div>
-        <p className="mt-[18px] font-mono-cl text-[13px] text-[#A8D6F0]">
-          Cierre de despachos: A CONFIRMAR. Consultá stock y plazo por WhatsApp antes de pedir.
-        </p>
-      </div>
+
+        <footer className="flex flex-wrap items-center gap-3 shrink-0">
+          <Link
+            href="/envios"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#F5EAD6]/25 text-[13px] font-semibold text-[#F5EAD6] no-underline hover:border-[#A8D6F0] hover:text-[#A8D6F0] transition-colors"
+          >
+            Envíos y pagos
+            <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
+          </Link>
+          <Link
+            href="/talles"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#F5EAD6]/25 text-[13px] font-semibold text-[#F5EAD6] no-underline hover:border-[#A8D6F0] hover:text-[#A8D6F0] transition-colors"
+          >
+            Guía de talles
+            <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
+          </Link>
+        </footer>
+      </article>
 
       {/* Reglas + Formulario de consulta */}
       <div className="relative grid grid-cols-[1fr_1.25fr] max-md:grid-cols-1 gap-[clamp(20px,4vw,64px)] max-w-[1180px] mx-auto items-start">

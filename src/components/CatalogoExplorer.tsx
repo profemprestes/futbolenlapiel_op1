@@ -34,6 +34,12 @@ interface CatalogoExplorerProps {
 const VALID_CATEGORIES = new Set<string>(['actuales', 'retros', 'uruguay', 'clubes']);
 const VERSION_FILTERS = ['Todas', 'Versión Jugador', 'Versión Fan', 'Retro', 'Edición especial'] as const;
 
+function extractDorsalNumber(dorsal?: string): string | null {
+  if (!dorsal) return null;
+  const match = dorsal.match(/\d+/);
+  return match ? match[0] : null;
+}
+
 function whatsAppItemHref(item: CatalogoItem) {
   return `https://wa.me/${WHATSAPP_NUMBER_RAW}?text=${encodeURIComponent(
     `Hola Fútbol en la Piel! Quiero consultar por "${item.title}" (${item.version}).`
@@ -75,7 +81,10 @@ export default function CatalogoExplorer({
     const q = query.trim().toLowerCase();
     return CATALOGO_ITEMS.filter((item) => {
       if (activeCategory !== 'todas' && item.category !== activeCategory) return false;
-      if (selectedVersion !== 'Todas' && !item.version.toLowerCase().includes(selectedVersion.toLowerCase())) {
+      if (
+        selectedVersion !== 'Todas' &&
+        !item.version.toLowerCase().includes(selectedVersion.toLowerCase())
+      ) {
         return false;
       }
       if (selectedSize !== 'Todos' && !item.availableSizes.includes(selectedSize)) {
@@ -110,19 +119,19 @@ export default function CatalogoExplorer({
   };
 
   return (
-    <div className="flex flex-col gap-6">
-      {/* Search + Filters */}
-      <div className="flex flex-col gap-3.5">
+    <div className="flex flex-col gap-7">
+      {/* Toolbar */}
+      <div className="glass-panel p-4 md:p-5 flex flex-col gap-4">
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 justify-between">
           <div className="relative flex-1 max-w-md">
-            <Search className="size-4 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <Search className="size-4 text-muted-foreground absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             <Input
               type="search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Buscar equipo, jugador, dorsal o año..."
               aria-label="Buscar camisetas en el catálogo"
-              className="h-10 pl-9 pr-9 rounded-full bg-card border-border text-foreground"
+              className="h-10 pl-10 pr-9 rounded-full bg-[#061121]/70 border-[#F5EAD6]/20 text-foreground"
             />
             {query && (
               <Button
@@ -138,9 +147,9 @@ export default function CatalogoExplorer({
             )}
           </div>
 
-          <p className="text-xs font-mono-cl text-muted-foreground">
-            Mostrando <span className="text-foreground font-bold">{filteredItems.length}</span>{' '}
-            {filteredItems.length === 1 ? 'camiseta' : 'camisetas'}
+          <p className="text-xs font-mono-cl text-muted-foreground tabular-nums">
+            <span className="text-primary font-bold">{filteredItems.length}</span>{' '}
+            {filteredItems.length === 1 ? 'camiseta encontrada' : 'camisetas encontradas'}
           </p>
         </div>
 
@@ -179,7 +188,7 @@ export default function CatalogoExplorer({
           </div>
         )}
 
-        <div className="flex flex-wrap items-center gap-4">
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 pt-1 border-t border-[#F5EAD6]/10">
           {!showDecadeFilters && (
             <div role="group" aria-label="Filtrar por versión" className="flex flex-wrap items-center gap-1.5">
               <span className="text-xs font-mono-cl text-muted-foreground mr-1">Versión:</span>
@@ -218,7 +227,7 @@ export default function CatalogoExplorer({
 
       {/* Results Grid or Empty State */}
       {filteredItems.length === 0 ? (
-        <Card className="bg-card/80 border-border py-6">
+        <Card className="glass-panel py-8">
           <CardHeader className="text-center items-center">
             <CardTitle className="font-disp text-2xl font-bold">
               No encontramos camisetas con ese filtro
@@ -246,79 +255,99 @@ export default function CatalogoExplorer({
         </Card>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {filteredItems.map((item) => (
-            <Card key={item.id} className="bg-card border-border flex flex-col justify-between">
-              <CardHeader>
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <div className="flex items-center gap-1.5">
-                    <Badge variant="outline" className="font-mono-cl">
-                      {item.season}
-                    </Badge>
-                    <Badge variant="secondary">{item.version}</Badge>
-                  </div>
-                  <Badge
-                    variant="outline"
-                    className={cn(
-                      'text-[11px] font-mono-cl',
-                      item.status === 'Disponible' && 'border-primary/50 text-primary bg-primary/10',
-                      item.status === 'Agotado' && 'border-destructive/50 text-destructive'
-                    )}
+          {filteredItems.map((item) => {
+            const dorsalNum = extractDorsalNumber(item.dorsal);
+            return (
+              <Card
+                key={item.id}
+                className="relative overflow-hidden bg-[#0E213E]/85 border-[#F5EAD6]/16 hover:border-[#A8D6F0]/45 transition-colors flex flex-col justify-between"
+              >
+                {dorsalNum && (
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none select-none absolute -right-2 -top-4 font-disp font-black text-[96px] leading-none text-[#F5EAD6]/[0.045]"
                   >
-                    {item.status}
-                  </Badge>
-                </div>
-
-                <CardTitle className="font-disp text-xl font-bold pt-1 leading-snug">
-                  <Link href={`/camiseta/${item.slug}`} className="no-underline hover:text-primary transition-colors">
-                    {item.title}
-                  </Link>
-                </CardTitle>
-                <CardDescription className="text-foreground/80 leading-relaxed">
-                  {item.shortDesc}
-                </CardDescription>
-                {item.contextNote && (
-                  <p className="text-xs text-muted-foreground italic pt-1">{item.contextNote}</p>
+                    #{dorsalNum}
+                  </span>
                 )}
-              </CardHeader>
 
-              <CardContent className="flex flex-wrap items-center justify-between gap-2">
-                <div className="flex flex-wrap gap-1.5">
-                  {item.brand && (
-                    <Badge variant="outline" className="text-[11px]">
-                      {item.brand}
+                <CardHeader className="relative z-[1]">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div className="flex items-center gap-1.5">
+                      <Badge variant="outline" className="font-mono-cl border-[#F5EAD6]/25">
+                        {item.season}
+                      </Badge>
+                      <Badge variant="secondary">{item.version}</Badge>
+                    </div>
+                    <Badge
+                      variant="outline"
+                      className={cn(
+                        'text-[11px] font-mono-cl',
+                        item.status === 'Disponible' && 'border-primary/50 text-primary bg-primary/10',
+                        item.status === 'Agotado' && 'border-destructive/50 text-destructive'
+                      )}
+                    >
+                      {item.status}
                     </Badge>
-                  )}
-                  <Badge variant="outline" className="text-[11px] font-mono-cl">
-                    {item.availableSizes.join(' · ')}
-                  </Badge>
-                </div>
-                <span className="text-xs font-mono-cl font-bold text-primary">
-                  {item.priceLabel}
-                </span>
-              </CardContent>
+                  </div>
 
-              <CardFooter className="justify-between gap-2 pt-4 border-t border-border/60">
-                <Button
-                  size="sm"
-                  className="rounded-full font-semibold"
-                  render={
-                    <a href={whatsAppItemHref(item)} target="_blank" rel="noopener noreferrer" />
-                  }
-                >
-                  <MessageCircle data-icon="inline-start" />
-                  Consultar
-                </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="rounded-full"
-                  render={<Link href={`/camiseta/${item.slug}`} />}
-                >
-                  Ver ficha
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
+                  <CardTitle className="font-disp text-[22px] font-bold pt-1.5 leading-[1.08] tracking-[-0.01em]">
+                    <Link
+                      href={`/camiseta/${item.slug}`}
+                      className="no-underline hover:text-primary transition-colors"
+                    >
+                      {item.title}
+                    </Link>
+                  </CardTitle>
+                  <CardDescription className="text-foreground/80 leading-relaxed">
+                    {item.shortDesc}
+                  </CardDescription>
+                  {item.contextNote && (
+                    <p className="text-xs text-[#A8D6F0]/80 italic pt-1 leading-relaxed">
+                      {item.contextNote}
+                    </p>
+                  )}
+                </CardHeader>
+
+                <CardContent className="relative z-[1] flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex flex-wrap gap-1.5">
+                    {item.brand && (
+                      <Badge variant="outline" className="text-[11px] border-[#F5EAD6]/20">
+                        {item.brand}
+                      </Badge>
+                    )}
+                    <Badge variant="outline" className="text-[11px] font-mono-cl border-[#F5EAD6]/20">
+                      {item.availableSizes.join(' · ')}
+                    </Badge>
+                  </div>
+                  <span className="text-xs font-mono-cl font-bold text-primary">
+                    {item.priceLabel}
+                  </span>
+                </CardContent>
+
+                <CardFooter className="relative z-[1] justify-between gap-2 pt-3.5 border-t border-[#F5EAD6]/10">
+                  <Button
+                    size="sm"
+                    className="rounded-full font-semibold"
+                    render={
+                      <a href={whatsAppItemHref(item)} target="_blank" rel="noopener noreferrer" />
+                    }
+                  >
+                    <MessageCircle data-icon="inline-start" />
+                    Consultar
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="rounded-full border-[#F5EAD6]/20 hover:border-[#A8D6F0]/50"
+                    render={<Link href={`/camiseta/${item.slug}`} />}
+                  >
+                    Ver ficha
+                  </Button>
+                </CardFooter>
+              </Card>
+            );
+          })}
         </div>
       )}
     </div>

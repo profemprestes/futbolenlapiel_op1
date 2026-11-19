@@ -1,13 +1,7 @@
 import Link from 'next/link';
-import { MessageCircle } from 'lucide-react';
+import { ChevronDown, MessageCircle } from 'lucide-react';
 import PageShell from '@/components/PageShell';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 import { WHATSAPP_NUMBER_RAW } from '@/lib/futbolenlapiel-data';
 
 export const metadata = {
@@ -58,16 +52,25 @@ export default function PreguntasPage() {
       title="PREGUNTAS FRECUENTES"
       description="Todo lo que necesitás saber sobre talles, calidad, envíos a todo Uruguay, medios de pago y encargos antes de escribirnos."
     >
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        {FAQS.map((item) => (
-          <Card key={item.q} className="bg-card border-border">
-            <CardHeader>
-              <CardTitle className="font-disp text-xl font-bold leading-snug">{item.q}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-foreground/85 leading-relaxed">{item.a}</p>
-            </CardContent>
-          </Card>
+      <section className="glass-panel divide-y divide-[#F5EAD6]/12 px-6 py-2">
+        {FAQS.map((item, idx) => (
+          <details key={item.q} open={idx === 0} className="group py-4">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-disp text-xl font-bold text-foreground hover:text-primary transition-colors">
+              <span className="flex items-baseline gap-3">
+                <span className="font-mono-cl text-xs text-primary">
+                  {String(idx + 1).padStart(2, '0')}
+                </span>
+                <span>{item.q}</span>
+              </span>
+              <ChevronDown
+                className="size-4 shrink-0 text-muted-foreground transition-transform duration-200 group-open:rotate-180"
+                aria-hidden="true"
+              />
+            </summary>
+            <p className="pt-3 pl-7 text-sm text-foreground/85 leading-relaxed max-w-2xl">
+              {item.a}
+            </p>
+          </details>
         ))}
       </section>
 

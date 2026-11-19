@@ -2,7 +2,7 @@
 
 import { MotionConfig } from 'motion/react';
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
-import { type CatalogCategory, type ModeloId, MODELO_NAMES, STATIC_COUNTDOWN } from '@/lib/futbolenlapiel-data';
+import { type CatalogCategory, type ModeloId, MODELO_NAMES } from '@/lib/futbolenlapiel-data';
 import CamisetaChapter from './CamisetaChapter';
 import CamisetaStage, { type StageController } from './CamisetaStage';
 import HeroSection from './HeroSection';
@@ -291,7 +291,6 @@ export default function FutbolEnLaPielExperience() {
   return (
     <MotionConfig reducedMotion="user">
       <TickerHeader
-        countdown={STATIC_COUNTDOWN}
         activeChapter={activeChapter}
         solid={tickerSolid}
         tickerRef={tickerRef}
@@ -334,7 +333,6 @@ export default function FutbolEnLaPielExperience() {
         />
 
         <PedidoChapter
-          countdown={STATIC_COUNTDOWN}
           selectedSize={selectedSize}
           selectedModelo={selectedModelo}
           camiseta={camiseta}

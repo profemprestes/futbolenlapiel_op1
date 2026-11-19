@@ -101,11 +101,11 @@ export default function TallesPage() {
               </thead>
               <tbody>
                 {SIZE_TABLE.map((row) => (
-                  <tr key={row.size} className="border-b border-border/50">
+                  <tr key={row.size} className="border-b border-border/50 tabular-nums">
                     <td className="py-3 pr-4 font-mono-cl font-bold text-primary">{row.size}</td>
-                    <td className="py-3 pr-4">{row.chest}</td>
-                    <td className="py-3 pr-4">{row.length}</td>
-                    <td className="py-3 text-muted-foreground">{row.fit}</td>
+                    <td className="py-3 pr-4 font-mono-cl">{row.chest}</td>
+                    <td className="py-3 pr-4 font-mono-cl">{row.length}</td>
+                    <td className="py-3 font-mono-cl text-muted-foreground">{row.fit}</td>
                   </tr>
                 ))}
               </tbody>
