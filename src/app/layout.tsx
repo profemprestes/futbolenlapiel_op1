@@ -1,7 +1,10 @@
 import type { Metadata, Viewport } from 'next';
-import { Archivo_Black, Barlow_Condensed, Inter, JetBrains_Mono } from 'next/font/google';
+import { Archivo_Black, Barlow_Condensed, Inter, JetBrains_Mono, Geist } from 'next/font/google';
 import { BRAND_LOGOS } from '@/lib/futbolenlapiel-data';
 import './globals.css';
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const inter = Inter({
   subsets: ['latin'],
@@ -65,7 +68,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="es"
-      className={`${inter.variable} ${jetbrainsMono.variable} ${archivoBlack.variable} ${barlowCondensed.variable}`}
+      className={cn(inter.variable, jetbrainsMono.variable, archivoBlack.variable, barlowCondensed.variable, "font-sans", geist.variable)}
     >
       <body suppressHydrationWarning>{children}</body>
     </html>
