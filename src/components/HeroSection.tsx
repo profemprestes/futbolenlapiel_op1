@@ -111,70 +111,11 @@ export default function HeroSection({
       {/* Insignia circular giratoria */}
       <div
         aria-hidden="true"
-        className={`cl-hero-badge absolute right-[calc(var(--pad)+10px)] top-[44%] max-md:right-3 max-md:top-auto max-md:bottom-[214px] w-28 h-28 max-md:w-[72px] max-md:h-[72px] pointer-events-none transition-transform duration-350 ease-[var(--ease)] ${
-          isDragging ? 'scale-108' : 'scale-100'
-        }`}
+        className={`cl-hero-badge absolute right-[calc(var(--pad)+10px)] top-[44%] max-md:right-3 max-md:top-auto max-md:bottom-[214px] w-28 h-28 max-md:w-[72px] max-md:h-[72px] pointer-events-none transition-transform duration-350 ease-[var(--ease)] ${isDragging ? 'scale-108' : 'scale-100'
+          }`}
       >
         {ROTATE_BADGE_SVG}
       </div>
-
-      {/* Presentación general de la marca */}
-      <div className="cl-picker glass-panel absolute left-[var(--pad)] bottom-[var(--pad)] w-[388px] min-w-0 p-4 pb-3.5 max-md:left-3 max-md:right-3 max-md:bottom-3 max-md:w-auto max-md:p-3 max-md:rounded-[18px]">
-        <p className="font-mono-cl text-[11.5px] font-bold tracking-[0.06em] text-[#A8D6F0] mb-1.5">
-          IDENTIDAD DE MARCA
-        </p>
-        <p className="text-[14px] max-md:text-[13px] font-semibold leading-snug text-[#F5EAD6]">
-          Cultura futbolera en cada camiseta: diseños actuales y reliquias históricas con atención cercana.
-        </p>
-        <ul className="mt-2.5 flex flex-wrap gap-1.5 max-md:hidden" aria-label="Pilares de la marca">
-          {BRAND_PILLARS.map((pillar) => (
-            <li
-              key={pillar}
-              className="rounded-full border border-[#F5EAD6]/25 bg-[#0A1B33]/45 px-2.5 py-1 font-mono-cl text-[11px] font-semibold text-[#F5EAD6]"
-            >
-              {pillar}
-            </li>
-          ))}
-        </ul>
-        <div className="mt-3 flex items-center gap-2 max-md:mt-2.5">
-          <a
-            href="#modelos"
-            className="inline-flex items-center gap-1.5 h-9 px-4 rounded-full bg-[#A8D6F0] hover:bg-[#8ECBF5] text-[#0A1B33] no-underline text-[13px] font-bold transition-colors"
-          >
-            Explorar modelos <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
-          </a>
-          <a
-            href="#pedido"
-            className="inline-flex items-center h-9 px-3.5 rounded-full border border-[#8ECBF5]/50 hover:border-[#F5EAD6] no-underline text-[12.5px] font-semibold transition-colors"
-          >
-            Contacto directo
-          </a>
-        </div>
-      </div>
-
-      {/* Ficha general de la marca */}
-      <aside
-        aria-label="Información general de Fútbol en la Piel"
-        className="cl-droptag glass-panel absolute right-[var(--pad)] bottom-[var(--pad)] w-[290px] px-[18px] py-4 max-md:left-3 max-md:right-3 max-md:bottom-[146px] max-md:w-auto max-md:px-3.5 max-md:py-[9px] max-md:rounded-[14px] max-md:flex max-md:gap-2.5 max-md:items-center max-md:justify-between"
-      >
-        <p className="cl-dt-n font-mono-cl text-[13px] font-bold tracking-[0.06em] text-[#A8D6F0]">
-          COLECCIÓN DESTACADA
-        </p>
-        <p className="font-disp font-bold text-[18px] max-md:text-[13px] mt-1 mb-2.5 max-md:m-0 leading-tight">
-          {MODELO_NAMES[selectedModelo]}
-        </p>
-        <dl className="max-md:hidden">
-          {BRAND_FACTS.map((fact) => (
-            <div
-              key={fact.label}
-              className="cl-dt-row flex justify-between gap-3 py-[6px] border-t border-[#8ECBF5]/35 text-[12.5px]"
-            >
-              <dt className="opacity-70">{fact.label}</dt>
-              <dd className="font-semibold text-right">{fact.value}</dd>
-            </div>
-          ))}
-        </dl>
-      </aside>
 
       {/* Indicador de scroll */}
       <a
