@@ -174,7 +174,11 @@ export default function SiteNavbar({
           size="sm"
           className="rounded-full font-bold px-3.5 max-md:px-3"
           render={
-            <a href={whatsappDirectHref} target="_blank" rel="noopener noreferrer" />
+            isHome ? (
+              <a href="#pedido" />
+            ) : (
+              <a href={whatsappDirectHref} target="_blank" rel="noopener noreferrer" />
+            )
           }
         >
           <MessageCircle data-icon="inline-start" />
