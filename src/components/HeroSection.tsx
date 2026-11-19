@@ -1,9 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { ArrowUpRight, MoveHorizontal } from 'lucide-react';
-import type { ModeloId } from '@/lib/futbolenlapiel-data';
-import { MODELO_NAMES } from '@/lib/futbolenlapiel-data';
+import { MoveHorizontal } from 'lucide-react';
 
 // bundle-dynamic-imports: cargar Three.js bajo demanda en cliente sin bloquear SSR
 const Logo3D = dynamic(() => import('./Logo3D'), {
@@ -12,15 +10,6 @@ const Logo3D = dynamic(() => import('./Logo3D'), {
 });
 
 // rendering-hoist-jsx: extraer contenido estático fuera del componente
-const BRAND_PILLARS = ['Actuales & Retros', 'Envíos a todo Uruguay', 'Atención directa'] as const;
-
-const BRAND_FACTS = [
-  { label: 'Propuesta', value: 'Selecciones, clubes y retros' },
-  { label: 'Cobertura', value: 'Montevideo e Interior' },
-  { label: 'Atención', value: 'Asesoramiento por WhatsApp' },
-  { label: 'Comunidad', value: 'Para hinchas y coleccionistas' },
-] as const;
-
 const ROTATE_BADGE_SVG = (
   <>
     <svg viewBox="0 0 120 120" className="cl-badge-spin w-full h-full">
@@ -39,8 +28,16 @@ const ROTATE_BADGE_SVG = (
   </>
 );
 
+const SCROLL_CUE = (
+  <a
+    href="#camiseta"
+    className="cl-scroll-cue absolute left-1/2 bottom-[var(--pad)] -translate-x-1/2 text-[12px] no-underline flex gap-2.5 items-center opacity-85 max-md:hidden"
+  >
+    <span className="font-mono-cl">01 / 04</span> Deslizá
+  </a>
+);
+
 interface HeroSectionProps {
-  selectedModelo: ModeloId;
   isDragging: boolean;
   sliderDeg: number;
   sliderText: string;
@@ -51,7 +48,6 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({
-  selectedModelo,
   isDragging,
   sliderDeg,
   sliderText,
@@ -111,19 +107,14 @@ export default function HeroSection({
       {/* Insignia circular giratoria */}
       <div
         aria-hidden="true"
-        className={`cl-hero-badge absolute right-[calc(var(--pad)+10px)] top-[44%] max-md:right-3 max-md:top-auto max-md:bottom-[214px] w-28 h-28 max-md:w-[72px] max-md:h-[72px] pointer-events-none transition-transform duration-350 ease-[var(--ease)] ${isDragging ? 'scale-108' : 'scale-100'
-          }`}
+        className={`cl-hero-badge absolute right-[calc(var(--pad)+10px)] top-[44%] max-md:right-3 max-md:top-auto max-md:bottom-[214px] w-28 h-28 max-md:w-[72px] max-md:h-[72px] pointer-events-none transition-transform duration-350 ease-[var(--ease)] ${
+          isDragging ? 'scale-108' : 'scale-100'
+        }`}
       >
         {ROTATE_BADGE_SVG}
       </div>
 
-      {/* Indicador de scroll */}
-      <a
-        href="#camiseta"
-        className="cl-scroll-cue absolute left-1/2 bottom-[var(--pad)] -translate-x-1/2 text-[12px] no-underline flex gap-2.5 items-center opacity-85 max-md:hidden"
-      >
-        <span className="font-mono-cl">01 / 04</span> Deslizá
-      </a>
+      {SCROLL_CUE}
     </section>
   );
 }

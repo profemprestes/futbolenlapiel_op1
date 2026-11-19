@@ -315,7 +315,6 @@ export default function FutbolEnLaPielExperience() {
 
       <main className="relative z-[2] overflow-x-clip">
         <HeroSection
-          selectedModelo={selectedModelo}
           isDragging={isDragging}
           sliderDeg={sliderDeg}
           sliderText={sliderText}
