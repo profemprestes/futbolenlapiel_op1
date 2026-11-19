@@ -46,7 +46,6 @@ export default function FutbolEnLaPielExperience() {
   const [camiseta, setCamiseta] = useState(MODELO_NAMES['uruguay']);
   const [camisetaPlaceholder, setCamisetaPlaceholder] = useState('Ej: Uruguay 2026 Mundial');
   const [pedidoResetNonce, setPedidoResetNonce] = useState(0);
-  const [paused, setPaused] = useState(false);
   const reducedMotion = useSyncExternalStore(
     subscribeReducedMotion,
     getReducedMotionSnapshot,
@@ -75,11 +74,6 @@ export default function FutbolEnLaPielExperience() {
   const cardsBoxRef = useRef<HTMLDivElement | null>(null);
   const cardRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const swRefs = useRef<Array<HTMLParagraphElement | null>>([]);
-
-  useEffect(() => {
-    stageRef.current?.setPaused(paused);
-    document.documentElement.classList.toggle('paused', paused);
-  }, [paused]);
 
   useEffect(() => {
     interface Metrics {
@@ -300,8 +294,6 @@ export default function FutbolEnLaPielExperience() {
         countdown={STATIC_COUNTDOWN}
         activeChapter={activeChapter}
         solid={tickerSolid}
-        paused={paused}
-        onTogglePause={() => setPaused((p) => !p)}
         tickerRef={tickerRef}
       />
 
@@ -356,7 +348,7 @@ export default function FutbolEnLaPielExperience() {
         />
       </main>
 
-      <WordmarkFooter paused={paused} reducedMotion={reducedMotion} footRef={footRef} />
+      <WordmarkFooter paused={false} reducedMotion={reducedMotion} footRef={footRef} />
     </MotionConfig>
   );
 }

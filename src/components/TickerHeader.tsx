@@ -7,24 +7,9 @@ interface TickerHeaderProps {
   countdown: CountdownState;
   activeChapter: '#inicio' | '#camiseta' | '#modelos' | '#pedido';
   solid: boolean;
-  paused: boolean;
-  onTogglePause: () => void;
   tickerRef: React.RefObject<HTMLElement | null>;
 }
 
-export default function TickerHeader({
-  solid,
-  paused,
-  onTogglePause,
-  tickerRef,
-}: TickerHeaderProps) {
-  return (
-    <SiteNavbar
-      solid={solid}
-      paused={paused}
-      onTogglePause={onTogglePause}
-      tickerRef={tickerRef}
-      isHome
-    />
-  );
+export default function TickerHeader({ solid, tickerRef }: TickerHeaderProps) {
+  return <SiteNavbar solid={solid} tickerRef={tickerRef} isHome />;
 }

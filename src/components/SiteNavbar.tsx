@@ -11,8 +11,6 @@ import {
   Home,
   Menu,
   MessageCircle,
-  Pause,
-  Play,
   ShoppingBag,
   Truck,
 } from 'lucide-react';
@@ -48,8 +46,6 @@ import { cn } from '@/lib/utils';
 
 interface SiteNavbarProps {
   solid?: boolean;
-  paused?: boolean;
-  onTogglePause?: () => void;
   tickerRef?: React.RefObject<HTMLElement | null>;
   isHome?: boolean;
 }
@@ -65,8 +61,6 @@ const NAV_ICONS: Record<NavItem['iconName'], React.ComponentType<{ className?: s
 
 export default function SiteNavbar({
   solid = false,
-  paused = false,
-  onTogglePause,
   tickerRef,
   isHome = false,
 }: SiteNavbarProps) {
@@ -171,21 +165,6 @@ export default function SiteNavbar({
 
       {/* Right actions */}
       <div className="flex items-center gap-1.5 shrink-0">
-        {onTogglePause && (
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={onTogglePause}
-            aria-pressed={paused}
-            aria-label={paused ? 'Reanudar movimiento' : 'Pausar movimiento'}
-            className="rounded-full border-[#8ECBF5]/45 bg-transparent text-foreground hover:bg-foreground/10 hover:text-foreground max-md:size-8 max-md:px-0"
-          >
-            {paused ? <Play data-icon="inline-start" /> : <Pause data-icon="inline-start" />}
-            <span className="max-md:hidden">{paused ? 'Reanudar' : 'Pausar'}</span>
-          </Button>
-        )}
-
         <Button
           size="sm"
           className="rounded-full font-bold px-3.5 max-md:px-3"
