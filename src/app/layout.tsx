@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Archivo_Black, Barlow_Condensed, Inter, JetBrains_Mono } from 'next/font/google';
+import { BRAND_LOGOS } from '@/lib/futbolenlapiel-data';
 import './globals.css';
 
 const inter = Inter({
@@ -31,20 +32,27 @@ const barlowCondensed = Barlow_Condensed({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://futbolenlapiel.uy'),
   title: 'Fútbol en la Piel — Camisetas actuales y retros en Uruguay (@futbolenlapieluy1)',
   description:
     'Camisetas actuales y retros en Uruguay. Envíos a todo el país. Consultá stock, versión Jugador o Fan y talles por WhatsApp al +598 092 864 559.',
+  icons: {
+    icon: BRAND_LOGOS.emblem,
+    apple: BRAND_LOGOS.emblem,
+  },
   openGraph: {
     title: 'Fútbol en la Piel — @futbolenlapieluy1',
     description:
       'Camisetas actuales y retros en Uruguay. Envíos a todo el país. Consultas al privado o por WhatsApp.',
     type: 'website',
+    images: [BRAND_LOGOS.emblem],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Fútbol en la Piel — @futbolenlapieluy1',
     description:
       'Camisetas actuales y retros en Uruguay. Envíos a todo el país. Consultas por WhatsApp.',
+    images: [BRAND_LOGOS.emblem],
   },
 };
 

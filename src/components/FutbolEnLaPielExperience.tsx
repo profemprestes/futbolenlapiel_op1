@@ -2,7 +2,7 @@
 
 import { MotionConfig } from 'motion/react';
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
-import { type ModeloId, STATIC_COUNTDOWN } from '@/lib/futbolenlapiel-data';
+import { type CatalogCategory, type ModeloId, MODELO_NAMES, STATIC_COUNTDOWN } from '@/lib/futbolenlapiel-data';
 import CamisetaChapter from './CamisetaChapter';
 import CamisetaStage, { type StageController } from './CamisetaStage';
 import HeroSection from './HeroSection';
@@ -43,6 +43,9 @@ export default function FutbolEnLaPielExperience() {
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedModelo, setSelectedModelo] = useState<ModeloId>('uruguay');
   const [announcedModelo, setAnnouncedModelo] = useState<ModeloId | null>(null);
+  const [camiseta, setCamiseta] = useState(MODELO_NAMES['uruguay']);
+  const [camisetaPlaceholder, setCamisetaPlaceholder] = useState('Ej: Uruguay 2026 Mundial');
+  const [pedidoResetNonce, setPedidoResetNonce] = useState(0);
   const [paused, setPaused] = useState(false);
   const reducedMotion = useSyncExternalStore(
     subscribeReducedMotion,
@@ -261,11 +264,30 @@ export default function FutbolEnLaPielExperience() {
 
   const handleSelectModelo = useCallback((modelo: ModeloId, announce = false) => {
     setSelectedModelo(modelo);
+    setCamiseta(MODELO_NAMES[modelo]);
+    setCamisetaPlaceholder('Ej: Uruguay 2026 Mundial');
+    setPedidoResetNonce((n) => n + 1);
     stageRef.current?.setModelo(modelo);
     if (announce) {
       setAnnouncedModelo(modelo);
     }
   }, []);
+
+  const handleSelectCategory = useCallback(
+    (category: CatalogCategory) => {
+      setCamiseta(category.defaultQuery);
+      setCamisetaPlaceholder(category.defaultPlaceholder ?? 'Ej: Uruguay 2026 Mundial');
+      setPedidoResetNonce((n) => n + 1);
+      requestAnimationFrame(() => {
+        const formEl = document.getElementById('pedido-form');
+        formEl?.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'center' });
+        const focusTargetId =
+          category.defaultQuery === '' ? 'pedido-camiseta-input' : 'pedido-name-input';
+        document.getElementById(focusTargetId)?.focus({ preventScroll: true });
+      });
+    },
+    [reducedMotion]
+  );
 
   const handleAriaUpdate = useCallback((deg: number, valueText: string) => {
     setSliderDeg(deg);
@@ -312,6 +334,7 @@ export default function FutbolEnLaPielExperience() {
           announcedModelo={announcedModelo}
           reducedMotion={reducedMotion}
           onSelectModelo={(m) => handleSelectModelo(m, true)}
+          onSelectCategory={handleSelectCategory}
           sectionRef={c2Ref}
           pinRef={pinRef}
           headRef={headRef}
@@ -325,7 +348,11 @@ export default function FutbolEnLaPielExperience() {
           countdown={STATIC_COUNTDOWN}
           selectedSize={selectedSize}
           selectedModelo={selectedModelo}
+          camiseta={camiseta}
+          camisetaPlaceholder={camisetaPlaceholder}
+          resetNonce={pedidoResetNonce}
           reducedMotion={reducedMotion}
+          onChangeCamiseta={setCamiseta}
           onSelectSize={handleSelectSize}
           sectionRef={c3Ref}
           swRefs={swRefs}

@@ -1,8 +1,9 @@
 'use client';
 
+import Image from 'next/image';
 import { ArrowUpRight, MoveHorizontal } from 'lucide-react';
 import type { ModeloId } from '@/lib/futbolenlapiel-data';
-import { MODELO_NAMES, SIZES } from '@/lib/futbolenlapiel-data';
+import { BRAND_LOGOS, MODELO_NAMES, SIZES } from '@/lib/futbolenlapiel-data';
 
 interface HeroSectionProps {
   selectedSize: string;
@@ -39,15 +40,27 @@ export default function HeroSection({
         <p className="font-mono-cl text-[12px] font-bold mb-2 text-[#A8D6F0]">
           URUGUAY <span className="text-[#8ECBF5]">/</span> ENVÍOS A TODO EL PAÍS
         </p>
-        <h1
-          id="hero-h"
-          className="font-archivo text-[clamp(22px,2.2vw,32px)] leading-[1.05] tracking-[-0.02em] text-[#F5EAD6] mb-1.5"
-        >
-          FUTBOL EN LA PIEL
-        </h1>
-        <p className="text-[14px] font-semibold text-[#8ECBF5] mb-1.5">
-          La pasión se lleva puesta.
-        </p>
+        <div className="flex items-center gap-3 mb-1.5">
+          <Image
+            src={BRAND_LOGOS.emblem}
+            alt="Emblema oficial Fútbol en la Piel"
+            width={48}
+            height={48}
+            priority
+            className="w-11 h-11 max-md:w-9 max-md:h-9 rounded-full border border-[#F5EAD6]/25 bg-black object-cover shrink-0"
+          />
+          <div>
+            <h1
+              id="hero-h"
+              className="font-archivo text-[clamp(22px,2.2vw,32px)] leading-[1.05] tracking-[-0.02em] text-[#F5EAD6]"
+            >
+              FUTBOL EN LA PIEL
+            </h1>
+            <p className="text-[14px] font-semibold text-[#8ECBF5]">
+              La pasión se lleva puesta.
+            </p>
+          </div>
+        </div>
         <p className="cl-hero-sub max-md:hidden text-[14px] opacity-90">
           Camisetas actuales y retros. Consultá stock por privado y pedí por WhatsApp.
         </p>

@@ -1,9 +1,9 @@
 'use client';
 
-import { ArrowUp } from 'lucide-react';
+import { ArrowUp, ArrowUpRight } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
-import type { ModeloId } from '@/lib/futbolenlapiel-data';
-import { MODELOS, MODELO_SHORT_NAMES } from '@/lib/futbolenlapiel-data';
+import type { CatalogCategory, ModeloId } from '@/lib/futbolenlapiel-data';
+import { CATALOG_CATEGORIES, MODELOS, MODELO_SHORT_NAMES } from '@/lib/futbolenlapiel-data';
 import CamisetaImage from './CamisetaImage';
 
 interface ModelosChapterProps {
@@ -11,6 +11,7 @@ interface ModelosChapterProps {
   announcedModelo: ModeloId | null;
   reducedMotion: boolean;
   onSelectModelo: (modelo: ModeloId) => void;
+  onSelectCategory?: (category: CatalogCategory) => void;
   sectionRef: React.RefObject<HTMLElement | null>;
   pinRef: React.RefObject<HTMLDivElement | null>;
   headRef: React.RefObject<HTMLHeadingElement | null>;
@@ -27,6 +28,7 @@ export default function ModelosChapter({
   announcedModelo,
   reducedMotion,
   onSelectModelo,
+  onSelectCategory,
   sectionRef,
   pinRef,
   headRef,
@@ -186,6 +188,40 @@ export default function ModelosChapter({
           )}
         </AnimatePresence>
       </p>
+
+      <div className="relative z-[2] max-w-[1160px] mx-auto mt-10 px-[var(--pad)]">
+        <p className="font-mono-cl text-[12px] font-bold tracking-[0.08em] uppercase text-[#1E5AA8] mb-3.5 text-center">
+          Categorías del catálogo (@futbolenlapieluy1)
+        </p>
+        <div className="grid grid-cols-4 max-lg:grid-cols-2 max-md:grid-cols-1 gap-3.5">
+          {CATALOG_CATEGORIES.map((cat) => (
+            <button
+              key={cat.id}
+              type="button"
+              onClick={() => onSelectCategory?.(cat)}
+              className="text-left p-4 rounded-[18px] bg-[#0A1B33] text-[#F5EAD6] border border-[#0A1B33]/15 hover:-translate-y-1 hover:border-[#1E5AA8] transition-all duration-250 cursor-pointer flex flex-col justify-between gap-2.5 shadow-[0_14px_34px_-22px_rgba(10,27,51,0.5)]"
+            >
+              <span className="block">
+                <span className="flex items-center justify-between gap-2 mb-1">
+                  <span className="font-disp font-extrabold text-[19px] tracking-[-0.02em] text-[#A8D6F0]">
+                    {cat.title}
+                  </span>
+                  <ArrowUpRight className="w-4 h-4 text-[#8ECBF5] shrink-0" aria-hidden="true" />
+                </span>
+                <span className="block text-[12px] font-semibold text-[#F5EAD6]/90 mb-1.5">
+                  {cat.subtitle}
+                </span>
+                <span className="block text-[12px] text-[#F5EAD6]/70 leading-[1.45]">
+                  {cat.examples}
+                </span>
+              </span>
+              <span className="block font-mono-cl text-[11px] font-bold text-[#8ECBF5] pt-2 border-t border-[#8ECBF5]/20">
+                Consultar categoría →
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }

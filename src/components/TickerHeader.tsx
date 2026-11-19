@@ -1,8 +1,9 @@
 'use client';
 
+import Image from 'next/image';
 import { Pause, Play } from 'lucide-react';
 import type { CountdownState } from '@/lib/futbolenlapiel-data';
-import { INSTAGRAM_HANDLE } from '@/lib/futbolenlapiel-data';
+import { BRAND_LOGOS, INSTAGRAM_HANDLE } from '@/lib/futbolenlapiel-data';
 
 interface TickerHeaderProps {
   countdown: CountdownState;
@@ -38,9 +39,19 @@ export default function TickerHeader({
       <a
         href="#inicio"
         aria-label="Fútbol en la Piel, volver arriba"
-        className="font-archivo text-[14px] max-md:text-[12px] tracking-[0.02em] no-underline whitespace-nowrap"
+        className="flex items-center gap-2 no-underline whitespace-nowrap shrink-0"
       >
-        FUTBOL EN LA PIEL
+        <Image
+          src={BRAND_LOGOS.emblem}
+          alt=""
+          width={28}
+          height={28}
+          priority
+          className="w-7 h-7 max-md:w-6 max-md:h-6 rounded-full border border-[#F5EAD6]/25 bg-black object-cover shrink-0"
+        />
+        <span className="font-archivo text-[14px] max-md:text-[12px] tracking-[0.02em] text-[#F5EAD6]">
+          FUTBOL EN LA PIEL
+        </span>
       </a>
 
       <span className="opacity-90 whitespace-nowrap max-lg:hidden">

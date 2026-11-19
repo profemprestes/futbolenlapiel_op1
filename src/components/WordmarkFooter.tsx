@@ -1,7 +1,14 @@
 'use client';
 
+import Image from 'next/image';
 import { useEffect, useRef } from 'react';
-import { INSTAGRAM_HANDLE, WHATSAPP_DISPLAY, WHATSAPP_NUMBER_RAW } from '@/lib/futbolenlapiel-data';
+import {
+  BRAND_LOGOS,
+  COMMERCIAL_INFO,
+  INSTAGRAM_HANDLE,
+  WHATSAPP_DISPLAY,
+  WHATSAPP_NUMBER_RAW,
+} from '@/lib/futbolenlapiel-data';
 
 interface WordmarkFooterProps {
   paused: boolean;
@@ -165,7 +172,20 @@ export default function WordmarkFooter({
         ))}
       </p>
 
-      <div className="grid grid-cols-4 max-md:grid-cols-2 gap-7 max-md:gap-[22px] mt-[8vh] pt-7 border-t-2 border-[#0A1B33]">
+      <div className="mt-[8vh] flex items-center justify-between gap-4 flex-wrap">
+        <Image
+          src={BRAND_LOGOS.horizontal}
+          alt="Fútbol en la Piel"
+          width={112}
+          height={56}
+          className="h-11 sm:h-12 w-auto object-contain"
+        />
+        <span className="font-mono-cl text-[12px] font-bold text-[#1E5AA8]">
+          LA PASIÓN SE LLEVA PUESTA · URUGUAY
+        </span>
+      </div>
+
+      <div className="grid grid-cols-4 max-md:grid-cols-2 gap-7 max-md:gap-[22px] mt-5 pt-7 border-t-2 border-[#0A1B33]">
         <div>
           <p className="font-mono-cl text-[12px] font-bold text-[#1E5AA8] mb-2">INSTAGRAM</p>
           <p className="text-[15px] max-md:text-[14px] leading-[1.5]">
@@ -189,10 +209,12 @@ export default function WordmarkFooter({
           </p>
         </div>
         <div>
-          <p className="font-mono-cl text-[12px] font-bold text-[#1E5AA8] mb-2">ENVÍOS</p>
+          <p className="font-mono-cl text-[12px] font-bold text-[#1E5AA8] mb-2">
+            ENVÍOS &amp; PAGOS
+          </p>
           <p className="text-[15px] max-md:text-[14px] leading-[1.5]">
-            Envíos a todo Uruguay. Versiones Jugador y Fan según publicación, talles S a XL según
-            modelo. Costo y plazo a confirmar.
+            {COMMERCIAL_INFO.shipping.map((s) => `${s.zone}: ${s.detail}`).join(' ')} Pagos:{' '}
+            {COMMERCIAL_INFO.payments.join(', ')}.
           </p>
         </div>
         <nav aria-label="Pie de página">

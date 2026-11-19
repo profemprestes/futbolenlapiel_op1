@@ -1,12 +1,14 @@
 'use client';
 
+import Image from 'next/image';
 import { ArrowUpRight, ChevronDown } from 'lucide-react';
 import { motion } from 'motion/react';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import type { CountdownState, ModeloId } from '@/lib/futbolenlapiel-data';
 import {
+  BRAND_LOGOS,
+  COMMERCIAL_INFO,
   DEPARTAMENTOS_URUGUAY,
-  MODELO_NAMES,
   SIZES,
   VERSION_OPTIONS,
   WHATSAPP_DISPLAY,
@@ -18,7 +20,11 @@ interface PedidoChapterProps {
   countdown: CountdownState;
   selectedSize: string;
   selectedModelo: ModeloId;
+  camiseta: string;
+  camisetaPlaceholder: string;
+  resetNonce: number;
   reducedMotion: boolean;
+  onChangeCamiseta: (value: string) => void;
   onSelectSize: (size: string) => void;
   sectionRef: React.RefObject<HTMLElement | null>;
   swRefs: React.MutableRefObject<Array<HTMLParagraphElement | null>>;
@@ -40,38 +46,52 @@ const SLIDE_WORDS = [
 export default function PedidoChapter({
   countdown,
   selectedSize,
-  selectedModelo,
+  camiseta,
+  camisetaPlaceholder,
+  resetNonce,
   reducedMotion,
+  onChangeCamiseta,
   onSelectSize,
   sectionRef,
   swRefs,
 }: PedidoChapterProps) {
   const [name, setName] = useState('');
-  const [camiseta, setCamiseta] = useState(MODELO_NAMES[selectedModelo]);
   const [version, setVersion] = useState<string>(VERSION_OPTIONS[2]);
   const [fulfil, setFulfil] = useState<'envio' | 'coordinar'>('envio');
   const [departamento, setDepartamento] = useState('');
   const [agree, setAgree] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
-  const [invalidFields, setInvalidFields] = useState<Record<string, boolean>>({});
+  const [errorState, setErrorState] = useState<{ nonce: number; msg: string } | null>(null);
+  const [invalidState, setInvalidState] = useState<{
+    nonce: number;
+    fields: Record<string, boolean>;
+  }>({ nonce: -1, fields: {} });
   const [shaking, setShaking] = useState(false);
-  const [receipt, setReceipt] = useState<ConsultaReceipt | null>(null);
+  const [receiptState, setReceiptState] = useState<{
+    nonce: number;
+    data: ConsultaReceipt;
+  } | null>(null);
+
+  const errorMsg = errorState && errorState.nonce === resetNonce ? errorState.msg : '';
+  const invalidFields = invalidState.nonce === resetNonce ? invalidState.fields : {};
+  const receipt = receiptState && receiptState.nonce === resetNonce ? receiptState.data : null;
+
+  const setErrorMsg = (msg: string) =>
+    setErrorState(msg ? { nonce: resetNonce, msg } : null);
+  const setInvalidFields = (
+    updater:
+      | Record<string, boolean>
+      | ((prev: Record<string, boolean>) => Record<string, boolean>)
+  ) => {
+    setInvalidState((prev) => {
+      const current = prev.nonce === resetNonce ? prev.fields : {};
+      const next = typeof updater === 'function' ? updater(current) : updater;
+      return { nonce: resetNonce, fields: next };
+    });
+  };
 
   const formRef = useRef<HTMLFormElement>(null);
   const receiptRef = useRef<HTMLDivElement>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
-
-  // Sync camiseta input when user clicks a model card
-  const prevModeloRef = useRef<ModeloId>(selectedModelo);
-  useEffect(() => {
-    if (prevModeloRef.current !== selectedModelo) {
-      prevModeloRef.current = selectedModelo;
-      const rafId = requestAnimationFrame(() => {
-        setCamiseta(MODELO_NAMES[selectedModelo]);
-      });
-      return () => cancelAnimationFrame(rafId);
-    }
-  }, [selectedModelo]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -136,11 +156,14 @@ export default function PedidoChapter({
       consultaId,
     });
 
-    setReceipt({
-      name: trimmedName,
-      consultaId,
-      summary: `${trimmedCamiseta}, ${version}, talle ${selectedSize}, ${destinoText}. Abrí WhatsApp (${WHATSAPP_DISPLAY}) para confirmar stock, precio y envío. Nada se cobra desde esta página.`,
-      whatsAppHref,
+    setReceiptState({
+      nonce: resetNonce,
+      data: {
+        name: trimmedName,
+        consultaId,
+        summary: `${trimmedCamiseta}, ${version}, talle ${selectedSize}, ${destinoText}. Abrí WhatsApp (${WHATSAPP_DISPLAY}) para confirmar stock, precio y envío. Nada se cobra desde esta página.`,
+        whatsAppHref,
+      },
     });
 
     requestAnimationFrame(() => {
@@ -149,9 +172,8 @@ export default function PedidoChapter({
   };
 
   const handleReset = () => {
-    setReceipt(null);
+    setReceiptState(null);
     setName('');
-    setCamiseta(MODELO_NAMES[selectedModelo]);
     setVersion(VERSION_OPTIONS[2]);
     setFulfil('envio');
     setDepartamento('');
@@ -231,29 +253,34 @@ export default function PedidoChapter({
         <ol className="cl-rules list-none grid gap-[18px]">
           <li className="relative pl-[58px] pb-[18px] border-b border-[#8ECBF5]/40 text-[16px] leading-[1.5]">
             <b className="block font-disp font-bold text-[18px] mb-0.5">
-              Elegí modelo, versión y talle.
+              Precios y stock al instante por WhatsApp.
             </b>
-            Indicá el modelo que viste, Versión Jugador o Fan según publicación, y tu talle (S a
-            XL según modelo).
+            Indicá el modelo que viste, Versión Jugador o Fan según publicación, y tu talle. Te
+            confirmamos disponibilidad real y precio actualizado en el momento.
           </li>
           <li className="relative pl-[58px] pb-[18px] border-b border-[#8ECBF5]/40 text-[16px] leading-[1.5]">
             <b className="block font-disp font-bold text-[18px] mb-0.5">
-              Confirmamos stock por WhatsApp.
+              Medios de pago disponibles.
             </b>
-            Te respondemos con disponibilidad real, precio actualizado y medios de pago disponibles.
-            Sin precios inventados en la página.
+            Aceptamos {COMMERCIAL_INFO.payments.join(', ')}.
           </li>
           <li className="relative pl-[58px] pb-[18px] border-b border-[#8ECBF5]/40 text-[16px] leading-[1.5]">
             <b className="block font-disp font-bold text-[18px] mb-0.5">
-              Envío a todo Uruguay.
+              Envíos a todo Uruguay.
             </b>
-            Despachamos a Montevideo y los 18 departamentos del interior o coordinamos entrega
-            directa al privado. Costo y plazo a confirmar al consultar.
+            {COMMERCIAL_INFO.shipping.map((s) => `${s.zone}: ${s.detail}`).join(' ')}
+          </li>
+          <li className="relative pl-[58px] pb-[18px] border-b border-[#8ECBF5]/40 text-[16px] leading-[1.5]">
+            <b className="block font-disp font-bold text-[18px] mb-0.5">
+              Guía de talles y cambios.
+            </b>
+            {COMMERCIAL_INFO.sizingAndChanges.map((item) => `${item.label}: ${item.detail}`).join(' ')}
           </li>
         </ol>
 
         {!receipt ? (
           <form
+            id="pedido-form"
             ref={formRef}
             noValidate
             onSubmit={handleSubmit}
@@ -262,9 +289,18 @@ export default function PedidoChapter({
               shaking ? 'cl-shake' : ''
             }`}
           >
-            <p className="font-disp font-extrabold text-[26px] tracking-[-0.02em]">
-              Pedir por WhatsApp
-            </p>
+            <div className="flex items-center justify-between gap-3">
+              <p className="font-disp font-extrabold text-[26px] tracking-[-0.02em]">
+                Pedir por WhatsApp
+              </p>
+              <Image
+                src={BRAND_LOGOS.emblem}
+                alt="Sello Fútbol en la Piel"
+                width={40}
+                height={40}
+                className="w-10 h-10 rounded-full border border-[#F5EAD6]/25 bg-black object-cover shrink-0"
+              />
+            </div>
 
             <div className="grid grid-cols-2 max-md:grid-cols-1 gap-3">
               <label className="block">
@@ -272,6 +308,7 @@ export default function PedidoChapter({
                   Tu nombre
                 </span>
                 <input
+                  id="pedido-name-input"
                   ref={nameInputRef}
                   name="name"
                   type="text"
@@ -294,12 +331,13 @@ export default function PedidoChapter({
                   Camiseta elegida
                 </span>
                 <input
+                  id="pedido-camiseta-input"
                   name="camiseta"
                   type="text"
-                  placeholder="Ej: Uruguay 2026 Mundial"
+                  placeholder={camisetaPlaceholder}
                   value={camiseta}
                   onChange={(e) => {
-                    setCamiseta(e.target.value);
+                    onChangeCamiseta(e.target.value);
                     if (invalidFields.camiseta) {
                       setInvalidFields((p) => ({ ...p, camiseta: false }));
                     }

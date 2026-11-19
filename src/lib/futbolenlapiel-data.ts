@@ -94,6 +94,76 @@ export const WHATSAPP_NUMBER_RAW = '598092864559';
 export const WHATSAPP_DISPLAY = '+598 092 864 559';
 export const INSTAGRAM_HANDLE = '@futbolenlapieluy1';
 
+export const BRAND_LOGOS = {
+  horizontal: '/logos/futbolenlapiel_horizontal_transparente.png',
+  emblem: '/logos/futbol_logo_mejorado_v2.png',
+} as const;
+
+export type CatalogCategoryId = 'actuales' | 'retros' | 'uruguay' | 'clubes';
+
+export interface CatalogCategory {
+  id: CatalogCategoryId;
+  title: string;
+  subtitle: string;
+  examples: string;
+  defaultQuery: string;
+  defaultPlaceholder?: string;
+}
+
+export const CATALOG_CATEGORIES: CatalogCategory[] = [
+  {
+    id: 'actuales',
+    title: 'Actuales',
+    subtitle: 'Temporada vigente & Mundial 2026',
+    examples: 'Noruega Haaland 9, Argentina Messi 10, España, Alemania 2026',
+    defaultQuery: 'Camiseta actual temporada 2026',
+  },
+  {
+    id: 'retros',
+    title: 'Retros',
+    subtitle: 'Clásicos 1988–2011 con dorsales icónicos',
+    examples: 'Man. United 1996 Cantona 7, España 1996 Luis Enrique 21, Brasil 1994',
+    defaultQuery: 'Camiseta retro con dorsal',
+  },
+  {
+    id: 'uruguay',
+    title: 'Uruguay',
+    subtitle: 'La Celeste para alentar o coleccionar',
+    examples: 'Uruguay 2026 Mundial y ediciones especiales',
+    defaultQuery: 'Uruguay 2026 Mundial',
+  },
+  {
+    id: 'clubes',
+    title: 'Clubes',
+    subtitle: 'Uruguayos, sudamericanos y europeos',
+    examples: 'Peñarol, Nacional, Boca, Real Madrid, Liverpool, Como 1907',
+    defaultQuery: '',
+    defaultPlaceholder: 'Ej: Peñarol 2026, Nacional 2026, Real Madrid...',
+  },
+];
+
+export const COMMERCIAL_INFO = {
+  payments: [
+    'Transferencia bancaria',
+    'Mercado Pago',
+    'Efectivo (a coordinar según entrega)',
+  ],
+  shipping: [
+    { zone: 'Montevideo', detail: 'Entrega o retiro a coordinar según disponibilidad.' },
+    { zone: 'Interior', detail: 'Envíos a todo el país por agencia; costo y plazo a confirmar.' },
+  ],
+  sizingAndChanges: [
+    {
+      label: 'Talles S a XL',
+      detail: 'Versión Jugador tiene corte más entallado; Versión Fan ofrece calce clásico.',
+    },
+    {
+      label: 'Cambios',
+      detail: 'Sujeto a disponibilidad de talle, con prenda sin uso y etiqueta original.',
+    },
+  ],
+} as const;
+
 export interface CountdownState {
   d: string;
   h: string;
