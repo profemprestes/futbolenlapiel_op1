@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { ArrowUpRight, CheckCircle2, MessageCircle } from 'lucide-react';
+import { ArrowUpRight, CheckCircle2, Clock } from 'lucide-react';
+import ComoPedirFormClient from '@/components/ComoPedirFormClient';
 import PageShell from '@/components/PageShell';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -10,53 +11,43 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { COMMERCIAL_INFO, SIZES, VERSION_OPTIONS, WHATSAPP_NUMBER_RAW } from '@/lib/futbolenlapiel-data';
+import { COMMERCIAL_INFO } from '@/lib/futbolenlapiel-data';
 
 export const metadata = {
   title: 'Cómo pedir — Fútbol en la Piel',
   description:
-    'Guía paso a paso para consultar stock, elegir versión Jugador o Fan, talle S a XL y coordinar tu pedido por WhatsApp.',
+    'Guía paso a paso y formulario rápido para preparar tu consulta por WhatsApp con modelo, versión y talle elegidos.',
 };
 
 const ORDER_STEPS = [
   {
     step: '01',
-    title: 'Elegí tu camiseta',
+    title: 'Elegís tu camiseta',
     detail:
-      'Buscá entre camisetas actuales 2026, La Celeste, clubes o clásicos retros 1988–2011.',
+      'Explorás Tienda / Stock o Retros y definís el modelo, la versión (Jugador o Fan) y tu talle.',
   },
   {
     step: '02',
-    title: 'Definí versión y talle',
+    title: 'Confirmamos stock y precio por WhatsApp',
     detail:
-      'Indicá si preferís Versión Jugador (calce entallado) o Versión Fan (calce clásico), en talles S, M, L o XL.',
+      'Nos escribís con el mensaje prearmado y te confirmamos disponibilidad inmediata o plazo de ingreso.',
   },
   {
     step: '03',
-    title: 'Coordiná entrega o envío',
+    title: 'Coordinamos pago y envío',
     detail:
-      'Contanos si estás en Montevideo o en el Interior para confirmar modalidad de entrega o envío por agencia.',
-  },
-  {
-    step: '04',
-    title: 'Confirmá por WhatsApp',
-    detail:
-      'Te confirmamos disponibilidad, precio final y medios de pago en el momento.',
+      'Elegís transferencia, Mercado Pago o efectivo y coordinamos entrega en Montevideo o despacho al Interior.',
   },
 ] as const;
 
 export default function ComoPedirPage() {
-  const whatsAppHref = `https://wa.me/${WHATSAPP_NUMBER_RAW}?text=${encodeURIComponent(
-    'Hola Fútbol en la Piel! Quiero hacer un pedido y consultar disponibilidad.'
-  )}`;
-
   return (
     <PageShell
       badge="Guía de compra"
       title="CÓMO PEDIR TU CAMISETA"
-      description="Proceso simple y directo por WhatsApp para confirmar stock, versión, talle y envío en todo Uruguay."
+      description="En 3 pasos llegás a WhatsApp con el modelo, la versión y el talle ya definidos. Sin checkout complejo ni registros."
     >
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {ORDER_STEPS.map((item) => (
           <Card key={item.step} className="bg-card border-border">
             <CardHeader>
@@ -64,76 +55,57 @@ export default function ComoPedirPage() {
                 PASO {item.step}
               </Badge>
               <CardTitle className="font-disp text-2xl font-bold pt-1">{item.title}</CardTitle>
-              <CardDescription className="text-foreground/80">{item.detail}</CardDescription>
+              <CardDescription className="text-foreground/85">{item.detail}</CardDescription>
             </CardHeader>
           </Card>
         ))}
       </section>
 
+      <ComoPedirFormClient />
+
       <section className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <Card className="bg-card border-border">
           <CardHeader>
-            <CardTitle className="font-disp text-xl font-bold">Versiones y talles</CardTitle>
-            <CardDescription>Opciones disponibles según publicación</CardDescription>
+            <div className="flex items-center gap-2 text-primary">
+              <Clock className="size-4" />
+              <span className="font-mono-cl text-xs uppercase tracking-wider">Luego de escribir</span>
+            </div>
+            <CardTitle className="font-disp text-xl font-bold">¿Qué pasa después?</CardTitle>
           </CardHeader>
-          <CardContent className="flex flex-col gap-3">
-            <div className="flex flex-wrap gap-2">
-              {VERSION_OPTIONS.map((v) => (
-                <Badge key={v} variant="secondary">
-                  {v}
-                </Badge>
-              ))}
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {SIZES.map((s) => (
-                <Badge key={s} variant="outline" className="font-mono-cl">
-                  {s}
-                </Badge>
-              ))}
-            </div>
-            {COMMERCIAL_INFO.sizingAndChanges.map((info) => (
-              <p key={info.label} className="text-sm text-muted-foreground">
-                <span className="font-semibold text-foreground">{info.label}:</span> {info.detail}
-              </p>
-            ))}
+          <CardContent className="flex flex-col gap-2 text-sm text-foreground/85">
+            <p>• Respondemos dentro del horario de atención por orden de llegada.</p>
+            <p>• Te confirmamos si el talle está para entrega inmediata y el precio final.</p>
+            <p>• Si coordinamos envío, te pedimos dirección o agencia de preferencia.</p>
           </CardContent>
         </Card>
 
         <Card className="bg-card border-border">
           <CardHeader>
-            <CardTitle className="font-disp text-xl font-bold">Medios de pago</CardTitle>
-            <CardDescription>Coordinamos el pago al confirmar stock</CardDescription>
+            <CardTitle className="font-disp text-xl font-bold">Medios de pago y talles</CardTitle>
+            <CardDescription>Información rápida antes de confirmar</CardDescription>
           </CardHeader>
-          <CardContent className="flex flex-col gap-2.5">
-            {COMMERCIAL_INFO.payments.map((payment) => (
-              <div key={payment} className="flex items-center gap-2 text-sm text-foreground/90">
-                <CheckCircle2 className="size-4 text-primary shrink-0" />
-                <span>{payment}</span>
-              </div>
-            ))}
+          <CardContent className="flex flex-col gap-3">
+            <div className="flex flex-col gap-1.5">
+              {COMMERCIAL_INFO.payments.map((payment) => (
+                <div key={payment} className="flex items-center gap-2 text-sm text-foreground/90">
+                  <CheckCircle2 className="size-4 text-primary shrink-0" />
+                  <span>{payment}</span>
+                </div>
+              ))}
+            </div>
+            <div className="flex flex-wrap gap-2 pt-1">
+              <Button variant="outline" size="sm" className="rounded-full" render={<Link href="/talles" />}>
+                Ver Talles y cambios
+                <ArrowUpRight data-icon="inline-end" />
+              </Button>
+              <Button variant="outline" size="sm" className="rounded-full" render={<Link href="/preguntas" />}>
+                Preguntas frecuentes
+                <ArrowUpRight data-icon="inline-end" />
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </section>
-
-      <div className="flex flex-wrap gap-3">
-        <Button
-          size="lg"
-          className="rounded-full font-bold"
-          render={<a href={whatsAppHref} target="_blank" rel="noopener noreferrer" />}
-        >
-          <MessageCircle data-icon="inline-start" />
-          Iniciar pedido por WhatsApp
-        </Button>
-        <Button
-          size="lg"
-          variant="outline"
-          className="rounded-full"
-          render={<Link href="/#pedido" />}
-        >
-          Usar formulario rápido en Inicio
-          <ArrowUpRight data-icon="inline-end" />
-        </Button>
-      </div>
     </PageShell>
   );
 }

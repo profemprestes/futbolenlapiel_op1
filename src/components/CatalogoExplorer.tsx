@@ -1,8 +1,9 @@
 'use client';
 
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useMemo, useState } from 'react';
-import { ArrowUpRight, MessageCircle, Search, X } from 'lucide-react';
+import { MessageCircle, Search, X } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -14,19 +15,28 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { CATALOGO_FILTER_OPTIONS, CATALOGO_ITEMS, type CatalogoItem } from '@/lib/catalogo-data';
-import { type CatalogCategoryId, WHATSAPP_NUMBER_RAW } from '@/lib/futbolenlapiel-data';
+import {
+  CATALOGO_FILTER_OPTIONS,
+  CATALOGO_ITEMS,
+  type CatalogoItem,
+  type JerseySize,
+  RETRO_DECADES,
+} from '@/lib/catalogo-data';
+import { type CatalogCategoryId, SIZES, WHATSAPP_NUMBER_RAW } from '@/lib/futbolenlapiel-data';
+import { cn } from '@/lib/utils';
 
 interface CatalogoExplorerProps {
   lockedCategory?: CatalogCategoryId;
   hideCategoryFilters?: boolean;
+  showDecadeFilters?: boolean;
 }
 
 const VALID_CATEGORIES = new Set<string>(['actuales', 'retros', 'uruguay', 'clubes']);
+const VERSION_FILTERS = ['Todas', 'Versión Jugador', 'Versión Fan', 'Retro', 'Edición especial'] as const;
 
 function whatsAppItemHref(item: CatalogoItem) {
   return `https://wa.me/${WHATSAPP_NUMBER_RAW}?text=${encodeURIComponent(
-    `Hola Fútbol en la Piel! Quiero consultar disponibilidad, talle y precio de: ${item.title}.`
+    `Hola Fútbol en la Piel! Quiero consultar por "${item.title}" (${item.version}).`
   )}`;
 }
 
@@ -41,6 +51,7 @@ function whatsAppCustomHref(query: string) {
 export default function CatalogoExplorer({
   lockedCategory,
   hideCategoryFilters = false,
+  showDecadeFilters = false,
 }: CatalogoExplorerProps) {
   const searchParams = useSearchParams();
   const paramCat = searchParams.get('categoria');
@@ -53,6 +64,9 @@ export default function CatalogoExplorer({
   const [selectedCategory, setSelectedCategory] = useState<'todas' | CatalogCategoryId>(
     initialCategory
   );
+  const [selectedVersion, setSelectedVersion] = useState<string>('Todas');
+  const [selectedSize, setSelectedSize] = useState<'Todos' | JerseySize>('Todos');
+  const [selectedDecade, setSelectedDecade] = useState<string>('Todas');
   const [query, setQuery] = useState('');
 
   const activeCategory = lockedCategory ?? selectedCategory;
@@ -60,7 +74,14 @@ export default function CatalogoExplorer({
   const filteredItems = useMemo(() => {
     const q = query.trim().toLowerCase();
     return CATALOGO_ITEMS.filter((item) => {
-      if (activeCategory !== 'todas' && item.category !== activeCategory) {
+      if (activeCategory !== 'todas' && item.category !== activeCategory) return false;
+      if (selectedVersion !== 'Todas' && !item.version.toLowerCase().includes(selectedVersion.toLowerCase())) {
+        return false;
+      }
+      if (selectedSize !== 'Todos' && !item.availableSizes.includes(selectedSize)) {
+        return false;
+      }
+      if (showDecadeFilters && selectedDecade !== 'Todas' && item.decade !== selectedDecade) {
         return false;
       }
       if (!q) return true;
@@ -72,17 +93,26 @@ export default function CatalogoExplorer({
         item.dorsal ?? '',
         item.brand ?? '',
         item.shortDesc,
+        item.contextNote ?? '',
       ]
         .join(' ')
         .toLowerCase();
       return haystack.includes(q);
     });
-  }, [activeCategory, query]);
+  }, [activeCategory, query, selectedDecade, selectedSize, selectedVersion, showDecadeFilters]);
+
+  const resetFilters = () => {
+    setQuery('');
+    setSelectedVersion('Todas');
+    setSelectedSize('Todos');
+    setSelectedDecade('Todas');
+    if (!lockedCategory) setSelectedCategory('todas');
+  };
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Search + Category Filters */}
-      <div className="flex flex-col gap-4">
+      {/* Search + Filters */}
+      <div className="flex flex-col gap-3.5">
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 justify-between">
           <div className="relative flex-1 max-w-md">
             <Search className="size-4 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -115,28 +145,75 @@ export default function CatalogoExplorer({
         </div>
 
         {!hideCategoryFilters && (
-          <div
-            role="group"
-            aria-label="Filtrar por categoría"
-            className="flex flex-wrap items-center gap-2"
-          >
-            {CATALOGO_FILTER_OPTIONS.map((option) => {
-              const isSelected = activeCategory === option.id;
-              return (
-                <Button
-                  key={option.id}
-                  type="button"
-                  size="sm"
-                  variant={isSelected ? 'default' : 'outline'}
-                  onClick={() => setSelectedCategory(option.id)}
-                  className="rounded-full"
-                >
-                  {option.label}
-                </Button>
-              );
-            })}
+          <div role="group" aria-label="Filtrar por categoría" className="flex flex-wrap items-center gap-2">
+            {CATALOGO_FILTER_OPTIONS.map((option) => (
+              <Button
+                key={option.id}
+                type="button"
+                size="sm"
+                variant={activeCategory === option.id ? 'default' : 'outline'}
+                onClick={() => setSelectedCategory(option.id)}
+                className="rounded-full"
+              >
+                {option.label}
+              </Button>
+            ))}
           </div>
         )}
+
+        {showDecadeFilters && (
+          <div role="group" aria-label="Filtrar por década" className="flex flex-wrap items-center gap-2">
+            <span className="text-xs font-mono-cl text-muted-foreground mr-1">Década:</span>
+            {RETRO_DECADES.map((decade) => (
+              <Button
+                key={decade}
+                type="button"
+                size="xs"
+                variant={selectedDecade === decade ? 'default' : 'outline'}
+                onClick={() => setSelectedDecade(decade)}
+                className="rounded-full"
+              >
+                {decade}
+              </Button>
+            ))}
+          </div>
+        )}
+
+        <div className="flex flex-wrap items-center gap-4">
+          {!showDecadeFilters && (
+            <div role="group" aria-label="Filtrar por versión" className="flex flex-wrap items-center gap-1.5">
+              <span className="text-xs font-mono-cl text-muted-foreground mr-1">Versión:</span>
+              {VERSION_FILTERS.map((ver) => (
+                <Button
+                  key={ver}
+                  type="button"
+                  size="xs"
+                  variant={selectedVersion === ver ? 'secondary' : 'ghost'}
+                  onClick={() => setSelectedVersion(ver)}
+                  className="rounded-full"
+                >
+                  {ver}
+                </Button>
+              ))}
+            </div>
+          )}
+
+          <div role="group" aria-label="Filtrar por talle" className="flex flex-wrap items-center gap-1.5">
+            <span className="text-xs font-mono-cl text-muted-foreground mr-1">Talle:</span>
+            {(['Todos', ...SIZES] as const).map((size) => (
+              <Button
+                key={size}
+                type="button"
+                size="xs"
+                variant={selectedSize === size ? 'secondary' : 'ghost'}
+                onClick={() => setSelectedSize(size)}
+                className="rounded-full font-mono-cl"
+              >
+                {size}
+              </Button>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Results Grid or Empty State */}
@@ -147,32 +224,19 @@ export default function CatalogoExplorer({
               No encontramos camisetas con ese filtro
             </CardTitle>
             <CardDescription className="max-w-md">
-              Probá con otro equipo, jugador o año, o consultanos directo por WhatsApp si buscás un
-              modelo puntual.
+              Probá con otro equipo, versión o talle, o consultanos directo por WhatsApp si buscás
+              un modelo puntual.
             </CardDescription>
           </CardHeader>
           <CardFooter className="justify-center gap-3 pt-2">
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              className="rounded-full"
-              onClick={() => {
-                setQuery('');
-                if (!lockedCategory) setSelectedCategory('todas');
-              }}
-            >
+            <Button type="button" variant="outline" size="sm" className="rounded-full" onClick={resetFilters}>
               Ver todo el catálogo
             </Button>
             <Button
               size="sm"
               className="rounded-full font-semibold"
               render={
-                <a
-                  href={whatsAppCustomHref(query.trim())}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                />
+                <a href={whatsAppCustomHref(query.trim())} target="_blank" rel="noopener noreferrer" />
               }
             >
               <MessageCircle data-icon="inline-start" />
@@ -186,33 +250,51 @@ export default function CatalogoExplorer({
             <Card key={item.id} className="bg-card border-border flex flex-col justify-between">
               <CardHeader>
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <Badge variant="outline" className="font-mono-cl">
-                    {item.season}
+                  <div className="flex items-center gap-1.5">
+                    <Badge variant="outline" className="font-mono-cl">
+                      {item.season}
+                    </Badge>
+                    <Badge variant="secondary">{item.version}</Badge>
+                  </div>
+                  <Badge
+                    variant="outline"
+                    className={cn(
+                      'text-[11px] font-mono-cl',
+                      item.status === 'Disponible' && 'border-primary/50 text-primary bg-primary/10',
+                      item.status === 'Agotado' && 'border-destructive/50 text-destructive'
+                    )}
+                  >
+                    {item.status}
                   </Badge>
-                  <Badge variant="secondary">{item.version}</Badge>
                 </div>
+
                 <CardTitle className="font-disp text-xl font-bold pt-1 leading-snug">
-                  {item.title}
+                  <Link href={`/camiseta/${item.slug}`} className="no-underline hover:text-primary transition-colors">
+                    {item.title}
+                  </Link>
                 </CardTitle>
                 <CardDescription className="text-foreground/80 leading-relaxed">
                   {item.shortDesc}
                 </CardDescription>
+                {item.contextNote && (
+                  <p className="text-xs text-muted-foreground italic pt-1">{item.contextNote}</p>
+                )}
               </CardHeader>
 
-              <CardContent className="flex flex-wrap gap-1.5">
-                {item.brand && (
-                  <Badge variant="outline" className="text-[11px]">
-                    {item.brand}
+              <CardContent className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex flex-wrap gap-1.5">
+                  {item.brand && (
+                    <Badge variant="outline" className="text-[11px]">
+                      {item.brand}
+                    </Badge>
+                  )}
+                  <Badge variant="outline" className="text-[11px] font-mono-cl">
+                    {item.availableSizes.join(' · ')}
                   </Badge>
-                )}
-                {item.dorsal && (
-                  <Badge variant="outline" className="text-[11px] text-primary border-primary/40">
-                    {item.dorsal}
-                  </Badge>
-                )}
-                <Badge variant="outline" className="text-[11px] font-mono-cl">
-                  {item.sizesLabel}
-                </Badge>
+                </div>
+                <span className="text-xs font-mono-cl font-bold text-primary">
+                  {item.priceLabel}
+                </span>
               </CardContent>
 
               <CardFooter className="justify-between gap-2 pt-4 border-t border-border/60">
@@ -220,26 +302,19 @@ export default function CatalogoExplorer({
                   size="sm"
                   className="rounded-full font-semibold"
                   render={
-                    <a
-                      href={whatsAppItemHref(item)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    />
+                    <a href={whatsAppItemHref(item)} target="_blank" rel="noopener noreferrer" />
                   }
                 >
                   <MessageCircle data-icon="inline-start" />
-                  Consultar stock
+                  Consultar
                 </Button>
                 <Button
                   size="sm"
-                  variant="ghost"
-                  className="rounded-full text-muted-foreground hover:text-foreground"
-                  render={
-                    <a href={item.instagramUrl} target="_blank" rel="noopener noreferrer" />
-                  }
+                  variant="outline"
+                  className="rounded-full"
+                  render={<Link href={`/camiseta/${item.slug}`} />}
                 >
-                  Ver fotos
-                  <ArrowUpRight data-icon="inline-end" />
+                  Ver ficha
                 </Button>
               </CardFooter>
             </Card>

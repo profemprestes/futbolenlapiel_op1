@@ -9,31 +9,31 @@ export const NAV_ITEMS: NavItem[] = [
   {
     href: '/',
     label: 'Inicio',
-    description: 'Experiencia 3D y portada principal',
+    description: 'Portada, destacadas y categorías',
     iconName: 'home',
   },
   {
     href: '/tienda',
     label: 'Tienda / Stock',
-    description: 'Actuales, Uruguay 2026 y clubes',
+    description: 'Catálogo completo con filtros',
     iconName: 'shopping-bag',
   },
   {
     href: '/retros',
     label: 'Retros',
-    description: 'Clásicos 1988–2011 con dorsales icónicos',
+    description: 'Clásicos 1988–2018 con historia',
     iconName: 'history',
   },
   {
     href: '/como-pedir',
     label: 'Cómo pedir',
-    description: 'Pasos, talles S–XL y versiones',
+    description: 'Pasos y formulario para WhatsApp',
     iconName: 'clipboard-list',
   },
   {
     href: '/envios',
     label: 'Envíos',
-    description: 'Montevideo y todo el interior del país',
+    description: 'Montevideo, interior y medios de pago',
     iconName: 'truck',
   },
   {
@@ -43,6 +43,11 @@ export const NAV_ITEMS: NavItem[] = [
     iconName: 'message-circle',
   },
 ];
+
+export const SECONDARY_NAV_ITEMS = [
+  { href: '/talles', label: 'Talles y cambios' },
+  { href: '/preguntas', label: 'Preguntas frecuentes' },
+] as const;
 
 export const TIENDA_DROPDOWN_ITEMS = [
   {

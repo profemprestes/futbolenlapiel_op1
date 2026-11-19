@@ -1,4 +1,4 @@
-import { ArrowUpRight, Instagram, MessageCircle } from 'lucide-react';
+import { ArrowUpRight, Clock, Instagram, MapPin, MessageCircle } from 'lucide-react';
 import PageShell from '@/components/PageShell';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -20,7 +20,7 @@ import {
 export const metadata = {
   title: 'Contacto — Fútbol en la Piel',
   description:
-    'Contactá a Fútbol en la Piel por WhatsApp o Instagram para consultar stock, talles y envíos en Uruguay.',
+    'Contactá a Fútbol en la Piel por WhatsApp o Instagram para consultar stock, talles, retiros en Montevideo y envíos.',
 };
 
 export default function ContactoPage() {
@@ -33,7 +33,7 @@ export default function ContactoPage() {
     <PageShell
       badge="Atención directa"
       title="CONTACTO"
-      description="Escribinos directo por WhatsApp o Instagram para confirmar stock, precios, talles y envíos en todo Uruguay."
+      description="Atención directa sin intermediarios. Escribinos por WhatsApp o Instagram para confirmar stock, talles, precios y envíos."
     >
       <section className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <Card className="bg-card border-border">
@@ -46,12 +46,17 @@ export default function ContactoPage() {
               Consultas de stock, talles S–XL, versión Jugador/Fan y coordinación de envíos.
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex flex-col gap-2">
             <p className="font-mono-cl text-lg font-bold text-primary">{WHATSAPP_DISPLAY}</p>
+            <p className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+              <Clock className="size-3.5 text-primary" />
+              Horario de atención: Lunes a Sábado (a confirmar por chat)
+            </p>
           </CardContent>
           <CardFooter className="pt-4 border-t border-border/60">
             <Button
-              className="rounded-full font-bold"
+              size="lg"
+              className="w-full rounded-full font-bold"
               render={<a href={whatsAppHref} target="_blank" rel="noopener noreferrer" />}
             >
               <MessageCircle data-icon="inline-start" />
@@ -71,13 +76,18 @@ export default function ContactoPage() {
               Ingresos recientes, camisetas actuales, retros y mensajes al privado.
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex flex-col gap-2">
             <p className="font-mono-cl text-lg font-bold text-foreground">{INSTAGRAM_HANDLE}</p>
+            <p className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+              <MapPin className="size-3.5 text-primary" />
+              Montevideo, Uruguay · Retiros y entregas a coordinar
+            </p>
           </CardContent>
           <CardFooter className="pt-4 border-t border-border/60">
             <Button
               variant="outline"
-              className="rounded-full font-semibold"
+              size="lg"
+              className="w-full rounded-full font-semibold"
               render={<a href={instagramHref} target="_blank" rel="noopener noreferrer" />}
             >
               <Instagram data-icon="inline-start" />

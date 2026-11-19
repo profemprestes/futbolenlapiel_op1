@@ -1,6 +1,9 @@
 import type { CatalogCategoryId } from './futbolenlapiel-data';
 
-export interface CatalogoItem {
+export type StockStatus = 'Disponible' | 'Consultar' | 'Agotado';
+export type JerseySize = 'S' | 'M' | 'L' | 'XL';
+
+export interface CatalogoItemRaw {
   id: number;
   title: string;
   team: string;
@@ -10,12 +13,61 @@ export interface CatalogoItem {
   dorsal?: string;
   brand?: string;
   sizesLabel: string;
+  availableSizes?: JerseySize[];
+  status?: StockStatus;
+  priceLabel?: string;
+  contextNote?: string;
   shortDesc: string;
   instagramUrl: string;
   publishedAt: string;
 }
 
-export const CATALOGO_ITEMS: CatalogoItem[] = [
+export interface CatalogoItem extends CatalogoItemRaw {
+  slug: string;
+  status: StockStatus;
+  priceLabel: string;
+  availableSizes: JerseySize[];
+  decade: string;
+}
+
+function toSlug(text: string, id: number): string {
+  const base = text
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+  return `${base}-${id}`;
+}
+
+function inferDecade(season: string): string {
+  const match = season.match(/(19\d\d|20\d\d)/);
+  if (!match) return 'Actual';
+  const year = Number(match[1]);
+  if (year < 1990) return '1980s';
+  if (year < 2000) return '1990s';
+  if (year < 2010) return '2000s';
+  if (year < 2020) return '2010s';
+  return '2020s';
+}
+
+function inferSizes(sizesLabel: string): JerseySize[] {
+  const found: JerseySize[] = [];
+  if (/\bS\b/i.test(sizesLabel)) found.push('S');
+  if (/\bM\b/i.test(sizesLabel)) found.push('M');
+  if (/\bL\b/i.test(sizesLabel)) found.push('L');
+  if (/\bXL\b/i.test(sizesLabel)) found.push('XL');
+  if (/S a XL/i.test(sizesLabel)) return ['S', 'M', 'L', 'XL'];
+  return found.length > 0 ? found : ['S', 'M', 'L', 'XL'];
+}
+
+function inferStatus(item: CatalogoItemRaw): StockStatus {
+  if (item.status) return item.status;
+  if (/inmediata|M, L, XL|S a XL/i.test(item.sizesLabel)) return 'Disponible';
+  return 'Consultar';
+}
+
+const RAW_ITEMS: CatalogoItemRaw[] = [
   {
     id: 1,
     title: 'Noruega 2026 — Braut Haaland #9',
@@ -25,7 +77,9 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     version: 'Versión Jugador',
     dorsal: 'Braut Haaland #9',
     brand: 'Nike',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'S, M, L, XL',
+    status: 'Disponible',
+    priceLabel: 'Consultar precio',
     shortDesc: 'Titular roja 2026 personalizada con dorsal oficial de Haaland.',
     instagramUrl: 'https://www.instagram.com/p/Df3honyj7x0/',
     publishedAt: '2026-11-18',
@@ -36,9 +90,9 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     team: 'Como 1907',
     season: '2026',
     category: 'clubes',
-    version: 'Actual 2026',
+    version: 'Versión Fan',
     brand: 'Adidas',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'S, M, L, XL',
     shortDesc: 'Azul clásica 2026 con sponsor Revolut y detalles bordados.',
     instagramUrl: 'https://www.instagram.com/p/Df2ZtIZkbTF/',
     publishedAt: '2026-11-17',
@@ -52,7 +106,9 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     version: 'Retro',
     dorsal: 'Cantona #7',
     brand: 'Umbro',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'M, L, XL',
+    status: 'Disponible',
+    contextNote: 'Temporada del doblete inglés 1995-96 con Eric Cantona como capitán y símbolo en Old Trafford.',
     shortDesc: 'Blanca visitante 1996 con sponsor Sharp Viewcam y dorsal Cantona #7.',
     instagramUrl: 'https://www.instagram.com/p/Df0aqbzESJl/',
     publishedAt: '2026-11-16',
@@ -63,9 +119,10 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     team: 'Uruguay',
     season: '2026',
     category: 'uruguay',
-    version: 'Mundial 2026',
+    version: 'Versión Jugador',
     brand: 'Nike',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'S, M, L, XL',
+    status: 'Disponible',
     shortDesc: 'Azul marino Nike para el Mundial 2026 con parches y escudo en relieve.',
     instagramUrl: 'https://www.instagram.com/p/DfyX7ziEbcI/',
     publishedAt: '2026-11-16',
@@ -79,7 +136,9 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     version: 'Retro',
     dorsal: 'Luis Enrique #21',
     brand: 'Adidas',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'M, L, XL',
+    status: 'Disponible',
+    contextNote: 'Camiseta de la Eurocopa de Inglaterra 1996 con las clásicas tres tiras anchas en el pecho.',
     shortDesc: 'Azul oscuro Euro 1996 con franjas clásicas y dorsal Luis Enrique #21.',
     instagramUrl: 'https://www.instagram.com/p/Dfxee9fj8v1/',
     publishedAt: '2026-11-15',
@@ -93,7 +152,8 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     version: 'Retro Reversible',
     dorsal: 'Beckham #7',
     brand: 'Umbro',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'M, L, XL',
+    contextNote: 'Edición especial centenario 1902–2002 reversible en blanco y dorado.',
     shortDesc: 'Edición centenario reversible (blanca y dorada) con dorsal Beckham #7.',
     instagramUrl: 'https://www.instagram.com/p/DfxIdeQEZnQ/',
     publishedAt: '2026-11-15',
@@ -107,7 +167,8 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     version: 'Retro',
     dorsal: 'McManaman #17',
     brand: 'Adidas',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'M, L, XL',
+    contextNote: 'Diseño icónico de mediados de los 90 con sponsor Carlsberg y el #17 de Steve McManaman.',
     shortDesc: 'Visitante retro 1995 con sponsor Carlsberg y dorsal McManaman #17.',
     instagramUrl: 'https://www.instagram.com/p/DfvvupZEbSE/',
     publishedAt: '2026-11-14',
@@ -120,7 +181,8 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     category: 'retros',
     version: 'Retro con etiquetas',
     brand: 'Adidas',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'M, L, XL',
+    contextNote: 'Clásica visitante azul de 1988 en manga larga, primeros años de Alex Ferguson en el club.',
     shortDesc: 'Visitante azul manga larga 1988 con sponsor SHARP, nueva con etiquetas.',
     instagramUrl: 'https://www.instagram.com/p/Dfvr6UFEXnE/',
     publishedAt: '2026-11-14',
@@ -133,7 +195,8 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     category: 'retros',
     version: 'Retro con etiquetas',
     brand: 'Adidas',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'M, L, XL',
+    contextNote: 'Temporada de doblete copero en Inglaterra (FA Cup y League Cup 1993).',
     shortDesc: 'Clásica titular 1993 con sponsor JVC y cuello de época.',
     instagramUrl: 'https://www.instagram.com/p/Dfupy30keHi/',
     publishedAt: '2026-11-14',
@@ -147,6 +210,7 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     version: 'Edición especial',
     dorsal: 'Jugador N° 12',
     sizesLabel: 'M, L, XL',
+    status: 'Disponible',
     shortDesc: 'Musculosa blanca, azul y oro con parche 1960–∞ en homenaje a Diego.',
     instagramUrl: 'https://www.instagram.com/p/DfsuetyGiPO/',
     publishedAt: '2026-11-13',
@@ -160,7 +224,7 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     version: 'Edición especial',
     dorsal: 'Jugador N° 12',
     brand: 'Adidas',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'M, L, XL',
     shortDesc: 'Musculosa azul marino y oro con estampa BOCA JRS 12 y dorsal Jugador N° 12.',
     instagramUrl: 'https://www.instagram.com/p/DfssKevmlfs/',
     publishedAt: '2026-11-13',
@@ -171,8 +235,9 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     team: 'Peñarol',
     season: '2026',
     category: 'clubes',
-    version: 'Edición Aniversario',
-    sizesLabel: 'Talles a confirmar',
+    version: 'Edición especial',
+    sizesLabel: 'S, M, L, XL',
+    status: 'Disponible',
     shortDesc: 'Edición aniversario 2026 oro y carbón en manga larga.',
     instagramUrl: 'https://www.instagram.com/p/DfnjpBzkbat/',
     publishedAt: '2026-11-11',
@@ -186,7 +251,9 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     version: 'Retro con etiquetas',
     dorsal: '#10',
     brand: 'Reebok',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'M, L, XL',
+    status: 'Disponible',
+    contextNote: 'Histórica Reebok de fines de los 90 con el clásico sponsor Parmalat al frente.',
     shortDesc: 'Clásica Reebok 1998 con sponsor Parmalat y dorsal #10 en la espalda.',
     instagramUrl: 'https://www.instagram.com/p/DfiZ1IMERHW/',
     publishedAt: '2026-11-09',
@@ -197,10 +264,10 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     team: 'Alemania',
     season: '2024',
     category: 'actuales',
-    version: 'Actual',
+    version: 'Versión Fan',
     dorsal: 'Kroos #8',
     brand: 'Adidas',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'S, M, L, XL',
     shortDesc: 'Titular blanca 2024 con detalles en hombros y dorsal Toni Kroos #8.',
     instagramUrl: 'https://www.instagram.com/p/DfUm5K-ESHO/',
     publishedAt: '2026-11-04',
@@ -211,10 +278,11 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     team: 'Manchester United',
     season: '2025-26',
     category: 'clubes',
-    version: 'Actual 25/26',
+    version: 'Versión Jugador',
     dorsal: 'Ugarte #25',
     brand: 'Adidas',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'S, M, L, XL',
+    status: 'Disponible',
     shortDesc: 'Visitante negra 2025-26 con sponsor Snapdragon y dorsal Manuel Ugarte #25.',
     instagramUrl: 'https://www.instagram.com/p/DfTTMwakeQY/',
     publishedAt: '2026-11-03',
@@ -225,10 +293,10 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     team: 'Noruega',
     season: '2026',
     category: 'actuales',
-    version: 'Actual 2026',
+    version: 'Versión Fan',
     dorsal: 'Braut Haaland #9',
     brand: 'Nike',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'S, M, L, XL',
     shortDesc: 'Alternativa blanca 2026 personalizada con Braut Haaland #9.',
     instagramUrl: 'https://www.instagram.com/p/DfTA0qpEZDk/',
     publishedAt: '2026-11-03',
@@ -239,10 +307,10 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     team: 'Noruega',
     season: '2026',
     category: 'actuales',
-    version: 'Mundial 2026',
+    version: 'Versión Jugador',
     dorsal: 'Ødegaard #10',
     brand: 'Nike',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'S, M, L, XL',
     shortDesc: 'Edición negra con parches FIFA Mundial 2026 y dorsal Martin Ødegaard #10.',
     instagramUrl: 'https://www.instagram.com/p/DfTAhcGkUAr/',
     publishedAt: '2026-11-03',
@@ -253,9 +321,10 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     team: 'Nacional',
     season: '2026',
     category: 'clubes',
-    version: 'Actual 2026',
+    version: 'Versión Fan',
     brand: 'Umbro',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'S, M, L, XL',
+    status: 'Disponible',
     shortDesc: 'Titular 2026 Umbro con detalle en cuello y leyenda "NADIE GANÓ MÁS".',
     instagramUrl: 'https://www.instagram.com/p/DfS_6ZyEaXI/',
     publishedAt: '2026-11-03',
@@ -268,7 +337,8 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     category: 'retros',
     version: 'Retro con etiquetas',
     brand: 'Adidas',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'M, L, XL',
+    contextNote: 'Época de los Galácticos en el Santiago Bernabéu, edición ClimaCool de manga larga.',
     shortDesc: 'Blanca manga larga 2005 ClimaCool con sponsor Siemens, nueva con etiquetas.',
     instagramUrl: 'https://www.instagram.com/p/DfS_hJBkR3J/',
     publishedAt: '2026-11-03',
@@ -281,7 +351,8 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     category: 'retros',
     version: 'Retro',
     dorsal: 'Baggio #10',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'M, L, XL',
+    contextNote: 'La camiseta blanca de la Azzurra subcampeona del mundo en USA 1994.',
     shortDesc: 'Alternativa blanca del Mundial USA 1994 con dorsal Roberto Baggio #10.',
     instagramUrl: 'https://www.instagram.com/p/DfQmpogEcwi/',
     publishedAt: '2026-11-02',
@@ -295,7 +366,8 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     version: 'Retro con etiquetas',
     dorsal: 'Valderrama #10',
     brand: 'Adidas',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'M, L, XL',
+    contextNote: 'Recordada casaca roja del Mundial de Italia 1990 liderada por el Pibe Valderrama.',
     shortDesc: 'Roja clásica de Italia 90 con dorsal Valderrama #10 en la espalda.',
     instagramUrl: 'https://www.instagram.com/p/DfN88eikdxH/',
     publishedAt: '2026-11-01',
@@ -306,10 +378,11 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     team: 'Real Madrid',
     season: '2026',
     category: 'clubes',
-    version: 'Edición Manga Larga',
+    version: 'Versión Jugador',
     dorsal: 'Valverde #8',
     brand: 'Adidas',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'S, M, L, XL',
+    status: 'Disponible',
     shortDesc: 'Verde oscuro manga larga con parches de competición y dorsal Fede Valverde #8.',
     instagramUrl: 'https://www.instagram.com/p/DfLBH9CD8iq/',
     publishedAt: '2026-10-31',
@@ -320,10 +393,11 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     team: 'Argentina',
     season: '2026',
     category: 'actuales',
-    version: 'Mundial 2026',
+    version: 'Versión Jugador',
     dorsal: 'Messi #10',
     brand: 'Adidas',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'S, M, L, XL',
+    status: 'Disponible',
     shortDesc: 'Camiseta de Argentina 2026 con sello de autenticidad y dorsal Messi #10.',
     instagramUrl: 'https://www.instagram.com/p/DfLA2fwD739/',
     publishedAt: '2026-10-31',
@@ -338,6 +412,8 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     dorsal: 'Romário #11',
     brand: 'Umbro',
     sizesLabel: 'M, L, XL',
+    status: 'Disponible',
+    contextNote: 'La azul tetracampeona del mundo en Estados Unidos 1994 con el #11 de Romário.',
     shortDesc: 'Alternativa azul Umbro 1994 con dorsal Romário #11. Entrega inmediata.',
     instagramUrl: 'https://www.instagram.com/p/DfI1P60ka5M/',
     publishedAt: '2026-10-30',
@@ -350,7 +426,8 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     category: 'retros',
     version: 'Retro con etiquetas',
     brand: 'Adidas',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'M, L, XL',
+    contextNote: 'Diseño ochentoso de Adidas con puños tejidos y sponsor SHARP.',
     shortDesc: 'Azul clásica de 1988 en manga larga con detalles en puños y sponsor SHARP.',
     instagramUrl: 'https://www.instagram.com/p/DfH5BMBkYz1/',
     publishedAt: '2026-10-30',
@@ -364,7 +441,8 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     version: 'Retro con etiquetas',
     dorsal: 'Messi #19',
     brand: 'Adidas',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'M, L, XL',
+    contextNote: 'Primer Mundial de Lionel Messi en Alemania 2006 usando el dorsal #19.',
     shortDesc: 'Visitante azul del Mundial Alemania 2006 con el histórico dorsal Messi #19.',
     instagramUrl: 'https://www.instagram.com/p/DfBIaGqEWoa/',
     publishedAt: '2026-10-27',
@@ -377,7 +455,8 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     category: 'retros',
     version: 'Retro',
     brand: 'Kappa',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'M, L, XL',
+    contextNote: 'Inolvidable casaca turquesa Kappa de la era del Dream Team de Johan Cruyff.',
     shortDesc: 'Icónica Kappa turquesa manga larga de comienzos de los 90.',
     instagramUrl: 'https://www.instagram.com/p/DfBB_GhESQQ/',
     publishedAt: '2026-10-27',
@@ -390,7 +469,8 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     category: 'retros',
     version: 'Retro',
     dorsal: "Eto'o #11",
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'M, L, XL',
+    contextNote: 'Mundial Francia 1998: torneo debut de un joven Samuel Eto’o con los Leones Indomables.',
     shortDesc: 'Camiseta retro de Camerún 1998 con dorsal Samuel Eto’o #11.',
     instagramUrl: 'https://www.instagram.com/p/DfBBleUETIV/',
     publishedAt: '2026-10-27',
@@ -401,9 +481,9 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     team: 'Alemania',
     season: '2026',
     category: 'actuales',
-    version: 'Actual 2026',
+    version: 'Versión Fan',
     brand: 'Adidas',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'S, M, L, XL',
     shortDesc: 'Titular blanca Adidas 2026 con textura jacquard y detalles tricolores.',
     instagramUrl: 'https://www.instagram.com/p/DfBAaNlEaqH/',
     publishedAt: '2026-10-27',
@@ -414,9 +494,9 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     team: 'Peñarol',
     season: '2026',
     category: 'clubes',
-    version: 'Actual 2026',
+    version: 'Versión Fan',
     dorsal: 'Nuñez',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'S, M, L, XL',
     shortDesc: 'Titular oro y carbón 2026 con sponsors Antel, BBVA, Médica Uruguaya y dorsal Nuñez.',
     instagramUrl: 'https://www.instagram.com/p/DfAiogjGjfz/',
     publishedAt: '2026-10-27',
@@ -429,7 +509,8 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     category: 'retros',
     version: 'Retro con etiquetas',
     brand: 'Umbro',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'M, L, XL',
+    contextNote: 'Noche histórica en el Camp Nou: la remontada del Triplete en la Champions League 1999.',
     shortDesc: 'Legendaria manga larga de la final 1999 con sponsor SHARP y etiqueta Only Football.',
     instagramUrl: 'https://www.instagram.com/p/De_-VkrkeME/',
     publishedAt: '2026-10-27',
@@ -443,7 +524,8 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     version: 'Retro con etiquetas',
     dorsal: 'Ronaldo #9',
     brand: 'Adidas',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'M, L, XL',
+    contextNote: 'Primera temporada de Ronaldo Nazário en el Real Madrid con el dorsal #9 y sponsor Siemens.',
     shortDesc: 'Visitante 2003 con sponsor Siemens Mobile y dorsal Ronaldo #9.',
     instagramUrl: 'https://www.instagram.com/p/De-XMFjkS9k/',
     publishedAt: '2026-10-26',
@@ -456,7 +538,8 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     category: 'clubes',
     version: 'Versión Fan',
     dorsal: 'Araujo #33',
-    sizesLabel: 'Entrega inmediata',
+    sizesLabel: 'S, M, L, XL',
+    status: 'Disponible',
     shortDesc: 'Negra y bordó 2026 versión Fan con dorsal Araujo #33.',
     instagramUrl: 'https://www.instagram.com/p/De-WykWEVID/',
     publishedAt: '2026-10-26',
@@ -470,7 +553,8 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     version: 'Retro con etiquetas',
     dorsal: 'A. Iniesta #8',
     brand: 'Nike',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'M, L, XL',
+    contextNote: 'Final de la Champions League 2009 en Roma: el Barça del Sextete con Iniesta #8.',
     shortDesc: 'Edición Final de Roma 2009 personalizada con Andrés Iniesta #8.',
     instagramUrl: 'https://www.instagram.com/p/De-Wk3lEYbC/',
     publishedAt: '2026-10-26',
@@ -485,6 +569,8 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     dorsal: 'Messi #10',
     brand: 'Nike',
     sizesLabel: 'M, L, XL',
+    status: 'Disponible',
+    contextNote: 'Final de Wembley 2011 frente al Manchester United con sponsor UNICEF y Messi #10.',
     shortDesc: 'Final Champions 2011 con sponsor UNICEF y dorsal Messi #10.',
     instagramUrl: 'https://www.instagram.com/p/De8DO_bEeaW/',
     publishedAt: '2026-10-25',
@@ -495,10 +581,11 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     team: 'España',
     season: '2026',
     category: 'actuales',
-    version: 'Actual 2026',
+    version: 'Versión Jugador',
     dorsal: 'Lamine Yamal #19',
     brand: 'Adidas',
-    sizesLabel: 'S a XL (inmediata)',
+    sizesLabel: 'S, M, L, XL',
+    status: 'Disponible',
     shortDesc: 'Blanca con escudo de campeones y dorsal Lamine Yamal #19.',
     instagramUrl: 'https://www.instagram.com/p/De7ycgYEdTF/',
     publishedAt: '2026-10-25',
@@ -509,10 +596,10 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     team: 'Cabo Verde',
     season: '2026',
     category: 'actuales',
-    version: 'Mundial 2026',
+    version: 'Versión Fan',
     dorsal: 'Lopes Cabral #13',
     brand: 'Capelli Sport',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'S, M, L, XL',
     shortDesc: 'Edición Mundial 2026 Capelli Sport con dorsal Lopes Cabral #13.',
     instagramUrl: 'https://www.instagram.com/p/De7yH5gkc50/',
     publishedAt: '2026-10-25',
@@ -523,9 +610,9 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     team: 'Nacional',
     season: '2026',
     category: 'clubes',
-    version: 'Actual 2026',
+    version: 'Versión Fan',
     brand: 'Umbro',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'S, M, L, XL',
     shortDesc: 'Camiseta 2026 con trama de trofeos en tela y lema "NADIE GANÓ MÁS".',
     instagramUrl: 'https://www.instagram.com/p/De7prFlkiZW/',
     publishedAt: '2026-10-25',
@@ -536,9 +623,10 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     team: 'Escocia',
     season: '2026',
     category: 'actuales',
-    version: 'Actual',
+    version: 'Versión Fan',
     brand: 'Adidas',
     sizesLabel: 'M, L, XL',
+    status: 'Disponible',
     shortDesc: 'Edición roja Adidas de la selección de Escocia con detalles internos en cuello.',
     instagramUrl: 'https://www.instagram.com/p/De5jRWjEeWg/',
     publishedAt: '2026-10-24',
@@ -549,10 +637,11 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     team: 'Real Madrid',
     season: '2026',
     category: 'clubes',
-    version: 'Actual 2026',
+    version: 'Versión Jugador',
     dorsal: 'Valverde #8',
     brand: 'Adidas',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'S, M, L, XL',
+    status: 'Disponible',
     shortDesc: 'Bordó 2026 con etiquetas de autenticidad y dorsal Fede Valverde #8.',
     instagramUrl: 'https://www.instagram.com/p/De5cGd_kbsC/',
     publishedAt: '2026-10-24',
@@ -563,10 +652,10 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     team: 'España',
     season: '2026',
     category: 'actuales',
-    version: 'Actual',
+    version: 'Versión Fan',
     dorsal: 'Pedro Porro #12',
     brand: 'Adidas',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'S, M, L, XL',
     shortDesc: 'Titular roja de España personalizada con dorsal Pedro Porro #12.',
     instagramUrl: 'https://www.instagram.com/p/De5bnDaEdaR/',
     publishedAt: '2026-10-24',
@@ -577,9 +666,9 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     team: 'Marruecos',
     season: '2026',
     category: 'actuales',
-    version: 'Actual 2026',
+    version: 'Versión Fan',
     dorsal: 'Hakimi #2',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'S, M, L, XL',
     shortDesc: 'Titular de Marruecos 2026 con dorsal Achraf Hakimi #2.',
     instagramUrl: 'https://www.instagram.com/p/De5auCeEe27/',
     publishedAt: '2026-10-24',
@@ -593,7 +682,8 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     version: 'Retro con etiquetas',
     dorsal: 'Cristiano #7',
     brand: 'Adidas',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'M, L, XL',
+    contextNote: 'Temporada de la Decimotercera Champions en Kiev con parches oficiales y Cristiano #7.',
     shortDesc: 'Visitante 2017-18 con parches de Mundial de Clubes, Champions y dorsal CR7.',
     instagramUrl: 'https://www.instagram.com/p/De4gtC-kXUj/',
     publishedAt: '2026-10-24',
@@ -604,10 +694,11 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     team: 'Inter Miami',
     season: '2026',
     category: 'clubes',
-    version: 'Actual 2026',
+    version: 'Versión Fan',
     dorsal: 'Luis Suárez #9',
     brand: 'Adidas',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'S, M, L, XL',
+    status: 'Disponible',
     shortDesc: 'Visitante negra y rosa 2026 con dorsal del Pistolero Luis Suárez #9.',
     instagramUrl: 'https://www.instagram.com/p/De4gbkfkXOi/',
     publishedAt: '2026-10-24',
@@ -620,7 +711,7 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     category: 'clubes',
     version: 'Edición especial',
     brand: 'Adidas',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'S, M, L, XL',
     shortDesc: 'Edición especial negra Adidas con sponsor clásico Carlsberg.',
     instagramUrl: 'https://www.instagram.com/p/De4d7JAkXpr/',
     publishedAt: '2026-10-24',
@@ -633,7 +724,7 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     category: 'actuales',
     version: 'Edición especial',
     dorsal: 'Cristiano #7',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'S, M, L, XL',
     shortDesc: 'Edición especial negra "Pantera Negra" con dorsal Cristiano Ronaldo #7.',
     instagramUrl: 'https://www.instagram.com/p/De4dYQYEY_7/',
     publishedAt: '2026-10-24',
@@ -646,7 +737,8 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     category: 'clubes',
     version: 'Edición especial',
     brand: 'Adidas',
-    sizesLabel: 'M, L, XL (inmediata)',
+    sizesLabel: 'M, L, XL',
+    status: 'Disponible',
     shortDesc: 'Verde oscuro con logo Adidas Trefoil clásico y etiquetas. Entrega inmediata.',
     instagramUrl: 'https://www.instagram.com/p/De4ajkjkfEb/',
     publishedAt: '2026-10-24',
@@ -657,23 +749,44 @@ export const CATALOGO_ITEMS: CatalogoItem[] = [
     team: 'Boca Juniors',
     season: '2026',
     category: 'clubes',
-    version: 'Actual 2026',
+    version: 'Versión Fan',
     dorsal: 'Paredes #5',
     brand: 'Adidas',
-    sizesLabel: 'Talles a confirmar',
+    sizesLabel: 'S, M, L, XL',
     shortDesc: 'Titular 2026 Adidas con sponsor Betsson y dorsal Paredes #5.',
     instagramUrl: 'https://www.instagram.com/p/De3dg9bERkz/',
     publishedAt: '2026-10-24',
   },
 ];
 
+export const CATALOGO_ITEMS: CatalogoItem[] = RAW_ITEMS.map((item) => ({
+  ...item,
+  slug: toSlug(item.title, item.id),
+  status: inferStatus(item),
+  priceLabel: item.priceLabel ?? 'Consultar precio',
+  availableSizes: item.availableSizes ?? inferSizes(item.sizesLabel),
+  decade: inferDecade(item.season),
+}));
+
+export function getCatalogoItemBySlug(slug: string): CatalogoItem | undefined {
+  return CATALOGO_ITEMS.find((item) => item.slug === slug);
+}
+
+export function getRelatedCatalogoItems(item: CatalogoItem, limit = 3): CatalogoItem[] {
+  return CATALOGO_ITEMS.filter(
+    (other) => other.id !== item.id && (other.category === item.category || other.team === item.team)
+  ).slice(0, limit);
+}
+
 export const CATALOGO_FILTER_OPTIONS: Array<{
   id: 'todas' | CatalogCategoryId;
   label: string;
 }> = [
-  { id: 'todas', label: 'Todas (48)' },
+  { id: 'todas', label: `Todas (${CATALOGO_ITEMS.length})` },
   { id: 'actuales', label: 'Actuales & Mundial 2026' },
   { id: 'retros', label: 'Retros' },
   { id: 'uruguay', label: 'Uruguay' },
   { id: 'clubes', label: 'Clubes' },
 ];
+
+export const RETRO_DECADES = ['Todas', '1980s', '1990s', '2000s', '2010s'] as const;

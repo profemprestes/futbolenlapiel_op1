@@ -41,7 +41,12 @@ import {
   WHATSAPP_DISPLAY,
   WHATSAPP_NUMBER_RAW,
 } from '@/lib/futbolenlapiel-data';
-import { NAV_ITEMS, TIENDA_DROPDOWN_ITEMS, type NavItem } from '@/lib/navigation';
+import {
+  NAV_ITEMS,
+  SECONDARY_NAV_ITEMS,
+  TIENDA_DROPDOWN_ITEMS,
+  type NavItem,
+} from '@/lib/navigation';
 import { cn } from '@/lib/utils';
 
 interface SiteNavbarProps {
@@ -169,11 +174,7 @@ export default function SiteNavbar({
           size="sm"
           className="rounded-full font-bold px-3.5 max-md:px-3"
           render={
-            isHome ? (
-              <a href="#pedido" />
-            ) : (
-              <a href={whatsappDirectHref} target="_blank" rel="noopener noreferrer" />
-            )
+            <a href={whatsappDirectHref} target="_blank" rel="noopener noreferrer" />
           }
         >
           <MessageCircle data-icon="inline-start" />
@@ -243,6 +244,24 @@ export default function SiteNavbar({
                 );
               })}
             </nav>
+
+            <div className="flex flex-wrap gap-2 px-4">
+              {SECONDARY_NAV_ITEMS.map((sub) => (
+                <Link
+                  key={sub.href}
+                  href={sub.href}
+                  onClick={() => setMobileOpen(false)}
+                  className={cn(
+                    'rounded-full border px-3 py-1 text-xs font-medium no-underline transition-colors',
+                    isActiveRoute(sub.href)
+                      ? 'border-primary/40 bg-primary/15 text-primary'
+                      : 'border-border text-muted-foreground hover:text-foreground'
+                  )}
+                >
+                  {sub.label}
+                </Link>
+              ))}
+            </div>
 
             <Separator />
 
