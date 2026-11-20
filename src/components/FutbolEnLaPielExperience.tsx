@@ -3,13 +3,13 @@
 import { MotionConfig } from 'motion/react';
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { type CatalogCategory, type ModeloId, MODELO_NAMES } from '@/lib/futbolenlapiel-data';
-import CamisetaChapter from './CamisetaChapter';
-import CamisetaStage, { type StageController } from './CamisetaStage';
-import HeroSection from './HeroSection';
-import ModelosChapter from './ModelosChapter';
-import PedidoChapter from './PedidoChapter';
-import TickerHeader from './TickerHeader';
-import WordmarkFooter from './WordmarkFooter';
+import CamisetaChapter from './home/CamisetaChapter';
+import CamisetaStage, { type StageController } from './home/CamisetaStage';
+import HeroSection from './home/HeroSection';
+import ModelosChapter from './home/ModelosChapter';
+import PedidoChapter from './home/PedidoChapter';
+import TickerHeader from './home/TickerHeader';
+import WordmarkFooter from './home/WordmarkFooter';
 
 const clamp = (v: number, a = 0, b = 1) => Math.min(b, Math.max(a, v));
 

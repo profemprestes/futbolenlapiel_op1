@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { MoveHorizontal } from 'lucide-react';
 
 // bundle-dynamic-imports: cargar Three.js bajo demanda en cliente sin bloquear SSR
-const Logo3D = dynamic(() => import('./Logo3D'), {
+const Logo3D = dynamic(() => import('../Logo3D'), {
   ssr: false,
   loading: () => <div className="h-full w-full rounded-full bg-black/50" aria-hidden="true" />,
 });
@@ -107,9 +107,8 @@ export default function HeroSection({
       {/* Insignia circular giratoria */}
       <div
         aria-hidden="true"
-        className={`cl-hero-badge absolute right-[calc(var(--pad)+10px)] top-[44%] max-md:right-3 max-md:top-auto max-md:bottom-[214px] w-28 h-28 max-md:w-[72px] max-md:h-[72px] pointer-events-none transition-transform duration-350 ease-[var(--ease)] ${
-          isDragging ? 'scale-108' : 'scale-100'
-        }`}
+        className={`cl-hero-badge absolute right-[calc(var(--pad)+10px)] top-[44%] max-md:right-3 max-md:top-auto max-md:bottom-[214px] w-28 h-28 max-md:w-[72px] max-md:h-[72px] pointer-events-none transition-transform duration-350 ease-[var(--ease)] ${isDragging ? 'scale-108' : 'scale-100'
+          }`}
       >
         {ROTATE_BADGE_SVG}
       </div>

@@ -4,7 +4,7 @@ import { ArrowUp, ArrowUpRight } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import type { CatalogCategory, ModeloId } from '@/lib/futbolenlapiel-data';
 import { CATALOG_CATEGORIES, MODELOS, MODELO_SHORT_NAMES } from '@/lib/futbolenlapiel-data';
-import CamisetaImage from './CamisetaImage';
+import CamisetaImage from '../CamisetaImage';
 
 interface ModelosChapterProps {
   selectedModelo: ModeloId;
@@ -76,9 +76,8 @@ export default function ModelosChapter({
               ref={(el) => {
                 headSpanRefs.current[idx] = el;
               }}
-              className={`block [transform:translateX(var(--hx,0))] ${
-                idx === 1 ? 'pl-[9vw]' : ''
-              } ${idx === 2 ? 'text-[#1E5AA8]' : ''}`}
+              className={`block [transform:translateX(var(--hx,0))] ${idx === 1 ? 'pl-[9vw]' : ''
+                } ${idx === 2 ? 'text-[#1E5AA8]' : ''}`}
             >
               {word}
             </span>
@@ -113,9 +112,8 @@ export default function ModelosChapter({
               onClick={() => onSelectModelo(m.id)}
               onPointerMove={(e) => handleCardMove(idx, e)}
               onPointerLeave={() => handleCardLeave(idx)}
-              className={`cl-card-3d group relative text-left border border-[#F5EAD6]/22 cursor-pointer rounded-[26px] p-[22px] pb-5 text-[#F5EAD6] flex flex-col gap-1.5 transition-[box-shadow,outline-color,border-color] duration-400 outline-[3px] outline-offset-4 ${
-                isOn ? 'outline-[#A8D6F0]' : 'outline-transparent'
-              }`}
+              className={`cl-card-3d group relative text-left border border-[#F5EAD6]/22 cursor-pointer rounded-[26px] p-[22px] pb-5 text-[#F5EAD6] flex flex-col gap-1.5 transition-[box-shadow,outline-color,border-color] duration-400 outline-[3px] outline-offset-4 ${isOn ? 'outline-[#A8D6F0]' : 'outline-transparent'
+                }`}
             >
               <span className="font-mono-cl text-[12px] opacity-80">{m.num}</span>
               <span className="w-full aspect-[4/3] grid place-items-center [transform:translateZ(40px)]">
@@ -141,11 +139,10 @@ export default function ModelosChapter({
                 </i>
               </span>
               <span
-                className={`mt-2.5 self-start inline-flex items-center gap-2 text-[13px] font-bold px-3.5 py-2 rounded-full border transition-colors duration-250 ${
-                  isOn
+                className={`mt-2.5 self-start inline-flex items-center gap-2 text-[13px] font-bold px-3.5 py-2 rounded-full border transition-colors duration-250 ${isOn
                     ? 'bg-[#A8D6F0] border-[#A8D6F0] text-[#0A1B33]'
                     : 'border-[#8ECBF5]/55 text-[#F5EAD6]'
-                }`}
+                  }`}
               >
                 {isOn && (
                   <span
