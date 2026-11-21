@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
-import OtroLogo from '@/components/OtroLogo';
+import Logo3D from '@/components/Logo3D';
 
 export const metadata: Metadata = {
   title: 'Emblema 3D | Fútbol en la Piel',
@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 
 export default function EmblemaPage() {
   return (
-    <main className="relative min-h-screen w-full overflow-hidden">
-      <OtroLogo />
+    <main className="relative h-screen w-full overflow-hidden bg-[#0A1B33]">
+      <Logo3D className="h-full w-full" ariaLabel="Emblema oficial 3D de Fútbol en la Piel" />
 
       <Link
         href="/"
