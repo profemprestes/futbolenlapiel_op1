@@ -49,10 +49,10 @@ export const MODELOS: ModeloInfo[] = [
     name: 'Uruguay 2026 Mundial',
     shortName: 'Uruguay 2026',
     dotColor: '#75B2E6',
-    desc: 'Celeste tradicional, selección Uruguay, versión 2026 Mundial',
-    alt: 'Camiseta Uruguay 2026 Mundial celeste tradicional',
-    priceLabel: 'A CONFIRMAR por WhatsApp',
-    availabilityLabel: 'Disponibilidad según publicación',
+    desc: 'Selección Uruguay 2026 Mundial · Versión Jugador y Fan · Talles S a XL',
+    alt: 'Camiseta Uruguay 2026 Mundial selección',
+    priceLabel: 'Consultar por WhatsApp',
+    availabilityLabel: 'Stock según publicación',
   },
   {
     id: 'retro',
@@ -60,10 +60,10 @@ export const MODELOS: ModeloInfo[] = [
     name: 'Retro — Manchester United 1996 Cantona 7',
     shortName: 'Retro Man. United 1996',
     dotColor: '#C81D25',
-    desc: 'Retro 1996, dorsal Cantona 7 — ejemplo real de posteos',
+    desc: 'Clásico 1996 Umbro, dorsal Cantona 7 · Edición retro de colección',
     alt: 'Camiseta Retro Manchester United 1996 dorsal Cantona 7',
-    priceLabel: 'A CONFIRMAR por WhatsApp',
-    availabilityLabel: 'Disponibilidad según publicación',
+    priceLabel: 'Consultar por WhatsApp',
+    availabilityLabel: 'Stock según publicación',
   },
   {
     id: 'club',
@@ -71,10 +71,10 @@ export const MODELOS: ModeloInfo[] = [
     name: 'Retro — España 1996 Luis Enrique 21',
     shortName: 'Retro España 1996',
     dotColor: '#F2C94C',
-    desc: 'Retro 1996, dorsal Luis Enrique 21 — ejemplo real de posteos',
+    desc: 'Clásico 1996 de selección, dorsal Luis Enrique 21 · Edición retro',
     alt: 'Camiseta Retro España 1996 dorsal Luis Enrique 21',
-    priceLabel: 'A CONFIRMAR por WhatsApp',
-    availabilityLabel: 'Disponibilidad según publicación',
+    priceLabel: 'Consultar por WhatsApp',
+    availabilityLabel: 'Stock según publicación',
   },
 ];
 
@@ -117,30 +117,78 @@ export const CATALOG_CATEGORIES: CatalogCategory[] = [
     id: 'actuales',
     title: 'Actuales',
     subtitle: 'Temporada vigente & Mundial 2026',
-    examples: 'Noruega Haaland 9, Argentina Messi 10, España, Alemania 2026',
+    examples: 'Uruguay 2026, Noruega Haaland 9, Argentina Messi 10, España Yamal 19, Alemania 2026',
     defaultQuery: 'Camiseta actual temporada 2026',
   },
   {
     id: 'retros',
     title: 'Retros',
     subtitle: 'Clásicos 1988–2011 con dorsales icónicos',
-    examples: 'Man. United 1996 Cantona 7, España 1996 Luis Enrique 21, Brasil 1994',
+    examples: 'Man. United 1996 Cantona 7, Real Madrid 2003, Barcelona 2009/2011, Brasil 1994',
     defaultQuery: 'Camiseta retro con dorsal',
   },
   {
     id: 'uruguay',
     title: 'Uruguay',
-    subtitle: 'La Celeste para alentar o coleccionar',
-    examples: 'Uruguay 2026 Mundial y ediciones especiales',
+    subtitle: 'La Celeste y clubes uruguayos',
+    examples: 'Uruguay 2026 Mundial, Peñarol 2026 & 1998 Retro, Nacional 2026',
     defaultQuery: 'Uruguay 2026 Mundial',
   },
   {
     id: 'clubes',
     title: 'Clubes',
     subtitle: 'Uruguayos, sudamericanos y europeos',
-    examples: 'Peñarol, Nacional, Boca, Real Madrid, Liverpool, Como 1907',
+    examples: 'Peñarol, Nacional, Boca Juniors, Real Madrid, Liverpool, Inter Miami CF, Como 1907',
     defaultQuery: '',
     defaultPlaceholder: 'Ej: Peñarol 2026, Nacional 2026, Real Madrid...',
+  },
+];
+
+export interface CamisetaChapterRow {
+  id: string;
+  word: string;
+  isHeading: boolean;
+  isNum: boolean;
+  reverse: boolean;
+  caption: string;
+}
+
+export const CAMISETA_CHAPTER_ROWS: CamisetaChapterRow[] = [
+  {
+    id: 'r1',
+    word: 'ACTUALES',
+    isHeading: true,
+    isNum: false,
+    reverse: false,
+    caption:
+      'Selecciones rumbo al Mundial 2026 y clubes de temporada vigente: Uruguay, Argentina, Noruega, España, Peñarol, Nacional y más.',
+  },
+  {
+    id: 'r2',
+    word: 'RETROS.',
+    isHeading: false,
+    isNum: false,
+    reverse: true,
+    caption:
+      'Clásicos de colección de 1988 a 2011 con dorsales históricos: Cantona 7, Luis Enrique 21, Ronaldo 9, Messi 10, Baggio 10 y más.',
+  },
+  {
+    id: 'r3',
+    word: 'S–XL',
+    isHeading: false,
+    isNum: true,
+    reverse: false,
+    caption:
+      'Versión Jugador (corte entallado), Versión Fan (calce clásico) y ediciones Retro. Elegí tu talle en el anillo o en el formulario.',
+  },
+  {
+    id: 'r4',
+    word: 'URUGUAY.',
+    isHeading: false,
+    isNum: false,
+    reverse: true,
+    caption:
+      'Envíos a los 19 departamentos y entregas a coordinar. Confirmás stock, talle y precio actualizado directo por WhatsApp.',
   },
 ];
 

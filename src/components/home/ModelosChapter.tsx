@@ -86,16 +86,17 @@ export default function ModelosChapter({
 
         <p
           ref={subRef}
-          className="absolute right-[var(--pad)] top-[max(15vh,88px)] max-md:left-[var(--pad)] max-md:right-auto max-md:top-[calc(12vh+48vw)] max-w-[260px] text-[16px] font-medium leading-[1.45] text-[#0A1B33] [opacity:var(--subo,0)]"
+          className="absolute right-[var(--pad)] top-[max(15vh,88px)] max-md:left-[var(--pad)] max-md:right-auto max-md:top-[calc(12vh+44vw)] max-w-[280px] text-[16px] max-md:text-[15px] font-medium leading-[1.45] text-[#0A1B33] [opacity:var(--subo,0)]"
         >
-          Mismo escudo, misma pasión, tres formas de llevarla. Disponibilidad según publicación.
+          Selecciones, clubes y clásicos retros. Elegí un modelo para verlo girar o consultá por
+          categoría.
         </p>
       </div>
 
       <div
         ref={cardsBoxRef}
         role="radiogroup"
-        aria-label="Modelos destacados de ejemplo"
+        aria-label="Modelos destacados"
         className="relative z-[2] mt-[55vh] max-md:mt-[50vh] px-[var(--pad)] grid grid-cols-3 max-md:grid-cols-1 gap-[clamp(14px,2vw,28px)] max-md:gap-[18px] max-w-[1320px] mx-auto [perspective:1200px]"
       >
         {MODELOS.map((m, idx) => {

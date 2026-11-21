@@ -226,8 +226,8 @@ export default function PedidoChapter({
             </span>
           </header>
           <p className="text-[15px] text-[#F5EAD6]/90 leading-relaxed">
-            Confirmamos stock, talle y plazo de entrega directo por WhatsApp antes de coordinar el
-            pago.
+            Envíos a los 19 departamentos. Confirmamos stock, versión, talle y plazo de entrega
+            directo por WhatsApp antes de coordinar el pago.
           </p>
         </div>
 
@@ -256,8 +256,8 @@ export default function PedidoChapter({
             <b className="block font-disp font-bold text-[18px] mb-0.5">
               Precios y stock al instante por WhatsApp.
             </b>
-            Indicá el modelo que viste, Versión Jugador o Fan según publicación, y tu talle. Te
-            confirmamos disponibilidad real y precio actualizado en el momento.
+            Indicá el modelo que viste (actual o retro), Versión Jugador, Fan o Retro, y tu talle
+            (S a XL). Te confirmamos disponibilidad real y precio actualizado en el momento.
           </li>
           <li className="relative pl-[58px] pb-[18px] border-b border-[#8ECBF5]/40 text-[16px] leading-[1.5]">
             <b className="block font-disp font-bold text-[18px] mb-0.5">

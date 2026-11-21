@@ -235,11 +235,11 @@ export default function CamisetaStage({
       const vw = window.innerWidth;
       const vh = window.innerHeight;
       const phone = vw <= 760;
-      S.R = phone ? vw * 0.54 : Math.min(vw * 0.36, vh * 0.6);
+      S.R = phone ? Math.min(vw * 0.42, vh * 0.28) : Math.min(vw * 0.36, vh * 0.6);
       stage.style.setProperty('--r', `${S.R}px`);
       stage.style.setProperty(
         '--gs',
-        `${phone ? vw * 0.115 : Math.min(vw * 0.08, vh * 0.13)}px`
+        `${phone ? Math.min(vw * 0.085, vh * 0.058) : Math.min(vw * 0.08, vh * 0.13)}px`
       );
       stage.style.setProperty('--persp', `${phone ? 820 : 1700}px`);
       const sw = camisetaEl.offsetWidth;

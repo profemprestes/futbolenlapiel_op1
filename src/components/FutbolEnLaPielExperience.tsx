@@ -134,11 +134,12 @@ export default function FutbolEnLaPielExperience() {
       const pw = reducedMotion ? (prTop <= vh * 0.2 ? 1 : 0) : clamp(-prTop / (vh * 0.5) + 0.25);
       const off = pw >= 1 && prTop < 0;
 
+      const isPhone = window.innerWidth <= 760;
       stageRef.current?.setScrollState({
-        extraScale: 1 + 0.35 * m,
+        extraScale: 1 + (isPhone ? 0.16 : 0.35) * m,
         extraYaw: 16 * m,
         ringFade: 1 - clamp(p1 / 0.32),
-        ringGrow: 1 + (reducedMotion ? 0 : 0.9 * clamp(p1 / 0.32)),
+        ringGrow: 1 + (reducedMotion ? 0 : (isPhone ? 0.55 : 0.9) * clamp(p1 / 0.32)),
         active: !off,
         lightX: `${64 - 30 * m}%`,
       });

@@ -31,7 +31,7 @@ const ROTATE_BADGE_SVG = (
 const SCROLL_CUE = (
   <a
     href="#camiseta"
-    className="cl-scroll-cue absolute left-1/2 bottom-[var(--pad)] -translate-x-1/2 text-[12px] no-underline flex gap-2.5 items-center opacity-85 max-md:hidden"
+    className="cl-scroll-cue absolute left-1/2 bottom-[var(--pad)] -translate-x-1/2 max-md:left-[var(--pad)] max-md:translate-x-0 max-md:bottom-[max(24px,5svh)] text-[12px] no-underline flex gap-2.5 items-center opacity-85"
   >
     <span className="font-mono-cl">01 / 04</span> Deslizá
   </a>
@@ -82,8 +82,8 @@ export default function HeroSection({
             </p>
           </div>
         </div>
-        <p className="cl-hero-sub max-md:hidden text-[14px] opacity-90">
-          Camisetas actuales, ediciones especiales y clásicos retros para vivir cada partido con historia.
+        <p className="cl-hero-sub text-[14px] max-md:text-[13px] opacity-90 max-md:mt-1 max-md:max-w-[300px]">
+          Camisetas actuales, Mundial 2026, clubes y clásicos retros en talles S a XL.
         </p>
       </div>
 
@@ -107,7 +107,7 @@ export default function HeroSection({
       {/* Insignia circular giratoria */}
       <div
         aria-hidden="true"
-        className={`cl-hero-badge absolute right-[calc(var(--pad)+10px)] top-[44%] max-md:right-3 max-md:top-auto max-md:bottom-[214px] w-28 h-28 max-md:w-[72px] max-md:h-[72px] pointer-events-none transition-transform duration-350 ease-[var(--ease)] ${isDragging ? 'scale-108' : 'scale-100'
+        className={`cl-hero-badge absolute right-[calc(var(--pad)+10px)] top-[44%] max-md:right-[var(--pad)] max-md:top-auto max-md:bottom-[max(20px,4svh)] w-28 h-28 max-md:w-[72px] max-md:h-[72px] pointer-events-none transition-transform duration-350 ease-[var(--ease)] ${isDragging ? 'scale-108' : 'scale-100'
           }`}
       >
         {ROTATE_BADGE_SVG}

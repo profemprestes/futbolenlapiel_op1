@@ -189,14 +189,14 @@ export default function WordmarkFooter({
         <div>
           <p className="font-mono-cl text-[12px] font-bold text-[#1E5AA8] mb-2">INSTAGRAM</p>
           <p className="text-[15px] max-md:text-[14px] leading-[1.5]">
-            {INSTAGRAM_HANDLE} — Publicaciones de camisetas actuales, retros y ediciones
-            especiales. Consultas al privado.
+            {INSTAGRAM_HANDLE} — Catálogo actualizado con camisetas actuales, Mundial 2026,
+            clásicos retros y clubes.
           </p>
         </div>
         <div>
           <p className="font-mono-cl text-[12px] font-bold text-[#1E5AA8] mb-2">WHATSAPP</p>
           <p className="text-[15px] max-md:text-[14px] leading-[1.5]">
-            WhatsApp directo:{' '}
+            Atención directa:{' '}
             <a
               href={`https://wa.me/${WHATSAPP_NUMBER_RAW}`}
               target="_blank"
@@ -205,7 +205,7 @@ export default function WordmarkFooter({
             >
               {WHATSAPP_DISPLAY}
             </a>
-            . Consultá stock, talles y precios.
+            . Consultá stock, talles (S–XL), versiones y precios.
           </p>
         </div>
         <div>
@@ -223,7 +223,13 @@ export default function WordmarkFooter({
             href="#inicio"
             className="block no-underline font-semibold py-1 transition-all duration-200 hover:text-[#1E5AA8] hover:translate-x-1"
           >
-            Talles
+            Inicio &amp; 3D
+          </a>
+          <a
+            href="#camiseta"
+            className="block no-underline font-semibold py-1 transition-all duration-200 hover:text-[#1E5AA8] hover:translate-x-1"
+          >
+            Catálogo
           </a>
           <a
             href="#modelos"
@@ -236,12 +242,6 @@ export default function WordmarkFooter({
             className="block no-underline font-semibold py-1 transition-all duration-200 hover:text-[#1E5AA8] hover:translate-x-1"
           >
             Pedir
-          </a>
-          <a
-            href="#inicio"
-            className="block no-underline font-semibold py-1 transition-all duration-200 hover:text-[#1E5AA8] hover:translate-x-1"
-          >
-            Volver arriba
           </a>
         </nav>
       </div>

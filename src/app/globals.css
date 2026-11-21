@@ -269,8 +269,8 @@
 /* ---------- chips mask on mobile ---------- */
 @media (max-width: 760px) {
   .cl-stage {
-    --cy: 43svh;
-    --sw: 86vw;
+    --cy: 56svh;
+    --sw: min(68vw, 44svh);
   }
 
   .cl-chips-scroll {
