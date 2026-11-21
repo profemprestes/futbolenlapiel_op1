@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const ROUTES = [
+  { href: '/links', label: 'Todos los Links' },
   { href: '/', label: 'Original' },
   { href: '/opcion-1', label: '01 Editorial' },
   { href: '/opcion-2', label: '02 Catálogo' },
