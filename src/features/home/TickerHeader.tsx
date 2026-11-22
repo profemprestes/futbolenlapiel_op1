@@ -3,7 +3,6 @@
 import SiteNavbar from '@/components/layout/SiteNavbar';
 
 interface TickerHeaderProps {
-  activeChapter: '#inicio' | '#camiseta' | '#modelos' | '#pedido';
   solid: boolean;
   tickerRef: React.RefObject<HTMLElement | null>;
 }

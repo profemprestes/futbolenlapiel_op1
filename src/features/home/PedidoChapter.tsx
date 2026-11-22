@@ -126,8 +126,10 @@ export default function PedidoChapter({
                 ? 'Aceptá que la confirmación es por WhatsApp.'
                 : 'Agregá tu nombre.';
       setErrorMsg(msg);
-      setShaking(false);
-      requestAnimationFrame(() => setShaking(true));
+      if (!reducedMotion) {
+        setShaking(false);
+        requestAnimationFrame(() => setShaking(true));
+      }
 
       const targetEl = form.elements.namedItem(firstBadKey) as HTMLElement | null;
       targetEl?.focus();
@@ -160,10 +162,12 @@ export default function PedidoChapter({
       data: {
         name: trimmedName,
         consultaId,
-        summary: `${trimmedCamiseta}, ${version}, talle ${selectedSize}, ${destinoText}. Abrí WhatsApp (${WHATSAPP_DISPLAY}) para confirmar stock, precio y envío. Nada se cobra desde esta página.`,
+        summary: `${trimmedCamiseta}, ${version}, talle ${selectedSize}, ${destinoText}. Abrimos WhatsApp (${WHATSAPP_DISPLAY}) para confirmar stock, precio y envío. Nada se cobra desde esta página.`,
         whatsAppHref,
       },
     });
+
+    window.open(whatsAppHref, '_blank', 'noopener,noreferrer');
 
     requestAnimationFrame(() => {
       receiptRef.current?.focus();

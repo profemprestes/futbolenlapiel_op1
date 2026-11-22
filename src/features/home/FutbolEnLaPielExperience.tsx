@@ -54,9 +54,6 @@ export default function FutbolEnLaPielExperience() {
   const [isDragging, setIsDragging] = useState(false);
   const [sliderDeg, setSliderDeg] = useState(0);
   const [sliderText, setSliderText] = useState('Frente');
-  const [activeChapter, setActiveChapter] = useState<
-    '#inicio' | '#camiseta' | '#modelos' | '#pedido'
-  >('#inicio');
   const [tickerSolid, setTickerSolid] = useState(false);
 
   const stageRef = useRef<StageController | null>(null);
@@ -72,7 +69,7 @@ export default function FutbolEnLaPielExperience() {
   const headSpanRefs = useRef<Array<HTMLSpanElement | null>>([]);
   const subRef = useRef<HTMLParagraphElement | null>(null);
   const cardsBoxRef = useRef<HTMLDivElement | null>(null);
-  const cardRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const cardRefs = useRef<Array<HTMLDivElement | null>>([]);
   const swRefs = useRef<Array<HTMLParagraphElement | null>>([]);
 
   useEffect(() => {
@@ -114,16 +111,6 @@ export default function FutbolEnLaPielExperience() {
       const y = window.scrollY;
 
       tickerRef.current?.style.setProperty('--scroll-p', clamp(y / M.maxScroll).toFixed(4));
-
-      const nextChapter: '#inicio' | '#camiseta' | '#modelos' | '#pedido' =
-        y >= M.c3 - vh * 0.45
-          ? '#pedido'
-          : y >= M.c2 - vh * 0.45
-            ? '#modelos'
-            : y >= M.c1Top - vh * 0.45
-              ? '#camiseta'
-              : '#inicio';
-      setActiveChapter((prev) => (prev === nextChapter ? prev : nextChapter));
 
       const nextSolid = y > M.c2 - vh * 0.4;
       setTickerSolid((prev) => (prev === nextSolid ? prev : nextSolid));
@@ -209,7 +196,7 @@ export default function FutbolEnLaPielExperience() {
         const t = (M.sws[i] - y) / vh - 0.5;
         s.style.setProperty(
           '--sx',
-          reducedMotion ? '0' : `${((i % 2 ? -1 : 1) * t * 34).toFixed(2)}vw`
+          reducedMotion ? '0' : `${((i % 2 ? -1 : 1) * t * 14).toFixed(2)}vw`
         );
       });
     };
@@ -299,7 +286,6 @@ export default function FutbolEnLaPielExperience() {
       </a>
 
       <TickerHeader
-        activeChapter={activeChapter}
         solid={tickerSolid}
         tickerRef={tickerRef}
       />

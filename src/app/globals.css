@@ -368,10 +368,17 @@
   opacity: var(--edge, 1);
 }
 
+.cl-card-scroll {
+  transform: translateY(var(--ry, 0)) rotateX(var(--rx, 0deg));
+  transform-style: preserve-3d;
+}
+
 .cl-card-3d {
   background: radial-gradient(80% 70% at 50% 35%, var(--field-hi), var(--field) 60%, var(--field-lo));
   box-shadow: 0 1px 0 rgba(245, 234, 214, 0.18) inset, 0 30px 70px -35px rgba(0, 0, 0, 0.78);
-  transform: translateY(var(--ry, 0)) rotateX(calc(var(--tx, 0deg) + var(--rx, 0deg))) rotateY(var(--ty, 0deg));
+  transform: rotateX(var(--tx, 0deg)) rotateY(var(--ty, 0deg));
+  transform-style: preserve-3d;
+  transition: transform 0.28s var(--ease), box-shadow 0.35s var(--ease), border-color 0.35s var(--ease);
   transform-style: preserve-3d;
 }
 
@@ -461,11 +468,13 @@
   .cl-grain,
   .cl-badge-spin,
   .cl-scroll-cue::after,
-  .cd-flip {
+  .cd-flip,
+  .cl-shake {
     animation: none !important;
   }
 
   .cl-card-3d,
+  .cl-card-scroll,
   .cl-wm-big span {
     transition: none !important;
   }

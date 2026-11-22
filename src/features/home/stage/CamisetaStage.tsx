@@ -10,6 +10,7 @@ import {
   disposeJerseyWebGL,
   drawJerseyWebGL,
   initJerseyWebGL,
+  setJerseyModeloTexture,
 } from './webgl-jersey';
 
 export interface StageController {
@@ -355,8 +356,10 @@ export default function CamisetaStage({
 
     setModelo: (nextModelo: ModeloId) => {
       const S = stateRef.current;
-      if (nextModelo === S.modelo) return;
       S.modelo = nextModelo;
+      if (setJerseyModeloTexture(glCtxRef.current, nextModelo)) {
+        S.mix = reducedMotion ? 1 : 0;
+      }
       S.swayAmp = 0;
       if (!reducedMotion) {
         S.target = nextRest(S.theta, 1);

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useRef } from 'react';
 import { ArrowUp, ArrowUpRight, MessageCircle } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import type { CatalogCategory, ModeloId } from '@/lib/data/modelos';
@@ -20,7 +21,7 @@ interface ModelosChapterProps {
   headSpanRefs: React.MutableRefObject<Array<HTMLSpanElement | null>>;
   subRef: React.RefObject<HTMLParagraphElement | null>;
   cardsBoxRef: React.RefObject<HTMLDivElement | null>;
-  cardRefs: React.MutableRefObject<Array<HTMLButtonElement | null>>;
+  cardRefs: React.MutableRefObject<Array<HTMLDivElement | null>>;
 }
 
 const HEAD_WORDS = ['ELEGÍ', 'TU', 'CAMISETA.'];
@@ -39,9 +40,11 @@ export default function ModelosChapter({
   cardsBoxRef,
   cardRefs,
 }: ModelosChapterProps) {
-  const handleCardMove = (idx: number, e: React.PointerEvent<HTMLButtonElement>) => {
+  const tiltRefs = useRef<Array<HTMLElement | null>>([]);
+
+  const handleCardMove = (idx: number, e: React.PointerEvent<HTMLElement>) => {
     if (reducedMotion || e.pointerType !== 'mouse') return;
-    const card = cardRefs.current[idx];
+    const card = tiltRefs.current[idx];
     if (!card) return;
     const r = card.getBoundingClientRect();
     card.style.setProperty('--ty', `${((e.clientX - r.left) / r.width - 0.5) * 12}deg`);
@@ -49,7 +52,7 @@ export default function ModelosChapter({
   };
 
   const handleCardLeave = (idx: number) => {
-    const card = cardRefs.current[idx];
+    const card = tiltRefs.current[idx];
     if (!card) return;
     card.style.setProperty('--tx', '0deg');
     card.style.setProperty('--ty', '0deg');
@@ -103,60 +106,77 @@ export default function ModelosChapter({
         {MODELOS.map((m, idx) => {
           const isOn = selectedModelo === m.id;
           return (
-            <button
+            <div
               key={m.id}
               ref={(el) => {
                 cardRefs.current[idx] = el;
               }}
-              type="button"
-              aria-pressed={isOn}
-              onClick={() => onSelectModelo(m.id)}
-              onPointerMove={(e) => handleCardMove(idx, e)}
-              onPointerLeave={() => handleCardLeave(idx)}
-              className={`cl-card-3d group relative text-left border cursor-pointer rounded-[26px] p-[22px] pb-5 text-[#F5EAD6] flex flex-col gap-1.5 transition-[box-shadow,border-color] duration-400 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0A1B33] ${
-                isOn
-                  ? 'border-[#A8D6F0] ring-[3px] ring-[#A8D6F0]/80'
-                  : 'border-[#F5EAD6]/22'
-              }`}
+              className="cl-card-scroll"
             >
-              <span className="font-mono-cl text-[12px] opacity-80">{m.num}</span>
-              <span className="w-full aspect-[4/3] grid place-items-center [transform:translateZ(40px)]">
-                <CamisetaImage
-                  modelo={m.id}
-                  alt={m.alt}
-                  className="w-[105%] max-md:w-full h-auto -rotate-2 group-hover:-translate-y-2 transition-transform duration-500 ease-[var(--ease)] drop-shadow-[0_22px_18px_rgba(0,0,0,0.5)]"
-                />
-              </span>
-              <span className="font-disp font-bold text-[clamp(21px,2vw,28px)] leading-[1.08] tracking-[-0.015em] flex items-start gap-2.5">
-                <span
-                  aria-hidden="true"
-                  style={{ backgroundColor: m.dotColor }}
-                  className="inline-block w-2.5 h-2.5 mt-2 rounded-full border-[1.5px] border-[#F5EAD6]/70 flex-none"
-                />
-                <span>{m.name}</span>
-              </span>
-              <span className="text-[14px] opacity-85 min-h-[2.9em]">{m.desc}</span>
-              <span className="flex justify-between items-baseline gap-2 pt-2.5 border-t border-[#8ECBF5]/40 mt-1.5">
-                <b className="text-[14px] text-[#A8D6F0]">{m.priceLabel}</b>
-                <i className="not-italic font-mono-cl text-[11px] opacity-80 text-right">
-                  {m.availabilityLabel}
-                </i>
-              </span>
-              <span
-                className={`mt-2.5 self-start inline-flex items-center gap-2 text-[13px] font-bold px-3.5 py-2 rounded-full border transition-colors duration-250 ${isOn
-                    ? 'bg-[#A8D6F0] border-[#A8D6F0] text-[#0A1B33]'
-                    : 'border-[#8ECBF5]/55 text-[#F5EAD6]'
-                  }`}
+              <article
+                ref={(el) => {
+                  tiltRefs.current[idx] = el;
+                }}
+                onPointerMove={(e) => handleCardMove(idx, e)}
+                onPointerLeave={() => handleCardLeave(idx)}
+                className={`cl-card-3d group relative h-full text-left border rounded-[26px] p-[22px] pb-5 text-[#F5EAD6] flex flex-col gap-1.5 ${
+                  isOn
+                    ? 'border-[#A8D6F0] ring-[3px] ring-[#A8D6F0]/80'
+                    : 'border-[#F5EAD6]/22'
+                }`}
               >
-                {isOn && (
+                <span className="font-mono-cl text-[12px] opacity-80">{m.num}</span>
+                <span className="w-full aspect-[4/3] grid place-items-center [transform:translateZ(40px)]">
+                  <CamisetaImage
+                    modelo={m.id}
+                    alt={m.alt}
+                    className="w-[105%] max-md:w-full h-auto -rotate-2 group-hover:-translate-y-2 transition-transform duration-500 ease-[var(--ease)] drop-shadow-[0_22px_18px_rgba(0,0,0,0.5)]"
+                  />
+                </span>
+                <h3 className="font-disp font-bold text-[clamp(21px,2vw,28px)] leading-[1.08] tracking-[-0.015em] flex items-start gap-2.5">
                   <span
                     aria-hidden="true"
-                    className="w-[7px] h-[7px] rounded-full bg-[#0A1B33] shadow-[0_0_0_3px_rgba(10,27,51,0.25)]"
+                    style={{ backgroundColor: m.dotColor }}
+                    className="inline-block w-2.5 h-2.5 mt-2 rounded-full border-[1.5px] border-[#F5EAD6]/70 flex-none"
                   />
-                )}
-                {isOn ? 'En el escenario' : 'Ver en el escenario'}
-              </span>
-            </button>
+                  <span>{m.name}</span>
+                </h3>
+                <p className="text-[14px] opacity-85 min-h-[2.9em]">{m.desc}</p>
+                <div className="flex justify-between items-baseline gap-2 pt-2.5 border-t border-[#8ECBF5]/40 mt-1.5">
+                  <b className="text-[14px] text-[#A8D6F0]">{m.priceLabel}</b>
+                  <i className="not-italic font-mono-cl text-[11px] opacity-80 text-right">
+                    {m.availabilityLabel}
+                  </i>
+                </div>
+                <div className="mt-auto pt-3 flex flex-wrap items-center justify-between gap-2">
+                  <button
+                    type="button"
+                    aria-pressed={isOn}
+                    onClick={() => onSelectModelo(m.id)}
+                    className={`inline-flex items-center gap-2 min-h-8 text-[13px] font-bold px-3.5 py-1.5 rounded-full border cursor-pointer transition-colors duration-250 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F5EAD6] ${
+                      isOn
+                        ? 'bg-[#A8D6F0] border-[#A8D6F0] text-[#0A1B33]'
+                        : 'border-[#8ECBF5]/55 text-[#F5EAD6] hover:border-[#A8D6F0] hover:text-[#A8D6F0]'
+                    }`}
+                  >
+                    {isOn && (
+                      <span
+                        aria-hidden="true"
+                        className="w-[7px] h-[7px] rounded-full bg-[#0A1B33] shadow-[0_0_0_3px_rgba(10,27,51,0.25)]"
+                      />
+                    )}
+                    {isOn ? 'En el escenario' : 'Ver en el escenario'}
+                  </button>
+                  <Link
+                    href={`/camiseta/${m.catalogSlug}`}
+                    className="inline-flex items-center gap-1 min-h-8 px-3 py-1.5 rounded-full font-mono-cl text-[12px] font-bold text-[#8ECBF5] hover:text-[#F5EAD6] hover:bg-[#132C52] no-underline transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#A8D6F0]"
+                  >
+                    Ver ficha
+                    <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
+                  </Link>
+                </div>
+              </article>
+            </div>
           );
         })}
       </div>

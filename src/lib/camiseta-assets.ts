@@ -78,13 +78,13 @@ function traceJerseySilhouette(ctx: CanvasRenderingContext2D) {
   ctx.closePath();
 }
 
-export function renderCamisetaDataURL(modelo: ModeloId): string {
+export function renderCamisetaCanvas(modelo: ModeloId): HTMLCanvasElement | null {
   const p = JERSEY_PALETTES[modelo] || JERSEY_PALETTES.uruguay;
   const c = document.createElement('canvas');
   c.width = 1200;
   c.height = 713;
   const ctx = c.getContext('2d');
-  if (!ctx) return '';
+  if (!ctx) return null;
 
   ctx.save();
 
@@ -244,7 +244,12 @@ export function renderCamisetaDataURL(modelo: ModeloId): string {
   ctx.restore();
 
   ctx.restore();
-  return c.toDataURL('image/png');
+  return c;
+}
+
+export function renderCamisetaDataURL(modelo: ModeloId): string {
+  const c = renderCamisetaCanvas(modelo);
+  return c ? c.toDataURL('image/png') : '';
 }
 
 export function renderCamisetaDepthDataURL(): string {

@@ -1,3 +1,4 @@
+import { renderCamisetaCanvas } from '@/lib/camiseta-assets';
 import { BRAND_LOGOS } from '@/lib/config/brand';
 import type { ModeloId } from '@/lib/data/modelos';
 import { FS, RAD, VS, wrap180 } from './shaders';
@@ -239,7 +240,6 @@ export async function initJerseyWebGL(
     glBox.U = U;
     glBox.nIdx = idx.length;
     glBox.tex.depth = dTex;
-    glBox.tex.uruguay = uTex;
 
     gl.uniform1i(U.uDepth, 2);
     gl.enable(gl.DEPTH_TEST);
@@ -255,6 +255,40 @@ export async function initJerseyWebGL(
   } catch {
     glBox.gl = null;
   }
+}
+
+function createSquareJerseyCanvas(modelo: ModeloId): HTMLCanvasElement | null {
+  const jersey = renderCamisetaCanvas(modelo);
+  if (!jersey) return null;
+  const size = 1024;
+  const sq = document.createElement('canvas');
+  sq.width = size;
+  sq.height = size;
+  const ctx = sq.getContext('2d');
+  if (!ctx) return null;
+  const drawW = size * 0.96;
+  const drawH = (drawW * jersey.height) / jersey.width;
+  ctx.drawImage(jersey, (size - drawW) / 2, (size - drawH) / 2, drawW, drawH);
+  return sq;
+}
+
+export function setJerseyModeloTexture(
+  glBox: JerseyWebGLContext,
+  modelo: ModeloId
+): boolean {
+  const { gl, ready } = glBox;
+  if (!gl || !ready) return false;
+  let nextTex = glBox.tex[modelo] ?? null;
+  if (!nextTex) {
+    const sq = createSquareJerseyCanvas(modelo);
+    if (!sq) return false;
+    nextTex = uploadCanvas(gl, sq, 1);
+    if (!nextTex) return false;
+    glBox.tex[modelo] = nextTex;
+  }
+  glBox.texA = glBox.texB ?? nextTex;
+  glBox.texB = nextTex;
+  return true;
 }
 
 export function drawJerseyWebGL(
