@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Archivo_Black, Barlow_Condensed, Inter, JetBrains_Mono, Geist } from 'next/font/google';
-import { BRAND_LOGOS } from '@/lib/futbolenlapiel-data';
+import { BRAND_LOGOS } from '@/lib/config/brand';
 import './globals.css';
 import { cn } from "@/lib/utils";
 

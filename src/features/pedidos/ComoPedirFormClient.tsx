@@ -16,9 +16,8 @@ import {
   DEPARTAMENTOS_URUGUAY,
   SIZES,
   VERSION_OPTIONS,
-  buildWhatsAppHref,
-  computeConsultaCode,
-} from '@/lib/futbolenlapiel-data';
+} from '@/lib/config/brand';
+import { buildWhatsAppHref, computeConsultaCode } from '@/lib/whatsapp';
 
 export default function ComoPedirFormClient() {
   const [name, setName] = useState('');

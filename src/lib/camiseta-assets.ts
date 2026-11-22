@@ -1,4 +1,4 @@
-import type { ModeloId } from './futbolenlapiel-data';
+import type { ModeloId } from '@/lib/data/modelos';
 
 const JERSEY_PALETTES: Record<
   ModeloId,

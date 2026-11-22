@@ -7,8 +7,8 @@ import {
   COMMERCIAL_INFO,
   INSTAGRAM_HANDLE,
   WHATSAPP_DISPLAY,
-  WHATSAPP_NUMBER_RAW,
-} from '@/lib/futbolenlapiel-data';
+} from '@/lib/config/brand';
+import { createWhatsAppUrl } from '@/lib/whatsapp';
 
 interface WordmarkFooterProps {
   paused: boolean;
@@ -198,7 +198,7 @@ export default function WordmarkFooter({
           <p className="text-[15px] max-md:text-[14px] leading-[1.5]">
             Atención directa:{' '}
             <a
-              href={`https://wa.me/${WHATSAPP_NUMBER_RAW}`}
+              href={createWhatsAppUrl()}
               target="_blank"
               rel="noopener noreferrer"
               className="font-semibold underline decoration-[#1E5AA8]/50 hover:text-[#1E5AA8]"

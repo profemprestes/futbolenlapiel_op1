@@ -1,6 +1,6 @@
 'use client';
 
-import SiteNavbar from '../SiteNavbar';
+import SiteNavbar from '@/components/layout/SiteNavbar';
 
 interface TickerHeaderProps {
   activeChapter: '#inicio' | '#camiseta' | '#modelos' | '#pedido';

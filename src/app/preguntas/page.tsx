@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { ChevronDown, MessageCircle } from 'lucide-react';
-import PageShell from '@/components/PageShell';
+import PageShell from '@/components/layout/PageShell';
 import { Button } from '@/components/ui/button';
-import { WHATSAPP_NUMBER_RAW } from '@/lib/futbolenlapiel-data';
+import { createWhatsAppUrl } from '@/lib/whatsapp';
 
 export const metadata = {
   title: 'Preguntas frecuentes — Fútbol en la Piel',
@@ -42,9 +42,9 @@ const FAQS = [
 ] as const;
 
 export default function PreguntasPage() {
-  const whatsAppHref = `https://wa.me/${WHATSAPP_NUMBER_RAW}?text=${encodeURIComponent(
+  const whatsAppHref = createWhatsAppUrl(
     'Hola Fútbol en la Piel! Tengo una consulta antes de hacer mi pedido.'
-  )}`;
+  );
 
   return (
     <PageShell

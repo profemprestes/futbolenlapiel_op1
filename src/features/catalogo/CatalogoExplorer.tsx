@@ -21,8 +21,10 @@ import {
   type CatalogoItem,
   type JerseySize,
   RETRO_DECADES,
-} from '@/lib/catalogo-data';
-import { type CatalogCategoryId, SIZES, WHATSAPP_NUMBER_RAW } from '@/lib/futbolenlapiel-data';
+} from '@/lib/catalogo-utils';
+import { SIZES } from '@/lib/config/brand';
+import type { CatalogCategoryId } from '@/lib/data/modelos';
+import { createWhatsAppUrl } from '@/lib/whatsapp';
 import { cn } from '@/lib/utils';
 
 interface CatalogoExplorerProps {
@@ -41,17 +43,17 @@ function extractDorsalNumber(dorsal?: string): string | null {
 }
 
 function whatsAppItemHref(item: CatalogoItem) {
-  return `https://wa.me/${WHATSAPP_NUMBER_RAW}?text=${encodeURIComponent(
+  return createWhatsAppUrl(
     `Hola Fútbol en la Piel! Quiero consultar por "${item.title}" (${item.version}).`
-  )}`;
+  );
 }
 
 function whatsAppCustomHref(query: string) {
-  return `https://wa.me/${WHATSAPP_NUMBER_RAW}?text=${encodeURIComponent(
+  return createWhatsAppUrl(
     query
       ? `Hola Fútbol en la Piel! Estoy buscando una camiseta de "${query}". ¿La tienen disponible?`
       : 'Hola Fútbol en la Piel! Quiero consultar por un modelo puntual.'
-  )}`;
+  );
 }
 
 export default function CatalogoExplorer({

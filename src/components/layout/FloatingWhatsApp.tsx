@@ -1,6 +1,6 @@
 import { MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { WHATSAPP_NUMBER_RAW } from '@/lib/futbolenlapiel-data';
+import { createWhatsAppUrl } from '@/lib/whatsapp';
 
 interface FloatingWhatsAppProps {
   message?: string;
@@ -9,7 +9,7 @@ interface FloatingWhatsAppProps {
 export default function FloatingWhatsApp({
   message = 'Hola Fútbol en la Piel! Quiero consultar por una camiseta.',
 }: FloatingWhatsAppProps) {
-  const href = `https://wa.me/${WHATSAPP_NUMBER_RAW}?text=${encodeURIComponent(message)}`;
+  const href = createWhatsAppUrl(message);
 
   return (
     <div className="fixed bottom-4 right-4 z-40 md:hidden">

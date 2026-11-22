@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { ArrowUpRight, ChevronDown, Truck } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useRef, useState } from 'react';
-import type { ModeloId } from '@/lib/futbolenlapiel-data';
+import type { ModeloId } from '@/lib/data/modelos';
 import {
   BRAND_LOGOS,
   COMMERCIAL_INFO,
@@ -13,9 +13,8 @@ import {
   SIZES,
   VERSION_OPTIONS,
   WHATSAPP_DISPLAY,
-  buildWhatsAppHref,
-  computeConsultaCode,
-} from '@/lib/futbolenlapiel-data';
+} from '@/lib/config/brand';
+import { buildWhatsAppHref, computeConsultaCode } from '@/lib/whatsapp';
 
 interface PedidoChapterProps {
   selectedSize: string;

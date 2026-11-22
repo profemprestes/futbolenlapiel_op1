@@ -3,20 +3,21 @@
 import Image from 'next/image';
 import { ArrowUpRight, Filter, MessageCircle, Search, Truck } from 'lucide-react';
 import { useState } from 'react';
-import CamisetaImage from '@/components/CamisetaImage';
+import CamisetaImage from '@/features/catalogo/CamisetaImage';
 import {
   BRAND_LOGOS,
-  CATALOG_CATEGORIES,
   COMMERCIAL_INFO,
   INSTAGRAM_HANDLE,
-  MODELOS,
   SIZES,
   VERSION_OPTIONS,
   WHATSAPP_DISPLAY,
-  buildWhatsAppHref,
-  computeConsultaCode,
+} from '@/lib/config/brand';
+import {
+  CATALOG_CATEGORIES,
+  MODELOS,
   type CatalogCategoryId,
-} from '@/lib/futbolenlapiel-data';
+} from '@/lib/data/modelos';
+import { buildWhatsAppHref, computeConsultaCode } from '@/lib/whatsapp';
 
 export default function Opcion2Catalogo() {
   const [filter, setFilter] = useState<'all' | CatalogCategoryId>('all');

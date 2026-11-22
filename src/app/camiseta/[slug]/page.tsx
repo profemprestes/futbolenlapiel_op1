@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
-import CamisetaDetailClient from '@/components/CamisetaDetailClient';
-import PageShell from '@/components/PageShell';
+import CamisetaDetailClient from '@/features/catalogo/CamisetaDetailClient';
+import PageShell from '@/components/layout/PageShell';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -16,7 +16,7 @@ import {
   CATALOGO_ITEMS,
   getCatalogoItemBySlug,
   getRelatedCatalogoItems,
-} from '@/lib/catalogo-data';
+} from '@/lib/catalogo-utils';
 
 export function generateStaticParams() {
   return CATALOGO_ITEMS.map((item) => ({ slug: item.slug }));

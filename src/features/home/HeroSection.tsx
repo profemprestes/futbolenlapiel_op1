@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { MoveHorizontal } from 'lucide-react';
 
 // bundle-dynamic-imports: cargar Three.js bajo demanda en cliente sin bloquear SSR
-const Logo3D = dynamic(() => import('../Logo3D'), {
+const Logo3D = dynamic(() => import('./Logo3D'), {
   ssr: false,
   loading: () => <div className="h-full w-full rounded-full bg-black/50" aria-hidden="true" />,
 });

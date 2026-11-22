@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
-import Logo3D from '@/components/Logo3D';
+import Logo3D from '@/features/home/Logo3D';
 
 export const metadata: Metadata = {
   title: 'Emblema 3D | Fútbol en la Piel',

@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { renderCamisetaDataURL } from '@/lib/camiseta-assets';
-import type { ModeloId } from '@/lib/futbolenlapiel-data';
+import type { ModeloId } from '@/lib/data/modelos';
 
 interface CamisetaImageProps {
   modelo: ModeloId;

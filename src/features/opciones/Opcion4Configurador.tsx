@@ -3,21 +3,18 @@
 import Image from 'next/image';
 import { ArrowUpRight, Check, CreditCard, MapPin, Shirt } from 'lucide-react';
 import { useState } from 'react';
-import CamisetaImage from '@/components/CamisetaImage';
+import CamisetaImage from '@/features/catalogo/CamisetaImage';
 import {
   BRAND_LOGOS,
-  CATALOG_CATEGORIES,
   COMMERCIAL_INFO,
   DEPARTAMENTOS_URUGUAY,
   INSTAGRAM_HANDLE,
-  MODELOS,
   SIZES,
   VERSION_OPTIONS,
   WHATSAPP_DISPLAY,
-  buildWhatsAppHref,
-  computeConsultaCode,
-  type ModeloId,
-} from '@/lib/futbolenlapiel-data';
+} from '@/lib/config/brand';
+import { CATALOG_CATEGORIES, MODELOS, type ModeloId } from '@/lib/data/modelos';
+import { buildWhatsAppHref, computeConsultaCode } from '@/lib/whatsapp';
 
 export default function Opcion4Configurador() {
   const [selectedModelo, setSelectedModelo] = useState<ModeloId>('uruguay');

@@ -1,9 +1,9 @@
 import { Suspense } from 'react';
 import { ShieldCheck } from 'lucide-react';
-import CatalogoExplorer from '@/components/CatalogoExplorer';
-import PageShell from '@/components/PageShell';
+import CatalogoExplorer from '@/features/catalogo/CatalogoExplorer';
+import PageShell from '@/components/layout/PageShell';
 import { Badge } from '@/components/ui/badge';
-import { SIZES } from '@/lib/futbolenlapiel-data';
+import { SIZES } from '@/lib/config/brand';
 
 export const metadata = {
   title: 'Tienda / Stock — Fútbol en la Piel',

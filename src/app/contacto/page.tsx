@@ -1,5 +1,5 @@
 import { ArrowUpRight, Clock, Instagram, MapPin, MessageCircle } from 'lucide-react';
-import PageShell from '@/components/PageShell';
+import PageShell from '@/components/layout/PageShell';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -14,8 +14,8 @@ import {
   COMMERCIAL_INFO,
   INSTAGRAM_HANDLE,
   WHATSAPP_DISPLAY,
-  WHATSAPP_NUMBER_RAW,
-} from '@/lib/futbolenlapiel-data';
+} from '@/lib/config/brand';
+import { createWhatsAppUrl } from '@/lib/whatsapp';
 
 export const metadata = {
   title: 'Contacto — Fútbol en la Piel',
@@ -24,9 +24,9 @@ export const metadata = {
 };
 
 export default function ContactoPage() {
-  const whatsAppHref = `https://wa.me/${WHATSAPP_NUMBER_RAW}?text=${encodeURIComponent(
+  const whatsAppHref = createWhatsAppUrl(
     'Hola Fútbol en la Piel! Te escribo desde la web para consultar por una camiseta.'
-  )}`;
+  );
   const instagramHref = `https://instagram.com/${INSTAGRAM_HANDLE.replace('@', '')}`;
 
   return (

@@ -1,5 +1,5 @@
-import Opcion4Configurador from '@/components/opciones/Opcion4Configurador';
-import OpcionesSwitcher from '@/components/opciones/OpcionesSwitcher';
+import Opcion4Configurador from '@/features/opciones/Opcion4Configurador';
+import OpcionesSwitcher from '@/features/opciones/OpcionesSwitcher';
 
 export default function Opcion4Page() {
   return (

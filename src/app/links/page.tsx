@@ -4,10 +4,10 @@ import { ArrowUpRight, ExternalLink, Layers, LayoutGrid, Shirt } from 'lucide-re
 import {
   BRAND_LOGOS,
   INSTAGRAM_HANDLE,
-  MODELOS,
   WHATSAPP_DISPLAY,
-  WHATSAPP_NUMBER_RAW,
-} from '@/lib/futbolenlapiel-data';
+} from '@/lib/config/brand';
+import { MODELOS } from '@/lib/data/modelos';
+import { createWhatsAppUrl } from '@/lib/whatsapp';
 
 const LANDING_OPTIONS = [
   { href: '/', title: 'Home Principal (Original)', desc: 'Experiencia 3D con scroll interactivo' },
@@ -53,7 +53,7 @@ export default function LinksPage() {
           </div>
 
           <a
-            href={`https://wa.me/${WHATSAPP_NUMBER_RAW}`}
+            href={createWhatsAppUrl()}
             target="_blank"
             rel="noopener noreferrer"
             className="self-start sm:self-auto px-5 py-2.5 rounded-full bg-[#A8D6F0] hover:bg-[#8ECBF5] text-[#0A1B33] font-bold text-[13px] no-underline inline-flex items-center gap-1.5 transition-colors"

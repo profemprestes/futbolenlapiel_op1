@@ -1,35 +1,5 @@
 export type ModeloId = 'uruguay' | 'retro' | 'club';
 
-export const SIZES = ['S', 'M', 'L', 'XL'] as const;
-
-export const VERSION_OPTIONS = [
-  'Versión Jugador',
-  'Versión Fan',
-  'A confirmar según stock',
-] as const;
-
-export const DEPARTAMENTOS_URUGUAY = [
-  'Montevideo',
-  'Canelones',
-  'Maldonado',
-  'Salto',
-  'Paysandú',
-  'Rivera',
-  'Colonia',
-  'Rocha',
-  'San José',
-  'Tacuarembó',
-  'Cerro Largo',
-  'Soriano',
-  'Artigas',
-  'Durazno',
-  'Florida',
-  'Lavalleja',
-  'Río Negro',
-  'Treinta y Tres',
-  'Flores',
-] as const;
-
 export interface ModeloInfo {
   id: ModeloId;
   num: string;
@@ -89,17 +59,6 @@ export const MODELO_SHORT_NAMES: Record<ModeloId, string> = {
   retro: 'Retro Man. United 1996',
   club: 'Retro España 1996',
 };
-
-export const WHATSAPP_NUMBER_RAW = '598092864559';
-export const WHATSAPP_DISPLAY = '+598 092 864 559';
-export const INSTAGRAM_HANDLE = '@futbolenlapieluy1';
-
-export const BRAND_LOGOS = {
-  horizontal: '/logos/futbolenlapiel_horizontal_transparente.png',
-  emblem: '/logos/futbol_logo_mejorado_v2.png',
-  emblem3d:
-    'https://ynqvddgxxtmflpouursq.supabase.co/storage/v1/object/public/marifertiendauy/futbol_logo_mejorado_v2.svg',
-} as const;
 
 export type CatalogCategoryId = 'actuales' | 'retros' | 'uruguay' | 'clubes';
 
@@ -192,28 +151,6 @@ export const CAMISETA_CHAPTER_ROWS: CamisetaChapterRow[] = [
   },
 ];
 
-export const COMMERCIAL_INFO = {
-  payments: [
-    'Transferencia bancaria',
-    'Mercado Pago',
-    'Efectivo (a coordinar según entrega)',
-  ],
-  shipping: [
-    { zone: 'Montevideo', detail: 'Entrega o retiro a coordinar según disponibilidad.' },
-    { zone: 'Interior', detail: 'Envíos a todo el país por agencia; costo y plazo a confirmar.' },
-  ],
-  sizingAndChanges: [
-    {
-      label: 'Talles S a XL',
-      detail: 'Versión Jugador tiene corte más entallado; Versión Fan ofrece calce clásico.',
-    },
-    {
-      label: 'Cambios',
-      detail: 'Sujeto a disponibilidad de talle, con prenda sin uso y etiqueta original.',
-    },
-  ],
-} as const;
-
 export interface CountdownState {
   d: string;
   h: string;
@@ -227,36 +164,3 @@ export const STATIC_COUNTDOWN: CountdownState = {
   m: '00',
   s: '00',
 };
-
-export function computeConsultaCode(seed: string): string {
-  let h = 7;
-  for (const ch of seed.toLowerCase()) {
-    h = (h * 31 + ch.charCodeAt(0)) >>> 0;
-  }
-  return `FEP-${String(1000 + (h % 9000))}`;
-}
-
-export function buildWhatsAppHref(params: {
-  name: string;
-  camiseta: string;
-  version: string;
-  size: string;
-  fulfil: 'envio' | 'coordinar';
-  departamento: string;
-  consultaId: string;
-}): string {
-  const entrega =
-    params.fulfil === 'envio'
-      ? `Envío a ${params.departamento}`
-      : `Coordinar entrega (${params.departamento || 'Uruguay'})`;
-  const text = [
-    `Hola Fútbol en la Piel! Consulta ${params.consultaId}:`,
-    `• Nombre: ${params.name}`,
-    `• Camiseta: ${params.camiseta}`,
-    `• Versión: ${params.version}`,
-    `• Talle: ${params.size}`,
-    `• Entrega: ${entrega}`,
-    `Quedo atento para confirmar stock, precio y envío.`,
-  ].join('\n');
-  return `https://wa.me/${WHATSAPP_NUMBER_RAW}?text=${encodeURIComponent(text)}`;
-}

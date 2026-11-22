@@ -2,15 +2,15 @@
 
 import Image from 'next/image';
 import { ArrowUpRight, Clock, History, Shield } from 'lucide-react';
-import CamisetaImage from '@/components/CamisetaImage';
+import CamisetaImage from '@/features/catalogo/CamisetaImage';
 import {
   BRAND_LOGOS,
   COMMERCIAL_INFO,
   INSTAGRAM_HANDLE,
-  MODELOS,
   WHATSAPP_DISPLAY,
-  WHATSAPP_NUMBER_RAW,
-} from '@/lib/futbolenlapiel-data';
+} from '@/lib/config/brand';
+import { MODELOS } from '@/lib/data/modelos';
+import { createWhatsAppUrl } from '@/lib/whatsapp';
 
 const ERAS = [
   {
@@ -55,9 +55,9 @@ export default function Opcion3RetroArchivo() {
               </span>
             </div>
             <a
-              href={`https://wa.me/${WHATSAPP_NUMBER_RAW}?text=${encodeURIComponent(
+              href={createWhatsAppUrl(
                 'Hola Fútbol en la Piel! Quiero consultar por una camiseta del archivo.'
-              )}`}
+              )}
               target="_blank"
               rel="noopener noreferrer"
               className="px-5 py-2.5 rounded-full bg-[#A8D6F0] text-[#0A1B33] font-bold text-[13px] no-underline inline-flex items-center gap-1.5 hover:bg-[#8ECBF5]"
@@ -102,9 +102,9 @@ export default function Opcion3RetroArchivo() {
                 <p className="text-[14px] text-[#F5EAD6]/80 leading-[1.6]">{era.items}</p>
               </div>
               <a
-                href={`https://wa.me/${WHATSAPP_NUMBER_RAW}?text=${encodeURIComponent(
+                href={createWhatsAppUrl(
                   `Hola Fútbol en la Piel! Consulto disponibilidad de la línea ${era.period} (${era.title}).`
-                )}`}
+                )}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="self-start font-mono-cl text-[12px] font-bold text-[#8ECBF5] no-underline hover:underline inline-flex items-center gap-1"
@@ -136,9 +136,9 @@ export default function Opcion3RetroArchivo() {
                 <h3 className="font-disp font-bold text-[20px]">{m.name}</h3>
                 <p className="text-[13px] text-[#F5EAD6]/75">{m.desc}</p>
                 <a
-                  href={`https://wa.me/${WHATSAPP_NUMBER_RAW}?text=${encodeURIComponent(
+                  href={createWhatsAppUrl(
                     `Hola Fútbol en la Piel! Quiero consultar stock y precio de: ${m.name}.`
-                  )}`}
+                  )}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-auto pt-3 border-t border-[#F5EAD6]/15 flex items-center justify-between text-[13px] font-bold text-[#A8D6F0] no-underline hover:text-[#8ECBF5]"

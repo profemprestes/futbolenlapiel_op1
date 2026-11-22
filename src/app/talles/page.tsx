@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { MessageCircle, Ruler, ShieldCheck } from 'lucide-react';
-import PageShell from '@/components/PageShell';
+import PageShell from '@/components/layout/PageShell';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { WHATSAPP_NUMBER_RAW } from '@/lib/futbolenlapiel-data';
+import { createWhatsAppUrl } from '@/lib/whatsapp';
 
 export const metadata = {
   title: 'Talles y cambios — Fútbol en la Piel',
@@ -26,9 +26,9 @@ const SIZE_TABLE = [
 ] as const;
 
 export default function TallesPage() {
-  const whatsAppHref = `https://wa.me/${WHATSAPP_NUMBER_RAW}?text=${encodeURIComponent(
+  const whatsAppHref = createWhatsAppUrl(
     'Hola Fútbol en la Piel! Tengo dudas con el talle para una camiseta.'
-  )}`;
+  );
 
   return (
     <PageShell

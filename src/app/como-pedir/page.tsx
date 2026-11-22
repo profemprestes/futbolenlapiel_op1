@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { ArrowUpRight, CheckCircle2, Clock } from 'lucide-react';
-import ComoPedirFormClient from '@/components/ComoPedirFormClient';
-import PageShell from '@/components/PageShell';
+import ComoPedirFormClient from '@/features/pedidos/ComoPedirFormClient';
+import PageShell from '@/components/layout/PageShell';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -11,7 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { COMMERCIAL_INFO } from '@/lib/futbolenlapiel-data';
+import { COMMERCIAL_INFO } from '@/lib/config/brand';
 
 export const metadata = {
   title: 'Cómo pedir — Fútbol en la Piel',

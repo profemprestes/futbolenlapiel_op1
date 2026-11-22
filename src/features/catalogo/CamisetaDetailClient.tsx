@@ -14,8 +14,9 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import type { CatalogoItem, JerseySize } from '@/lib/catalogo-data';
-import { SIZES, WHATSAPP_NUMBER_RAW } from '@/lib/futbolenlapiel-data';
+import type { CatalogoItem, JerseySize } from '@/lib/catalogo-utils';
+import { SIZES } from '@/lib/config/brand';
+import { createWhatsAppUrl } from '@/lib/whatsapp';
 
 interface CamisetaDetailClientProps {
   item: CatalogoItem;
@@ -38,7 +39,7 @@ export default function CamisetaDetailClient({ item }: CamisetaDetailClientProps
     `¿Me confirmás stock, precio y envío?`,
   ].join('\n');
 
-  const whatsAppHref = `https://wa.me/${WHATSAPP_NUMBER_RAW}?text=${encodeURIComponent(whatsAppText)}`;
+  const whatsAppHref = createWhatsAppUrl(whatsAppText);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">

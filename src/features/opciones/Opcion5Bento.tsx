@@ -2,17 +2,16 @@
 
 import Image from 'next/image';
 import { ArrowUpRight, CreditCard, Instagram, MapPin, MessageCircle, Ruler, Shirt } from 'lucide-react';
-import CamisetaImage from '@/components/CamisetaImage';
+import CamisetaImage from '@/features/catalogo/CamisetaImage';
 import {
   BRAND_LOGOS,
-  CATALOG_CATEGORIES,
   COMMERCIAL_INFO,
   INSTAGRAM_HANDLE,
-  MODELOS,
   SIZES,
   WHATSAPP_DISPLAY,
-  WHATSAPP_NUMBER_RAW,
-} from '@/lib/futbolenlapiel-data';
+} from '@/lib/config/brand';
+import { CATALOG_CATEGORIES, MODELOS } from '@/lib/data/modelos';
+import { createWhatsAppUrl } from '@/lib/whatsapp';
 
 export default function Opcion5Bento() {
   return (
@@ -33,9 +32,9 @@ export default function Opcion5Bento() {
             </span>
           </div>
           <a
-            href={`https://wa.me/${WHATSAPP_NUMBER_RAW}?text=${encodeURIComponent(
+            href={createWhatsAppUrl(
               'Hola Fútbol en la Piel! Vengo de la web y quiero consultar por una camiseta.'
-            )}`}
+            )}
             target="_blank"
             rel="noopener noreferrer"
             className="px-5 py-2.5 rounded-full bg-[#A8D6F0] hover:bg-[#8ECBF5] text-[#0A1B33] font-bold text-[13px] no-underline inline-flex items-center gap-1.5 transition-colors"
@@ -63,9 +62,9 @@ export default function Opcion5Bento() {
               {CATALOG_CATEGORIES.map((cat) => (
                 <a
                   key={cat.id}
-                  href={`https://wa.me/${WHATSAPP_NUMBER_RAW}?text=${encodeURIComponent(
+                  href={createWhatsAppUrl(
                     `Hola Fútbol en la Piel! Quiero consultar modelos de ${cat.title}.`
-                  )}`}
+                  )}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-4 py-2 rounded-full bg-[#F5EAD6] text-[#0A1B33] font-bold text-[13px] no-underline hover:bg-[#A8D6F0] transition-colors inline-flex items-center gap-1"
@@ -107,9 +106,9 @@ export default function Opcion5Bento() {
           {CATALOG_CATEGORIES.map((cat) => (
             <a
               key={cat.id}
-              href={`https://wa.me/${WHATSAPP_NUMBER_RAW}?text=${encodeURIComponent(
+              href={createWhatsAppUrl(
                 `Hola Fútbol en la Piel! Quiero consultar por ${cat.title}: ${cat.defaultQuery || cat.examples}.`
-              )}`}
+              )}
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-[22px] bg-[#F5EAD6] text-[#0A1B33] p-5 no-underline flex flex-col justify-between gap-3 hover:-translate-y-0.5 transition-transform"

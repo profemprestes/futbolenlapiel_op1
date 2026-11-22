@@ -2,9 +2,9 @@
 
 import { ArrowUp, ArrowUpRight } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
-import type { CatalogCategory, ModeloId } from '@/lib/futbolenlapiel-data';
-import { CATALOG_CATEGORIES, MODELOS, MODELO_SHORT_NAMES } from '@/lib/futbolenlapiel-data';
-import CamisetaImage from '../CamisetaImage';
+import type { CatalogCategory, ModeloId } from '@/lib/data/modelos';
+import { CATALOG_CATEGORIES, MODELOS, MODELO_SHORT_NAMES } from '@/lib/data/modelos';
+import CamisetaImage from '@/features/catalogo/CamisetaImage';
 
 interface ModelosChapterProps {
   selectedModelo: ModeloId;

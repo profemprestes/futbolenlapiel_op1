@@ -1,6 +1,6 @@
 'use client';
 
-import { CAMISETA_CHAPTER_ROWS } from '@/lib/futbolenlapiel-data';
+import { CAMISETA_CHAPTER_ROWS } from '@/lib/data/modelos';
 
 interface CamisetaChapterProps {
   sectionRef: React.RefObject<HTMLElement | null>;

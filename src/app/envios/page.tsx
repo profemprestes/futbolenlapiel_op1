@@ -1,5 +1,5 @@
 import { CheckCircle2, MapPin, MessageCircle, ShieldAlert, Truck } from 'lucide-react';
-import PageShell from '@/components/PageShell';
+import PageShell from '@/components/layout/PageShell';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -9,11 +9,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import {
-  COMMERCIAL_INFO,
-  DEPARTAMENTOS_URUGUAY,
-  WHATSAPP_NUMBER_RAW,
-} from '@/lib/futbolenlapiel-data';
+import { COMMERCIAL_INFO, DEPARTAMENTOS_URUGUAY } from '@/lib/config/brand';
+import { createWhatsAppUrl } from '@/lib/whatsapp';
 
 export const metadata = {
   title: 'Envíos y pagos — Fútbol en la Piel',
@@ -22,9 +19,9 @@ export const metadata = {
 };
 
 export default function EnviosPage() {
-  const whatsAppHref = `https://wa.me/${WHATSAPP_NUMBER_RAW}?text=${encodeURIComponent(
+  const whatsAppHref = createWhatsAppUrl(
     'Hola Fútbol en la Piel! Quiero consultar costos y plazos de envío a mi departamento.'
-  )}`;
+  );
 
   return (
     <PageShell

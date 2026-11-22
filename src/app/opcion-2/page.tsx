@@ -1,5 +1,5 @@
-import Opcion2Catalogo from '@/components/opciones/Opcion2Catalogo';
-import OpcionesSwitcher from '@/components/opciones/OpcionesSwitcher';
+import Opcion2Catalogo from '@/features/opciones/Opcion2Catalogo';
+import OpcionesSwitcher from '@/features/opciones/OpcionesSwitcher';
 
 export default function Opcion2Page() {
   return (

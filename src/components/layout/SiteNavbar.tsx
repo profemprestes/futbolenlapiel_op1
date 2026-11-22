@@ -39,8 +39,8 @@ import {
   BRAND_LOGOS,
   INSTAGRAM_HANDLE,
   WHATSAPP_DISPLAY,
-  WHATSAPP_NUMBER_RAW,
-} from '@/lib/futbolenlapiel-data';
+} from '@/lib/config/brand';
+import { createWhatsAppUrl } from '@/lib/whatsapp';
 import {
   NAV_ITEMS,
   SECONDARY_NAV_ITEMS,
@@ -77,9 +77,9 @@ export default function SiteNavbar({
     return pathname === href || pathname.startsWith(`${href}/`);
   };
 
-  const whatsappDirectHref = `https://wa.me/${WHATSAPP_NUMBER_RAW}?text=${encodeURIComponent(
+  const whatsappDirectHref = createWhatsAppUrl(
     'Hola Fútbol en la Piel! Quiero consultar por stock y talles disponibles.'
-  )}`;
+  );
 
   return (
     <header

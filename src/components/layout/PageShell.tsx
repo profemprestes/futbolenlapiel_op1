@@ -2,8 +2,9 @@ import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { INSTAGRAM_HANDLE, WHATSAPP_DISPLAY, WHATSAPP_NUMBER_RAW } from '@/lib/futbolenlapiel-data';
+import { INSTAGRAM_HANDLE, WHATSAPP_DISPLAY } from '@/lib/config/brand';
 import { NAV_ITEMS, SECONDARY_NAV_ITEMS } from '@/lib/navigation';
+import { createWhatsAppUrl } from '@/lib/whatsapp';
 import FloatingWhatsApp from './FloatingWhatsApp';
 import SiteNavbar from './SiteNavbar';
 
@@ -67,7 +68,7 @@ export default function PageShell({ badge, title, description, children }: PageS
               </a>{' '}
               ·{' '}
               <a
-                href={`https://wa.me/${WHATSAPP_NUMBER_RAW}`}
+                href={createWhatsAppUrl()}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="underline underline-offset-4 hover:text-primary"

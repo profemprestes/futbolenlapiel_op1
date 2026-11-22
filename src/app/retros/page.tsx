@@ -1,11 +1,11 @@
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { ArrowUpRight, MessageCircle } from 'lucide-react';
-import CatalogoExplorer from '@/components/CatalogoExplorer';
-import PageShell from '@/components/PageShell';
+import CatalogoExplorer from '@/features/catalogo/CatalogoExplorer';
+import PageShell from '@/components/layout/PageShell';
 import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { WHATSAPP_NUMBER_RAW } from '@/lib/futbolenlapiel-data';
+import { createWhatsAppUrl } from '@/lib/whatsapp';
 
 export const metadata = {
   title: 'Retros — Fútbol en la Piel',
@@ -14,9 +14,9 @@ export const metadata = {
 };
 
 export default function RetrosPage() {
-  const customRetroHref = `https://wa.me/${WHATSAPP_NUMBER_RAW}?text=${encodeURIComponent(
+  const customRetroHref = createWhatsAppUrl(
     'Hola Fútbol en la Piel! Estoy buscando una camiseta retro que no veo publicada en la web.'
-  )}`;
+  );
 
   return (
     <PageShell

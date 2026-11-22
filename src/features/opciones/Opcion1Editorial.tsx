@@ -3,23 +3,27 @@
 import Image from 'next/image';
 import { ArrowUpRight, CheckCircle2, MapPin, ShieldCheck, Shirt, Truck } from 'lucide-react';
 import { useState } from 'react';
-import CamisetaImage from '@/components/CamisetaImage';
+import CamisetaImage from '@/features/catalogo/CamisetaImage';
 import {
   BRAND_LOGOS,
-  CATALOG_CATEGORIES,
   COMMERCIAL_INFO,
   DEPARTAMENTOS_URUGUAY,
   INSTAGRAM_HANDLE,
-  MODELOS,
   SIZES,
   VERSION_OPTIONS,
   WHATSAPP_DISPLAY,
-  WHATSAPP_NUMBER_RAW,
-  buildWhatsAppHref,
-  computeConsultaCode,
+} from '@/lib/config/brand';
+import {
+  CATALOG_CATEGORIES,
+  MODELOS,
   type CatalogCategoryId,
   type ModeloId,
-} from '@/lib/futbolenlapiel-data';
+} from '@/lib/data/modelos';
+import {
+  buildWhatsAppHref,
+  computeConsultaCode,
+  createWhatsAppUrl,
+} from '@/lib/whatsapp';
 
 export default function Opcion1Editorial() {
   const [activeCat, setActiveCat] = useState<CatalogCategoryId>('actuales');
@@ -201,9 +205,9 @@ export default function Opcion1Editorial() {
               Modelos publicados en la cuenta oficial: <strong className="text-[#A8D6F0]">{currentCat.examples}</strong>.
             </p>
             <a
-              href={`https://wa.me/${WHATSAPP_NUMBER_RAW}?text=${encodeURIComponent(
+              href={createWhatsAppUrl(
                 `Hola Fútbol en la Piel! Quiero consultar disponibilidad de la categoría ${currentCat.title}.`
-              )}`}
+              )}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-[#A8D6F0] text-[#0A1B33] font-bold text-[14px] no-underline hover:bg-[#8ECBF5]"
