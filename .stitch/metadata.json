@@ -1,0 +1,17 @@
+{
+  "projectId": "12789674805474014535",
+  "projectName": "projects/12789674805474014535",
+  "title": "Fútbol en la Piel — Showcase",
+  "designSystem": {
+    "assetId": "d3d78db6ff6b4e0697ad8fc97454447b",
+    "sourceFile": ".stitch/DESIGN.md"
+  },
+  "screens": [
+    {
+      "id": "4802607048569262723",
+      "sourceScreen": "projects/12789674805474014535/screens/4802607048569262723",
+      "title": "Home — Fútbol en la Piel",
+      "sourceFile": ".stitch/home.html"
+    }
+  ]
+}
