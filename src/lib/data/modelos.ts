@@ -10,54 +10,58 @@ export interface ModeloInfo {
   alt: string;
   priceLabel: string;
   availabilityLabel: string;
+  catalogSlug: string;
 }
 
 export const MODELOS: ModeloInfo[] = [
   {
     id: 'uruguay',
     num: '01',
-    name: 'Uruguay 2026 Mundial',
+    name: 'Uruguay 2026 Mundial — Alternativa',
     shortName: 'Uruguay 2026',
     dotColor: '#75B2E6',
-    desc: 'Selección Uruguay 2026 Mundial · Versión Jugador y Fan · Talles S a XL',
-    alt: 'Camiseta Uruguay 2026 Mundial selección',
-    priceLabel: 'Consultar por WhatsApp',
-    availabilityLabel: 'Stock según publicación',
+    desc: 'Azul marino Nike Mundial 2026 · Versión Jugador y Fan · Talles S a XL',
+    alt: 'Camiseta Uruguay 2026 Mundial Alternativa',
+    priceLabel: '$ 1.990 (ref.)',
+    availabilityLabel: 'Entrega inmediata / Encargo',
+    catalogSlug: 'uruguay-2026-mundial-alternativa-4',
   },
   {
     id: 'retro',
     num: '02',
-    name: 'Retro — Manchester United 1996 Cantona 7',
-    shortName: 'Retro Man. United 1996',
+    name: 'Manchester United 1996 — Cantona #7',
+    shortName: 'Man. United 1996',
     dotColor: '#C81D25',
-    desc: 'Clásico 1996 Umbro, dorsal Cantona 7 · Edición retro de colección',
+    desc: 'Blanca visitante Umbro 1996, sponsor Sharp Viewcam · Dorsal Cantona #7',
     alt: 'Camiseta Retro Manchester United 1996 dorsal Cantona 7',
-    priceLabel: 'Consultar por WhatsApp',
-    availabilityLabel: 'Stock según publicación',
+    priceLabel: '$ 1.890 (ref.)',
+    availabilityLabel: 'Entrega inmediata',
+    catalogSlug: 'manchester-united-1996-cantona-7-3',
   },
   {
     id: 'club',
     num: '03',
-    name: 'Retro — España 1996 Luis Enrique 21',
-    shortName: 'Retro España 1996',
+    name: 'Real Madrid 2026 — Valverde #8',
+    shortName: 'Real Madrid Valverde #8',
     dotColor: '#F2C94C',
-    desc: 'Clásico 1996 de selección, dorsal Luis Enrique 21 · Edición retro',
-    alt: 'Camiseta Retro España 1996 dorsal Luis Enrique 21',
-    priceLabel: 'Consultar por WhatsApp',
-    availabilityLabel: 'Stock según publicación',
+    desc: 'Verde manga larga con parches de competición · Versión Jugador · Talles S a XL',
+    alt: 'Camiseta Real Madrid Valverde 8 verde manga larga',
+    priceLabel: '$ 2.090 (ref.)',
+    availabilityLabel: 'Entrega inmediata / Encargo',
+    catalogSlug: 'real-madrid-valverde-8-verde-manga-larga-22',
   },
 ];
 
 export const MODELO_NAMES: Record<ModeloId, string> = {
-  uruguay: 'Uruguay 2026 Mundial',
-  retro: 'Retro — Manchester United 1996 Cantona 7',
-  club: 'Retro — España 1996 Luis Enrique 21',
+  uruguay: 'Uruguay 2026 Mundial — Alternativa',
+  retro: 'Manchester United 1996 — Cantona #7',
+  club: 'Real Madrid 2026 — Valverde #8',
 };
 
 export const MODELO_SHORT_NAMES: Record<ModeloId, string> = {
   uruguay: 'Uruguay 2026',
-  retro: 'Retro Man. United 1996',
-  club: 'Retro España 1996',
+  retro: 'Man. United 1996',
+  club: 'Real Madrid Valverde #8',
 };
 
 export type CatalogCategoryId = 'actuales' | 'retros' | 'uruguay' | 'clubes';
@@ -82,7 +86,7 @@ export const CATALOG_CATEGORIES: CatalogCategory[] = [
   {
     id: 'retros',
     title: 'Retros',
-    subtitle: 'Clásicos 1988–2011 con dorsales icónicos',
+    subtitle: 'Clásicos 1988–2018 con dorsales icónicos',
     examples: 'Man. United 1996 Cantona 7, Real Madrid 2003, Barcelona 2009/2011, Brasil 1994',
     defaultQuery: 'Camiseta retro con dorsal',
   },
@@ -97,8 +101,8 @@ export const CATALOG_CATEGORIES: CatalogCategory[] = [
     id: 'clubes',
     title: 'Clubes',
     subtitle: 'Uruguayos, sudamericanos y europeos',
-    examples: 'Peñarol, Nacional, Boca Juniors, Real Madrid, Liverpool, Inter Miami CF, Como 1907',
-    defaultQuery: '',
+    examples: 'Peñarol, Nacional, Boca Juniors, Real Madrid, Liverpool, Inter Miami, Como 1907',
+    defaultQuery: 'Camiseta de club 2026',
     defaultPlaceholder: 'Ej: Peñarol 2026, Nacional 2026, Real Madrid...',
   },
 ];
@@ -115,12 +119,12 @@ export interface CamisetaChapterRow {
 export const CAMISETA_CHAPTER_ROWS: CamisetaChapterRow[] = [
   {
     id: 'r1',
-    word: 'ACTUALES',
+    word: 'EN STOCK',
     isHeading: true,
     isNum: false,
     reverse: false,
     caption:
-      'Selecciones rumbo al Mundial 2026 y clubes de temporada vigente: Uruguay, Argentina, Noruega, España, Peñarol, Nacional y más.',
+      'Entrega inmediata en modelos seleccionados y pedidos por encargo a tu talle: Uruguay 2026, Argentina, Noruega, Peñarol, Nacional y Real Madrid.',
   },
   {
     id: 'r2',
@@ -129,7 +133,7 @@ export const CAMISETA_CHAPTER_ROWS: CamisetaChapterRow[] = [
     isNum: false,
     reverse: true,
     caption:
-      'Clásicos de colección de 1988 a 2011 con dorsales históricos: Cantona 7, Luis Enrique 21, Ronaldo 9, Messi 10, Baggio 10 y más.',
+      'Clásicos de colección 1988–2018 con etiquetas y dorsales históricos: Cantona #7, Luis Enrique #21, Ronaldo #9, Messi #10 y Baggio #10.',
   },
   {
     id: 'r3',
@@ -138,7 +142,7 @@ export const CAMISETA_CHAPTER_ROWS: CamisetaChapterRow[] = [
     isNum: true,
     reverse: false,
     caption:
-      'Versión Jugador (corte entallado), Versión Fan (calce clásico) y ediciones Retro. Elegí tu talle en el anillo o en el formulario.',
+      'Versión Fan (desde $ 1.690), Retro (desde $ 1.890) y Jugador (desde $ 1.990). Elegí tu talle en el anillo 3D o abajo en el formulario.',
   },
   {
     id: 'r4',
@@ -147,7 +151,7 @@ export const CAMISETA_CHAPTER_ROWS: CamisetaChapterRow[] = [
     isNum: false,
     reverse: true,
     caption:
-      'Envíos a los 19 departamentos y entregas a coordinar. Confirmás stock, talle y precio actualizado directo por WhatsApp.',
+      'Envíos a los 19 departamentos por agencias conocidas (DAC, Mirtrans, Correo) y pago contado o transferencia bancaria.',
   },
 ];
 

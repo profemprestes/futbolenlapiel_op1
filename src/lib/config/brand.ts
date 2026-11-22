@@ -3,6 +3,7 @@ export const SIZES = ['S', 'M', 'L', 'XL'] as const;
 export const VERSION_OPTIONS = [
   'Versión Jugador',
   'Versión Fan',
+  'Edición Retro',
   'A confirmar según stock',
 ] as const;
 
@@ -28,8 +29,8 @@ export const DEPARTAMENTOS_URUGUAY = [
   'Flores',
 ] as const;
 
-export const WHATSAPP_NUMBER_RAW = '598092864559';
-export const WHATSAPP_DISPLAY = '+598 092 864 559';
+export const WHATSAPP_NUMBER_RAW = '59899760998';
+export const WHATSAPP_DISPLAY = '+598 99 760 998';
 export const INSTAGRAM_HANDLE = '@futbolenlapieluy1';
 
 export const BRAND_LOGOS = {
@@ -39,15 +40,26 @@ export const BRAND_LOGOS = {
     'https://ynqvddgxxtmflpouursq.supabase.co/storage/v1/object/public/marifertiendauy/futbol_logo_mejorado_v2.svg',
 } as const;
 
+export const PRICE_REFERENCES = {
+  fan: 'Desde $ 1.690',
+  jugador: 'Desde $ 1.990',
+  retro: 'Desde $ 1.890',
+} as const;
+
 export const COMMERCIAL_INFO = {
   payments: [
+    'Pago contado',
     'Transferencia bancaria',
-    'Mercado Pago',
-    'Efectivo (a coordinar según entrega)',
   ],
   shipping: [
-    { zone: 'Montevideo', detail: 'Entrega o retiro a coordinar según disponibilidad.' },
-    { zone: 'Interior', detail: 'Envíos a todo el país por agencia; costo y plazo a confirmar.' },
+    {
+      zone: 'Montevideo',
+      detail: 'Entrega o retiro a coordinar; envíos por cadetería o agencia.',
+    },
+    {
+      zone: 'Interior',
+      detail: 'Envíos a los 19 departamentos por agencias conocidas (DAC, Mirtrans, Correo Uruguayo).',
+    },
   ],
   sizingAndChanges: [
     {

@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import {
   BRAND_LOGOS,
@@ -8,6 +9,7 @@ import {
   INSTAGRAM_HANDLE,
   WHATSAPP_DISPLAY,
 } from '@/lib/config/brand';
+import { HOME_CONTENT } from '@/lib/content/home';
 import { createWhatsAppUrl } from '@/lib/whatsapp';
 
 interface WordmarkFooterProps {
@@ -181,7 +183,7 @@ export default function WordmarkFooter({
           className="h-11 sm:h-12 w-auto object-contain"
         />
         <span className="font-mono-cl text-[12px] font-bold text-[#1E5AA8]">
-          LA PASIÓN SE LLEVA PUESTA · URUGUAY
+          {HOME_CONTENT.footer.tagline}
         </span>
       </div>
 
@@ -189,8 +191,7 @@ export default function WordmarkFooter({
         <div>
           <p className="font-mono-cl text-[12px] font-bold text-[#1E5AA8] mb-2">INSTAGRAM</p>
           <p className="text-[15px] max-md:text-[14px] leading-[1.5]">
-            {INSTAGRAM_HANDLE} — Catálogo actualizado con camisetas actuales, Mundial 2026,
-            clásicos retros y clubes.
+            {INSTAGRAM_HANDLE} — {HOME_CONTENT.footer.instagramDesc}
           </p>
         </div>
         <div>
@@ -219,29 +220,41 @@ export default function WordmarkFooter({
         </div>
         <nav aria-label="Pie de página">
           <p className="font-mono-cl text-[12px] font-bold text-[#1E5AA8] mb-2">IR A</p>
-          <a
-            href="#inicio"
+          <Link
+            href="/tienda"
             className="block no-underline font-semibold py-1 transition-all duration-200 hover:text-[#1E5AA8] hover:translate-x-1"
           >
-            Inicio &amp; 3D
-          </a>
-          <a
-            href="#camiseta"
+            Tienda / Stock
+          </Link>
+          <Link
+            href="/retros"
             className="block no-underline font-semibold py-1 transition-all duration-200 hover:text-[#1E5AA8] hover:translate-x-1"
           >
-            Catálogo
-          </a>
-          <a
-            href="#modelos"
+            Retros
+          </Link>
+          <Link
+            href="/talles"
             className="block no-underline font-semibold py-1 transition-all duration-200 hover:text-[#1E5AA8] hover:translate-x-1"
           >
-            Modelos
-          </a>
+            Talles y cambios
+          </Link>
+          <Link
+            href="/envios"
+            className="block no-underline font-semibold py-1 transition-all duration-200 hover:text-[#1E5AA8] hover:translate-x-1"
+          >
+            Envíos y pagos
+          </Link>
+          <Link
+            href="/preguntas"
+            className="block no-underline font-semibold py-1 transition-all duration-200 hover:text-[#1E5AA8] hover:translate-x-1"
+          >
+            Preguntas frecuentes
+          </Link>
           <a
             href="#pedido"
             className="block no-underline font-semibold py-1 transition-all duration-200 hover:text-[#1E5AA8] hover:translate-x-1"
           >
-            Pedir
+            Pedir ahora
           </a>
         </nav>
       </div>

@@ -4,6 +4,7 @@ import { ArrowUp, ArrowUpRight } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import type { CatalogCategory, ModeloId } from '@/lib/data/modelos';
 import { CATALOG_CATEGORIES, MODELOS, MODELO_SHORT_NAMES } from '@/lib/data/modelos';
+import { HOME_CONTENT } from '@/lib/content/home';
 import CamisetaImage from '@/features/catalogo/CamisetaImage';
 
 interface ModelosChapterProps {
@@ -86,10 +87,9 @@ export default function ModelosChapter({
 
         <p
           ref={subRef}
-          className="absolute right-[var(--pad)] top-[max(15vh,88px)] max-md:left-[var(--pad)] max-md:right-auto max-md:top-[calc(12vh+44vw)] max-w-[280px] text-[16px] max-md:text-[15px] font-medium leading-[1.45] text-[#0A1B33] [opacity:var(--subo,0)]"
+          className="absolute right-[var(--pad)] top-[max(15vh,88px)] max-md:left-[var(--pad)] max-md:right-auto max-md:top-[calc(12vh+44vw)] max-w-[290px] text-[16px] max-md:text-[15px] font-medium leading-[1.45] text-[#0A1B33] [opacity:var(--subo,0)]"
         >
-          Selecciones, clubes y clásicos retros. Elegí un modelo para verlo girar o consultá por
-          categoría.
+          {HOME_CONTENT.modelos.subtitle}
         </p>
       </div>
 
@@ -191,7 +191,7 @@ export default function ModelosChapter({
 
       <div className="relative z-[2] max-w-[1160px] mx-auto mt-10 px-[var(--pad)]">
         <p className="font-mono-cl text-[12px] font-bold tracking-[0.08em] uppercase text-[#1E5AA8] mb-3.5 text-center">
-          Categorías del catálogo (@futbolenlapieluy1)
+          {HOME_CONTENT.modelos.categoriesHeading}
         </p>
         <div className="grid grid-cols-4 max-lg:grid-cols-2 max-md:grid-cols-1 gap-3.5">
           {CATALOG_CATEGORIES.map((cat) => (

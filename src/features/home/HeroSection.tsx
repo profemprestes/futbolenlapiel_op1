@@ -2,6 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import { ChevronLeft, ChevronRight, MoveHorizontal } from 'lucide-react';
+import { HOME_CONTENT } from '@/lib/content/home';
 
 // bundle-dynamic-imports: cargar Three.js bajo demanda en cliente sin bloquear SSR
 const Logo3D = dynamic(() => import('./Logo3D'), {
@@ -67,7 +68,8 @@ export default function HeroSection({
     >
       <div className="cl-hero-kick absolute left-[var(--pad)] top-[86px] max-md:top-[64px] max-w-[360px] max-md:max-w-none max-md:right-[var(--pad)] text-[15px] leading-[1.45]">
         <p className="font-mono-cl text-[12px] font-bold mb-2 text-[#A8D6F0]">
-          URUGUAY <span className="text-[#8ECBF5]">/</span> ENVÍOS A TODO EL PAÍS
+          {HOME_CONTENT.hero.kickerLeft} <span className="text-[#8ECBF5]">/</span>{' '}
+          {HOME_CONTENT.hero.kickerRight}
         </p>
         <div className="flex items-center gap-3 mb-1.5">
           <div className="relative z-10 w-16 h-16 max-md:w-12 max-md:h-12 rounded-full border border-[#F5EAD6]/25 bg-black/70 overflow-hidden shrink-0">
@@ -78,15 +80,15 @@ export default function HeroSection({
               id="hero-h"
               className="font-archivo text-[clamp(22px,2.2vw,32px)] leading-[1.05] tracking-[-0.02em] text-[#F5EAD6]"
             >
-              FUTBOL EN LA PIEL
+              {HOME_CONTENT.hero.title}
             </h1>
             <p className="text-[14px] font-semibold text-[#8ECBF5]">
-              La pasión se lleva puesta.
+              {HOME_CONTENT.hero.tagline}
             </p>
           </div>
         </div>
-        <p className="cl-hero-sub text-[14px] max-md:text-[13px] opacity-90 max-md:mt-1 max-md:max-w-[300px]">
-          Camisetas actuales, Mundial 2026, clubes y clásicos retros en talles S a XL.
+        <p className="cl-hero-sub text-[14px] max-md:text-[13px] opacity-90 max-md:mt-1 max-md:max-w-[320px]">
+          {HOME_CONTENT.hero.subtitle}
         </p>
       </div>
 

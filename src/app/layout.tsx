@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Archivo_Black, Barlow_Condensed, Inter, JetBrains_Mono, Geist } from 'next/font/google';
-import { BRAND_LOGOS } from '@/lib/config/brand';
+import { BRAND_LOGOS, WHATSAPP_DISPLAY } from '@/lib/config/brand';
 import './globals.css';
 import { cn } from "@/lib/utils";
 
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://futbolenlapiel.uy'),
   title: 'Fútbol en la Piel — Camisetas actuales y retros en Uruguay (@futbolenlapieluy1)',
   description:
-    'Camisetas actuales y retros en Uruguay. Envíos a todo el país. Consultá stock, versión Jugador o Fan y talles por WhatsApp al +598 092 864 559.',
+    `Camisetas actuales y retros en Uruguay. Envíos a todo el país. Consultá stock, versión Jugador o Fan y talles por WhatsApp al ${WHATSAPP_DISPLAY}.`,
   icons: {
     icon: BRAND_LOGOS.emblem,
     apple: BRAND_LOGOS.emblem,
