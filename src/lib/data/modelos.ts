@@ -124,7 +124,7 @@ export const CAMISETA_CHAPTER_ROWS: CamisetaChapterRow[] = [
     isNum: false,
     reverse: false,
     caption:
-      'Entrega inmediata en modelos seleccionados y pedidos por encargo a tu talle: Uruguay 2026, Argentina, Noruega, Peñarol, Nacional y Real Madrid.',
+      'Entrega inmediata en modelos seleccionados y pedidos por encargo: Uruguay 2026, Argentina, Noruega, Peñarol, Nacional y Real Madrid.',
   },
   {
     id: 'r2',
@@ -133,7 +133,7 @@ export const CAMISETA_CHAPTER_ROWS: CamisetaChapterRow[] = [
     isNum: false,
     reverse: true,
     caption:
-      'Clásicos de colección 1988–2018 con etiquetas y dorsales históricos: Cantona #7, Luis Enrique #21, Ronaldo #9, Messi #10 y Baggio #10.',
+      'Clásicos 1988–2018 con etiquetas y dorsales históricos: Cantona #7, Luis Enrique #21, Ronaldo #9, Messi #10 y Baggio #10.',
   },
   {
     id: 'r3',
@@ -142,7 +142,7 @@ export const CAMISETA_CHAPTER_ROWS: CamisetaChapterRow[] = [
     isNum: true,
     reverse: false,
     caption:
-      'Versión Fan (desde $ 1.690), Retro (desde $ 1.890) y Jugador (desde $ 1.990). Elegí tu talle en el anillo 3D o abajo en el formulario.',
+      'Versión Fan (desde $ 1.690), Retro (desde $ 1.890) y Jugador (desde $ 1.990). Elegí tu talle en el anillo 3D o abajo.',
   },
   {
     id: 'r4',
@@ -151,7 +151,7 @@ export const CAMISETA_CHAPTER_ROWS: CamisetaChapterRow[] = [
     isNum: false,
     reverse: true,
     caption:
-      'Envíos a los 19 departamentos por agencias conocidas (DAC, Mirtrans, Correo) y pago contado o transferencia bancaria.',
+      'Envíos a los 19 departamentos por DAC, Mirtrans o Correo Uruguayo. Pago contado o transferencia bancaria.',
   },
 ];
 

@@ -324,7 +324,11 @@ export default function FutbolEnLaPielExperience() {
           onRotateStep={(dir) => stageRef.current?.rotateStep(dir)}
         />
 
-        <CamisetaChapter sectionRef={c1Ref} kwRefs={kwRefs} />
+        <CamisetaChapter
+          reducedMotion={reducedMotion}
+          sectionRef={c1Ref}
+          kwRefs={kwRefs}
+        />
 
         <ModelosChapter
           selectedModelo={selectedModelo}

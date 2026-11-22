@@ -1,10 +1,11 @@
 'use client';
 
-import { ArrowUp, ArrowUpRight } from 'lucide-react';
+import Link from 'next/link';
+import { ArrowUp, ArrowUpRight, MessageCircle } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import type { CatalogCategory, ModeloId } from '@/lib/data/modelos';
 import { CATALOG_CATEGORIES, MODELOS, MODELO_SHORT_NAMES } from '@/lib/data/modelos';
-import { HOME_CONTENT } from '@/lib/content/home';
+import { HOME_CATEGORY_PRESENTATION, HOME_CONTENT } from '@/lib/content/home';
 import CamisetaImage from '@/features/catalogo/CamisetaImage';
 
 interface ModelosChapterProps {
@@ -189,37 +190,75 @@ export default function ModelosChapter({
         </AnimatePresence>
       </p>
 
-      <div className="relative z-[2] max-w-[1160px] mx-auto mt-10 px-[var(--pad)]">
-        <p className="font-mono-cl text-[12px] font-bold tracking-[0.08em] uppercase text-[#1E5AA8] mb-3.5 text-center">
+      <div className="relative z-[2] max-w-[1200px] mx-auto mt-12 px-[var(--pad)]">
+        <p className="font-mono-cl text-[12px] font-bold tracking-[0.08em] uppercase text-[#1E5AA8] mb-4 text-center">
           {HOME_CONTENT.modelos.categoriesHeading}
         </p>
-        <div className="grid grid-cols-4 max-lg:grid-cols-2 max-md:grid-cols-1 gap-3.5">
-          {CATALOG_CATEGORIES.map((cat) => (
-            <button
-              key={cat.id}
-              type="button"
-              onClick={() => onSelectCategory?.(cat)}
-              className="text-left p-4 rounded-[18px] bg-[#0A1B33] text-[#F5EAD6] border border-[#0A1B33]/15 hover:-translate-y-1 hover:border-[#1E5AA8] transition-all duration-250 cursor-pointer flex flex-col justify-between gap-2.5 shadow-[0_14px_34px_-22px_rgba(10,27,51,0.5)]"
-            >
-              <span className="block">
-                <span className="flex items-center justify-between gap-2 mb-1">
-                  <span className="font-disp font-extrabold text-[19px] tracking-[-0.02em] text-[#A8D6F0]">
-                    {cat.title}
-                  </span>
-                  <ArrowUpRight className="w-4 h-4 text-[#8ECBF5] shrink-0" aria-hidden="true" />
-                </span>
-                <span className="block text-[12px] font-semibold text-[#F5EAD6]/90 mb-1.5">
-                  {cat.subtitle}
-                </span>
-                <span className="block text-[12px] text-[#F5EAD6]/70 leading-[1.45]">
-                  {cat.examples}
-                </span>
-              </span>
-              <span className="block font-mono-cl text-[11px] font-bold text-[#8ECBF5] pt-2 border-t border-[#8ECBF5]/20">
-                Consultar categoría →
-              </span>
-            </button>
-          ))}
+        <div className="grid grid-cols-4 max-lg:grid-cols-2 max-md:grid-cols-1 gap-4">
+          {CATALOG_CATEGORIES.map((cat, idx) => {
+            const pres = HOME_CATEGORY_PRESENTATION[cat.id];
+            return (
+              <motion.article
+                key={cat.id}
+                initial={reducedMotion ? false : { opacity: 0.25, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{
+                  duration: 0.4,
+                  delay: reducedMotion ? 0 : idx * 0.06,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                className="p-5 rounded-[20px] bg-[#0A1B33] text-[#F5EAD6] border border-[#8ECBF5]/20 hover:border-[#A8D6F0]/60 transition-colors duration-250 flex flex-col justify-between gap-4 shadow-[0_14px_34px_-22px_rgba(10,27,51,0.5)]"
+              >
+                <div className="flex flex-col gap-2.5">
+                  <div className="flex items-center justify-between gap-2">
+                    <h3 className="font-disp font-extrabold text-[22px] leading-none tracking-[-0.02em] text-[#A8D6F0]">
+                      {cat.title}
+                    </h3>
+                    <span className="font-mono-cl text-[10px] font-bold uppercase tracking-[0.06em] px-2.5 py-1 rounded-full bg-[#132C52] text-[#8ECBF5] border border-[#8ECBF5]/25 whitespace-nowrap">
+                      {pres.badge}
+                    </span>
+                  </div>
+
+                  <p className="text-[13px] font-semibold text-[#F5EAD6]">
+                    {cat.subtitle}
+                  </p>
+                  <p className="text-[12.5px] text-[#F5EAD6]/85 leading-[1.45]">
+                    {pres.summary}
+                  </p>
+
+                  <ul className="flex flex-wrap gap-1.5 pt-1 list-none" aria-label={`Ejemplos de ${cat.title}`}>
+                    {pres.tags.map((tag) => (
+                      <li
+                        key={tag}
+                        className="text-[11px] font-mono-cl px-2 py-0.5 rounded-md bg-[#132C52]/90 text-[#F5EAD6]/90 border border-[#F5EAD6]/12"
+                      >
+                        {tag}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="flex items-center justify-between gap-2 pt-3 border-t border-[#8ECBF5]/20">
+                  <Link
+                    href={`/tienda?categoria=${cat.id}`}
+                    className="inline-flex items-center gap-1 min-h-7 px-3 py-1 rounded-full bg-[#A8D6F0] hover:bg-[#8ECBF5] text-[#0A1B33] font-bold text-[12px] no-underline transition-colors focus-visible:outline-2 focus-visible:outline-[#F5EAD6] focus-visible:outline-offset-2"
+                  >
+                    Ver en tienda
+                    <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => onSelectCategory?.(cat)}
+                    className="inline-flex items-center gap-1 min-h-7 px-2.5 py-1 rounded-full font-mono-cl text-[11px] font-bold text-[#8ECBF5] hover:text-[#F5EAD6] hover:bg-[#132C52] cursor-pointer transition-colors focus-visible:outline-2 focus-visible:outline-[#A8D6F0] focus-visible:outline-offset-2"
+                  >
+                    <MessageCircle className="w-3 h-3" aria-hidden="true" />
+                    Consultar
+                  </button>
+                </div>
+              </motion.article>
+            );
+          })}
         </div>
       </div>
     </section>

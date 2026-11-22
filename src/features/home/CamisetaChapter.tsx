@@ -1,13 +1,19 @@
 'use client';
 
+import { motion } from 'motion/react';
 import { CAMISETA_CHAPTER_ROWS } from '@/lib/data/modelos';
 
 interface CamisetaChapterProps {
+  reducedMotion: boolean;
   sectionRef: React.RefObject<HTMLElement | null>;
   kwRefs: React.MutableRefObject<Array<HTMLElement | null>>;
 }
 
-export default function CamisetaChapter({ sectionRef, kwRefs }: CamisetaChapterProps) {
+export default function CamisetaChapter({
+  reducedMotion,
+  sectionRef,
+  kwRefs,
+}: CamisetaChapterProps) {
   return (
     <section
       ref={sectionRef}
@@ -18,7 +24,7 @@ export default function CamisetaChapter({ sectionRef, kwRefs }: CamisetaChapterP
       {CAMISETA_CHAPTER_ROWS.map((row, idx) => (
         <div
           key={row.id}
-          className={`cl-kw-row min-h-[62vh] max-md:min-h-[54svh] max-md:py-6 flex items-center gap-[3vw] max-md:gap-4 max-md:flex-col max-md:justify-end ${
+          className={`cl-kw-row min-h-[54vh] max-md:min-h-[46svh] max-md:py-6 flex items-center gap-[3vw] max-md:gap-4 max-md:flex-col max-md:justify-end ${
             row.reverse
               ? 'flex-row-reverse text-right max-md:items-end max-md:text-right'
               : 'max-md:items-start max-md:text-left'
@@ -46,15 +52,22 @@ export default function CamisetaChapter({ sectionRef, kwRefs }: CamisetaChapterP
             </p>
           )}
 
-          <p
-            className={`max-w-[320px] max-md:max-w-[340px] text-[16px] max-md:text-[15px] leading-[1.52] px-[18px] py-4 bg-[#0A1B33]/82 max-md:bg-[#0A1B33]/90 shadow-[0_14px_36px_-20px_rgba(0,0,0,0.65)] backdrop-blur-[14px] ${
+          <motion.div
+            initial={reducedMotion ? false : { opacity: 0.25, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            className={`max-w-[340px] max-md:max-w-[360px] text-[16px] max-md:text-[15px] leading-[1.52] px-5 py-4 bg-[#0A1B33]/90 shadow-[0_14px_36px_-20px_rgba(0,0,0,0.65)] backdrop-blur-[14px] ${
               row.reverse
                 ? 'border-r-[3px] border-[#A8D6F0] rounded-l-[14px]'
                 : 'border-l-[3px] border-[#A8D6F0] rounded-r-[14px]'
             }`}
           >
-            {row.caption}
-          </p>
+            <span className="block font-mono-cl text-[11px] font-bold tracking-[0.1em] text-[#A8D6F0] mb-1">
+              0{idx + 1} / 0{CAMISETA_CHAPTER_ROWS.length}
+            </span>
+            <p className="text-[#F5EAD6]">{row.caption}</p>
+          </motion.div>
         </div>
       ))}
     </section>
