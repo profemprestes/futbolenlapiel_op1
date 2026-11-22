@@ -290,9 +290,9 @@ export default function PedidoChapter({
             }`}
           >
             <div className="flex items-center justify-between gap-3">
-              <p className="font-disp font-extrabold text-[26px] tracking-[-0.02em]">
+              <h3 className="font-disp font-extrabold text-[26px] tracking-[-0.02em]">
                 Pedir por WhatsApp
-              </p>
+              </h3>
               <Image
                 src={BRAND_LOGOS.emblem}
                 alt="Sello Fútbol en la Piel"
@@ -320,7 +320,9 @@ export default function PedidoChapter({
                     if (invalidFields.name) setInvalidFields((p) => ({ ...p, name: false }));
                   }}
                   required
-                  className={`w-full h-12 px-3.5 rounded-[14px] border bg-[#000000]/35 outline-none text-[16px] placeholder:text-[#F5EAD6]/42 focus:border-[#F5EAD6] focus:bg-[#000000]/50 focus:shadow-[0_0_0_3px_rgba(168,214,240,0.3)] transition-all duration-200 ${
+                  aria-invalid={Boolean(invalidFields.name)}
+                  aria-describedby={errorMsg ? 'pedido-error' : undefined}
+                  className={`w-full h-12 px-3.5 rounded-[14px] border bg-[#000000]/35 outline-none text-[16px] placeholder:text-[#F5EAD6]/70 focus:border-[#F5EAD6] focus:bg-[#000000]/50 focus:shadow-[0_0_0_3px_rgba(168,214,240,0.3)] transition-all duration-200 ${
                     invalidFields.name ? 'border-[#A8D6F0]' : 'border-[#F5EAD6]/35'
                   }`}
                 />
@@ -343,7 +345,9 @@ export default function PedidoChapter({
                     }
                   }}
                   required
-                  className={`w-full h-12 px-3.5 rounded-[14px] border bg-[#000000]/35 outline-none text-[16px] placeholder:text-[#F5EAD6]/42 focus:border-[#F5EAD6] focus:bg-[#000000]/50 focus:shadow-[0_0_0_3px_rgba(168,214,240,0.3)] transition-all duration-200 ${
+                  aria-invalid={Boolean(invalidFields.camiseta)}
+                  aria-describedby={errorMsg ? 'pedido-error' : undefined}
+                  className={`w-full h-12 px-3.5 rounded-[14px] border bg-[#000000]/35 outline-none text-[16px] placeholder:text-[#F5EAD6]/70 focus:border-[#F5EAD6] focus:bg-[#000000]/50 focus:shadow-[0_0_0_3px_rgba(168,214,240,0.3)] transition-all duration-200 ${
                     invalidFields.camiseta ? 'border-[#A8D6F0]' : 'border-[#F5EAD6]/35'
                   }`}
                 />
@@ -389,6 +393,8 @@ export default function PedidoChapter({
                       if (invalidFields.size) setInvalidFields((p) => ({ ...p, size: false }));
                     }}
                     required
+                    aria-invalid={Boolean(invalidFields.size)}
+                    aria-describedby={errorMsg ? 'pedido-error' : undefined}
                     className={`w-full h-12 pl-3.5 pr-9 rounded-[14px] border bg-[#000000]/35 outline-none text-[16px] appearance-none cursor-pointer focus:border-[#F5EAD6] focus:bg-[#000000]/50 focus:shadow-[0_0_0_3px_rgba(168,214,240,0.3)] transition-all duration-200 [&>option]:text-[#0A1B33] ${
                       invalidFields.size ? 'border-[#A8D6F0]' : 'border-[#F5EAD6]/35'
                     }`}
@@ -459,6 +465,8 @@ export default function PedidoChapter({
                       }
                     }}
                     required
+                    aria-invalid={Boolean(invalidFields.departamento)}
+                    aria-describedby={errorMsg ? 'pedido-error' : undefined}
                     className={`w-full h-12 pl-3.5 pr-9 rounded-[14px] border bg-[#000000]/35 outline-none text-[16px] appearance-none cursor-pointer focus:border-[#F5EAD6] focus:bg-[#000000]/50 focus:shadow-[0_0_0_3px_rgba(168,214,240,0.3)] transition-all duration-200 [&>option]:text-[#0A1B33] ${
                       invalidFields.departamento ? 'border-[#A8D6F0]' : 'border-[#F5EAD6]/35'
                     }`}
@@ -478,7 +486,7 @@ export default function PedidoChapter({
               </label>
             )}
 
-            <label className="flex gap-2.5 items-start text-[14px] leading-[1.4] cursor-pointer">
+            <label className="flex gap-2.5 items-start min-h-6 text-[14px] leading-[1.4] cursor-pointer">
               <input
                 type="checkbox"
                 name="agree"
@@ -488,7 +496,9 @@ export default function PedidoChapter({
                   if (invalidFields.agree) setInvalidFields((p) => ({ ...p, agree: false }));
                 }}
                 required
-                className={`w-5 h-5 accent-[#A8D6F0] mt-[1px] flex-none ${
+                aria-invalid={Boolean(invalidFields.agree)}
+                aria-describedby={errorMsg ? 'pedido-error' : undefined}
+                className={`w-5 h-5 accent-[#A8D6F0] mt-[1px] flex-none focus-visible:outline-2 focus-visible:outline-[#A8D6F0] ${
                   invalidFields.agree ? 'outline-2 outline-[#A8D6F0]' : ''
                 }`}
               />
@@ -504,7 +514,7 @@ export default function PedidoChapter({
               Preparar consulta para WhatsApp <ArrowUpRight className="w-5 h-5" aria-hidden="true" />
             </button>
 
-            <p role="alert" className="min-h-[1.2em] text-[14px] text-[#A8D6F0] font-semibold">
+            <p id="pedido-error" role="alert" className="min-h-[1.2em] text-[14px] text-[#A8D6F0] font-semibold">
               {errorMsg}
             </p>
           </form>

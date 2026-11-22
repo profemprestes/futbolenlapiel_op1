@@ -95,7 +95,7 @@ export default function ModelosChapter({
 
       <div
         ref={cardsBoxRef}
-        role="radiogroup"
+        role="group"
         aria-label="Modelos destacados"
         className="relative z-[2] mt-[55vh] max-md:mt-[50vh] px-[var(--pad)] grid grid-cols-3 max-md:grid-cols-1 gap-[clamp(14px,2vw,28px)] max-md:gap-[18px] max-w-[1320px] mx-auto [perspective:1200px]"
       >
@@ -108,13 +108,15 @@ export default function ModelosChapter({
                 cardRefs.current[idx] = el;
               }}
               type="button"
-              role="radio"
-              aria-checked={isOn}
+              aria-pressed={isOn}
               onClick={() => onSelectModelo(m.id)}
               onPointerMove={(e) => handleCardMove(idx, e)}
               onPointerLeave={() => handleCardLeave(idx)}
-              className={`cl-card-3d group relative text-left border border-[#F5EAD6]/22 cursor-pointer rounded-[26px] p-[22px] pb-5 text-[#F5EAD6] flex flex-col gap-1.5 transition-[box-shadow,outline-color,border-color] duration-400 outline-[3px] outline-offset-4 ${isOn ? 'outline-[#A8D6F0]' : 'outline-transparent'
-                }`}
+              className={`cl-card-3d group relative text-left border cursor-pointer rounded-[26px] p-[22px] pb-5 text-[#F5EAD6] flex flex-col gap-1.5 transition-[box-shadow,border-color] duration-400 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0A1B33] ${
+                isOn
+                  ? 'border-[#A8D6F0] ring-[3px] ring-[#A8D6F0]/80'
+                  : 'border-[#F5EAD6]/22'
+              }`}
             >
               <span className="font-mono-cl text-[12px] opacity-80">{m.num}</span>
               <span className="w-full aspect-[4/3] grid place-items-center [transform:translateZ(40px)]">

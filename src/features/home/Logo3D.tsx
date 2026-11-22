@@ -73,12 +73,18 @@ export default function Logo3D({
     rimLight.position.set(-3, 1, -3);
     scene.add(rimLight);
 
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
-    controls.autoRotate = true;
+    controls.autoRotate = !motionQuery.matches;
     controls.autoRotateSpeed = autoRotateSpeed;
     controls.minDistance = 1.5;
     controls.maxDistance = 6;
+
+    const handleMotionChange = (event: MediaQueryListEvent) => {
+      controls.autoRotate = !event.matches;
+    };
+    motionQuery.addEventListener('change', handleMotionChange);
 
     let mesh: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshPhysicalMaterial> | null =
       null;
@@ -151,6 +157,7 @@ export default function Logo3D({
       cancelAnimationFrame(animationFrameId);
       resizeObserver.disconnect();
       window.removeEventListener('resize', handleResize);
+      motionQuery.removeEventListener('change', handleMotionChange);
 
       controls.dispose();
 

@@ -28,6 +28,7 @@ export interface StageController {
   handlePointerMove: (e: React.PointerEvent<HTMLDivElement>) => void;
   handlePointerEnd: () => void;
   handleKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => void;
+  rotateStep: (dir: -1 | 1) => void;
 }
 
 interface CamisetaStageProps {
@@ -446,6 +447,19 @@ export default function CamisetaStage({
       const S = stateRef.current;
       const base = S.target ?? S.theta;
       S.target = nextRest(base, e.key === 'ArrowRight' ? 1 : -1);
+      S.swayAmp = 0;
+      if (reducedMotion) {
+        S.theta = S.target;
+        S.target = null;
+      }
+      S.last = performance.now();
+      S.dirty = true;
+    },
+
+    rotateStep: (dir: -1 | 1) => {
+      const S = stateRef.current;
+      const base = S.target ?? S.theta;
+      S.target = nextRest(base, dir);
       S.swayAmp = 0;
       if (reducedMotion) {
         S.theta = S.target;

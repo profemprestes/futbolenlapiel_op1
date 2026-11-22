@@ -1,7 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { MoveHorizontal } from 'lucide-react';
+import { ChevronLeft, ChevronRight, MoveHorizontal } from 'lucide-react';
 
 // bundle-dynamic-imports: cargar Three.js bajo demanda en cliente sin bloquear SSR
 const Logo3D = dynamic(() => import('./Logo3D'), {
@@ -31,7 +31,8 @@ const ROTATE_BADGE_SVG = (
 const SCROLL_CUE = (
   <a
     href="#camiseta"
-    className="cl-scroll-cue absolute left-1/2 bottom-[var(--pad)] -translate-x-1/2 max-md:left-[var(--pad)] max-md:translate-x-0 max-md:bottom-[max(24px,5svh)] text-[12px] no-underline flex gap-2.5 items-center opacity-85"
+    aria-label="Ir a la sección Catálogo y versiones"
+    className="cl-scroll-cue absolute left-1/2 bottom-[var(--pad)] -translate-x-1/2 max-md:left-[var(--pad)] max-md:translate-x-0 max-md:bottom-[max(24px,5svh)] min-h-6 px-2 py-1 rounded-full text-[12px] no-underline flex gap-2.5 items-center opacity-90 focus-visible:outline-2 focus-visible:outline-[#A8D6F0] focus-visible:outline-offset-2"
   >
     <span className="font-mono-cl">01 / 04</span> Deslizá
   </a>
@@ -45,6 +46,7 @@ interface HeroSectionProps {
   onPointerMove: (e: React.PointerEvent<HTMLDivElement>) => void;
   onPointerEnd: () => void;
   onKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => void;
+  onRotateStep: (dir: -1 | 1) => void;
 }
 
 export default function HeroSection({
@@ -55,6 +57,7 @@ export default function HeroSection({
   onPointerMove,
   onPointerEnd,
   onKeyDown,
+  onRotateStep,
 }: HeroSectionProps) {
   return (
     <section
@@ -101,8 +104,28 @@ export default function HeroSection({
         onPointerUp={onPointerEnd}
         onPointerCancel={onPointerEnd}
         onKeyDown={onKeyDown}
-        className="absolute inset-x-0 top-[70px] bottom-0 cursor-grab active:cursor-grabbing touch-pan-y focus-visible:-outline-offset-8"
+        className="absolute inset-x-0 top-[70px] bottom-0 cursor-grab active:cursor-grabbing touch-pan-y focus-visible:outline-2 focus-visible:outline-[#A8D6F0] focus-visible:-outline-offset-8"
       />
+
+      {/* Alternativa de clic simple para rotación 3D (WCAG 2.2 SC 2.5.7 / 2.5.8) */}
+      <div className="absolute right-[var(--pad)] bottom-[var(--pad)] max-md:bottom-[max(20px,4svh)] z-10 flex items-center gap-2">
+        <button
+          type="button"
+          onClick={() => onRotateStep(-1)}
+          aria-label="Girar camiseta a la izquierda"
+          className="w-10 h-10 rounded-full border border-[#F5EAD6]/30 bg-[#0A1B33]/85 text-[#F5EAD6] hover:border-[#A8D6F0] hover:text-[#A8D6F0] grid place-items-center cursor-pointer transition-colors focus-visible:outline-2 focus-visible:outline-[#A8D6F0] focus-visible:outline-offset-2"
+        >
+          <ChevronLeft className="w-5 h-5" aria-hidden="true" />
+        </button>
+        <button
+          type="button"
+          onClick={() => onRotateStep(1)}
+          aria-label="Girar camiseta a la derecha"
+          className="w-10 h-10 rounded-full border border-[#F5EAD6]/30 bg-[#0A1B33]/85 text-[#F5EAD6] hover:border-[#A8D6F0] hover:text-[#A8D6F0] grid place-items-center cursor-pointer transition-colors focus-visible:outline-2 focus-visible:outline-[#A8D6F0] focus-visible:outline-offset-2"
+        >
+          <ChevronRight className="w-5 h-5" aria-hidden="true" />
+        </button>
+      </div>
 
       {/* Insignia circular giratoria */}
       <div

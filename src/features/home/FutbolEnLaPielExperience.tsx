@@ -291,6 +291,13 @@ export default function FutbolEnLaPielExperience() {
 
   return (
     <MotionConfig reducedMotion="user">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-full focus:bg-[#A8D6F0] focus:px-4 focus:py-2 focus:text-sm focus:font-bold focus:text-[#0A1B33] focus:outline-2 focus:outline-offset-2 focus:outline-[#F5EAD6]"
+      >
+        Saltar al contenido principal
+      </a>
+
       <TickerHeader
         activeChapter={activeChapter}
         solid={tickerSolid}
@@ -305,7 +312,7 @@ export default function FutbolEnLaPielExperience() {
         controllerRef={stageRef}
       />
 
-      <main className="relative z-[2] overflow-x-clip">
+      <main id="main-content" tabIndex={-1} className="relative z-[2] overflow-x-clip outline-none">
         <HeroSection
           isDragging={isDragging}
           sliderDeg={sliderDeg}
@@ -314,6 +321,7 @@ export default function FutbolEnLaPielExperience() {
           onPointerMove={(e) => stageRef.current?.handlePointerMove(e)}
           onPointerEnd={() => stageRef.current?.handlePointerEnd()}
           onKeyDown={(e) => stageRef.current?.handleKeyDown(e)}
+          onRotateStep={(dir) => stageRef.current?.rotateStep(dir)}
         />
 
         <CamisetaChapter sectionRef={c1Ref} kwRefs={kwRefs} />
