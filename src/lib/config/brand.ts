@@ -48,8 +48,9 @@ export const PRICE_REFERENCES = {
 
 export const COMMERCIAL_INFO = {
   payments: [
-    'Pago contado',
     'Transferencia bancaria',
+    'Mercado Pago',
+    'Efectivo',
   ],
   shipping: [
     {
@@ -63,8 +64,8 @@ export const COMMERCIAL_INFO = {
   ],
   sizingAndChanges: [
     {
-      label: 'Talles S a XL',
-      detail: 'Versión Jugador tiene corte más entallado; Versión Fan ofrece calce clásico.',
+      label: 'Talles S a XL en stock · Todos por encargo',
+      detail: 'En stock habitual del S al XL; por encargo trabajamos todos los talles. Versión Jugador (calidad muy alta, corte entallado) y Versión Fan (calce clásico).',
     },
     {
       label: 'Cambios',

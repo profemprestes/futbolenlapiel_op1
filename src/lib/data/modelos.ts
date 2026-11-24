@@ -22,7 +22,7 @@ export const MODELOS: ModeloInfo[] = [
     dotColor: '#75B2E6',
     desc: 'Azul marino Nike Mundial 2026 · Versión Jugador y Fan · Talles S a XL',
     alt: 'Camiseta Uruguay 2026 Mundial Alternativa',
-    priceLabel: '$ 1.990 (ref.)',
+    priceLabel: 'Consultar precio',
     availabilityLabel: 'Entrega inmediata / Encargo',
     catalogSlug: 'uruguay-2026-mundial-alternativa-4',
   },
@@ -34,7 +34,7 @@ export const MODELOS: ModeloInfo[] = [
     dotColor: '#C81D25',
     desc: 'Blanca visitante Umbro 1996, sponsor Sharp Viewcam · Dorsal Cantona #7',
     alt: 'Camiseta Retro Manchester United 1996 dorsal Cantona 7',
-    priceLabel: '$ 1.890 (ref.)',
+    priceLabel: 'Consultar precio',
     availabilityLabel: 'Entrega inmediata',
     catalogSlug: 'manchester-united-1996-cantona-7-3',
   },
@@ -46,7 +46,7 @@ export const MODELOS: ModeloInfo[] = [
     dotColor: '#F2C94C',
     desc: 'Verde manga larga con parches de competición · Versión Jugador · Talles S a XL',
     alt: 'Camiseta Real Madrid Valverde 8 verde manga larga',
-    priceLabel: '$ 2.090 (ref.)',
+    priceLabel: 'Consultar precio',
     availabilityLabel: 'Entrega inmediata / Encargo',
     catalogSlug: 'real-madrid-valverde-8-verde-manga-larga-22',
   },
@@ -124,7 +124,7 @@ export const CAMISETA_CHAPTER_ROWS: CamisetaChapterRow[] = [
     isNum: false,
     reverse: false,
     caption:
-      'Entrega inmediata en modelos seleccionados y pedidos por encargo: Uruguay 2026, Argentina, Noruega, Peñarol, Nacional y Real Madrid.',
+      'Camisetas, shorts y remeras de fútbol y basket. Entrega inmediata en modelos seleccionados y pedidos por encargo.',
   },
   {
     id: 'r2',
@@ -142,7 +142,7 @@ export const CAMISETA_CHAPTER_ROWS: CamisetaChapterRow[] = [
     isNum: true,
     reverse: false,
     caption:
-      'Versión Fan (desde $ 1.690), Retro (desde $ 1.890) y Jugador (desde $ 1.990). Elegí tu talle en el anillo 3D o abajo.',
+      'Stock habitual del S al XL y todos los talles por encargo. Versiones Fan, Retro y Jugador de calidad muy alta.',
   },
   {
     id: 'r4',
@@ -151,7 +151,7 @@ export const CAMISETA_CHAPTER_ROWS: CamisetaChapterRow[] = [
     isNum: false,
     reverse: true,
     caption:
-      'Envíos a los 19 departamentos por DAC, Mirtrans o Correo Uruguayo. Pago contado o transferencia bancaria.',
+      'Envíos a los 19 departamentos por DAC, Mirtrans o Correo Uruguayo. Pagá con transferencia, Mercado Pago o efectivo.',
   },
 ];
 

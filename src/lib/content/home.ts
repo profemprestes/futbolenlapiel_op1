@@ -1,4 +1,3 @@
-import { PRICE_REFERENCES } from '@/lib/config/brand';
 import type { CatalogCategoryId } from '@/lib/data/modelos';
 
 export interface HomeCategoryPresentation {
@@ -10,7 +9,7 @@ export interface HomeCategoryPresentation {
 export const HOME_CATEGORY_PRESENTATION: Record<CatalogCategoryId, HomeCategoryPresentation> = {
   actuales: {
     badge: 'Temporada 2026',
-    summary: 'Selecciones y camisetas oficiales de la nueva temporada.',
+    summary: 'Selecciones y camisetas de la nueva temporada en calidad alta.',
     tags: ['Uruguay 2026', 'Haaland #9', 'Messi #10', 'Yamal #19'],
   },
   retros: {
@@ -25,8 +24,8 @@ export const HOME_CATEGORY_PRESENTATION: Record<CatalogCategoryId, HomeCategoryP
   },
   clubes: {
     badge: 'Stock & Encargo',
-    summary: 'Clubes uruguayos, sudamericanos y gigantes de Europa.',
-    tags: ['Peñarol', 'Nacional', 'Real Madrid', 'Boca Juniors'],
+    summary: 'Clubes uruguayos, sudamericanos, europeos y basket.',
+    tags: ['Peñarol', 'Nacional', 'Real Madrid', 'Basket'],
   },
 };
 
@@ -36,19 +35,20 @@ export const HOME_CONTENT = {
     kickerRight: 'ENTREGA INMEDIATA Y POR ENCARGO',
     title: 'FUTBOL EN LA PIEL',
     tagline: 'La pasión se lleva puesta.',
-    subtitle: `Camisetas actuales, Mundial 2026, clubes y retros en talles S a XL (${PRICE_REFERENCES.fan}). Envíos a todo el país por agencias conocidas.`,
+    subtitle:
+      'Camisetas, shorts y remeras de fútbol y basket en alta calidad. Stock S a XL y todos los talles por encargo. Envíos a todo el país.',
     scrollCue: 'Deslizá',
   },
   modelos: {
     subtitle:
-      'Stock real para entrega inmediata y modelos por encargo. Elegí una camiseta para verla girar o consultá por categoría.',
+      'Stock real para entrega inmediata (S a XL) y pedidos por encargo en todos los talles. Elegí un modelo para girarlo o consultá por categoría.',
     categoriesHeading: 'Categorías del catálogo (@futbolenlapieluy1)',
   },
   pedido: {
-    bannerEyebrow: 'STOCK EN URUGUAY + ENCARGOS · PAGO CONTADO O TRANSFERENCIA',
-    bannerTitle: 'CONSULTÁ STOCK, TALLE Y ENVÍO EN MINUTOS',
+    bannerEyebrow: 'STOCK EN URUGUAY + ENCARGOS · TRANSFERENCIA, MERCADO PAGO Y EFECTIVO',
+    bannerTitle: 'CONSULTÁ STOCK, PROMOCIONES Y ENVÍO EN MINUTOS',
     bannerDesc:
-      'Trabajamos con entrega inmediata de nuestro stock en Uruguay y pedidos por encargo si buscás un modelo o dorsal puntual. Despachamos por agencias conocidas a todo el país.',
+      'Elegí en nuestra web o Instagram (@futbolenlapieluy1) y cerrá tu pedido por WhatsApp. Trabajamos entrega inmediata en stock (S a XL), encargos en todos los talles, promociones vigentes y envíos a todo el país.',
     formTitle: 'Pedir por WhatsApp',
     submitLabel: 'Enviar consulta por WhatsApp',
     agreeLabel:
@@ -57,6 +57,6 @@ export const HOME_CONTENT = {
   footer: {
     tagline: 'LA PASIÓN SE LLEVA PUESTA · URUGUAY',
     instagramDesc:
-      'Catálogo actualizado con entregas inmediatas, Mundial 2026, clubes y clásicos retros.',
+      'Nuestro canal principal: lanzamientos, promociones y catálogo de fútbol y basket. Cerramos tu pedido por WhatsApp.',
   },
 } as const;

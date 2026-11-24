@@ -206,7 +206,7 @@ export default function WordmarkFooter({
             >
               {WHATSAPP_DISPLAY}
             </a>
-            . Consultá stock, talles (S–XL), versiones y precios.
+            . Consultá stock, talles (S–XL o todos por encargo), promociones y precios.
           </p>
         </div>
         <div>

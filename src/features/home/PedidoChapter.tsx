@@ -259,8 +259,9 @@ export default function PedidoChapter({
             <b className="block font-disp font-bold text-[18px] mb-0.5">
               {HOME_CONTENT.pedido.bannerTitle}
             </b>
-            Trabajamos con entrega inmediata de stock y pedidos por encargo (Fan desde $ 1.690,
-            Retro desde $ 1.890, Jugador desde $ 1.990 como referencia).
+            Trabajamos con entrega inmediata en stock (talles S a XL) y pedidos por encargo en
+            todos los talles: camisetas, shorts y remeras de fútbol y basket en versiones Fan, Retro
+            y Jugador de alta calidad.
           </li>
           <li className="relative pl-[58px] pb-[18px] border-b border-[#8ECBF5]/40 text-[16px] leading-[1.5]">
             <b className="block font-disp font-bold text-[18px] mb-0.5">
@@ -409,6 +410,7 @@ export default function PedidoChapter({
                         Talle {s}
                       </option>
                     ))}
+                    <option value="Otro (por encargo)">Otro talle (por encargo)</option>
                   </select>
                   <ChevronDown
                     aria-hidden="true"
