@@ -40,9 +40,13 @@ export const metadata: Metadata = {
   description:
     `Camisetas actuales y retros en Uruguay. Envíos a todo el país. Consultá stock, versión Jugador o Fan y talles por WhatsApp al ${WHATSAPP_DISPLAY}.`,
   icons: {
-    icon: BRAND_LOGOS.emblem,
-    apple: BRAND_LOGOS.emblem,
+    icon: [
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
   },
+  manifest: '/site.webmanifest',
   openGraph: {
     title: 'Fútbol en la Piel — @futbolenlapieluy1',
     description:
