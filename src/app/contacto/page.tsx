@@ -39,11 +39,11 @@ export default function ContactoPage() {
         <Card className="bg-card border-border">
           <CardHeader>
             <Badge variant="secondary" className="w-fit">
-              Canal principal
+              Cierre de pedidos
             </Badge>
             <CardTitle className="font-disp text-2xl font-bold pt-1">WhatsApp Directo</CardTitle>
             <CardDescription>
-              Consultas de stock, talles S–XL, versión Jugador/Fan y coordinación de envíos.
+              Cierre de pedidos: stock S–XL, todos los talles por encargo, promociones y envíos.
             </CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-2">
@@ -69,11 +69,11 @@ export default function ContactoPage() {
         <Card className="bg-card border-border">
           <CardHeader>
             <Badge variant="outline" className="w-fit">
-              Novedades y posteos
+              Canal principal
             </Badge>
             <CardTitle className="font-disp text-2xl font-bold pt-1">Instagram</CardTitle>
             <CardDescription>
-              Ingresos recientes, camisetas actuales, retros y mensajes al privado.
+              Lanzamientos, promociones, indumentaria de fútbol y basket, y consultas al privado.
             </CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-2">

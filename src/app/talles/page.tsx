@@ -15,7 +15,7 @@ import { createWhatsAppUrl } from '@/lib/whatsapp';
 export const metadata = {
   title: 'Talles y cambios — Fútbol en la Piel',
   description:
-    'Guía de talles S a XL, diferencias entre Versión Jugador y Versión Fan, y política de cambios en Uruguay.',
+    'Guía de talles (stock habitual S a XL y todos los talles por encargo), diferencias entre Versión Jugador y Versión Fan, y política de cambios en Uruguay.',
 };
 
 const SIZE_TABLE = [
@@ -34,7 +34,7 @@ export default function TallesPage() {
     <PageShell
       badge="Guía de calce"
       title="TALLES Y CAMBIOS"
-      description="Elegí entre Versión Jugador y Versión Fan sin equivocarte, revisá la tabla de referencia S a XL y conocé nuestra política de cambios."
+      description="Elegí entre Versión Jugador y Versión Fan sin equivocarte. En stock habitual trabajamos del S al XL y por encargo conseguimos todos los talles."
     >
       {/* Jugador vs Fan */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-5">

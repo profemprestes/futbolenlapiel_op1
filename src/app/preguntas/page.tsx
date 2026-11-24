@@ -12,12 +12,16 @@ export const metadata = {
 
 const FAQS = [
   {
-    q: '¿Qué calidad tienen las camisetas?',
-    a: 'Trabajamos camisetas actuales y retros importadas de excelente confección, con etiquetas, escudos y detalles fieles según cada edición (Versión Jugador termosellada o Versión Fan bordada).',
+    q: '¿Qué productos y qué calidad trabajan?',
+    a: 'Vendemos camisetas, shorts, remeras e indumentaria vinculada a fútbol y basket. En Versión Jugador no son originales, pero tienen una confección de calidad muy alta, con telas técnicas, escudos y detalles fieles (Versión Jugador termosellada o Versión Fan bordada).',
   },
   {
     q: '¿Cómo elijo entre Versión Jugador y Versión Fan?',
     a: 'La Versión Jugador tiene corte más entallado y tela deportiva liviana; la Versión Fan tiene calce clásico más holgado y escudo bordado. Si dudás entre dos talles en Jugador, conviene subir uno.',
+  },
+  {
+    q: '¿Qué talles tienen disponibles?',
+    a: 'En stock para entrega inmediata trabajamos habitualmente del S al XL. Si buscás otro talle, por encargo conseguimos todos los talles.',
   },
   {
     q: '¿Puedo pedirla personalizada con nombre y número?',
@@ -28,8 +32,8 @@ const FAQS = [
     a: 'En Montevideo coordinamos entrega o retiro rápido según disponibilidad. Al Interior despachamos por agencia a los 19 departamentos y te pasamos el comprobante apenas sale.',
   },
   {
-    q: '¿Qué medios de pago aceptan y cuándo se paga?',
-    a: 'Aceptamos transferencia bancaria, Mercado Pago y efectivo (a coordinar según entrega). Primero confirmamos stock y talle por WhatsApp; recién después coordinamos el pago.',
+    q: '¿Qué medios de pago aceptan y tienen promociones?',
+    a: 'Aceptamos transferencia bancaria, Mercado Pago y efectivo (a coordinar según entrega). Primero confirmamos stock y talle por WhatsApp y también podés consultarnos por promociones vigentes.',
   },
   {
     q: '¿Puedo encargar un modelo que no está en el catálogo?',

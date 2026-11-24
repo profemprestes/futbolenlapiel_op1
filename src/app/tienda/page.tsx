@@ -16,7 +16,7 @@ export default function TiendaPage() {
     <PageShell
       badge="Tienda / Stock · @futbolenlapieluy1"
       title="CATÁLOGO COMPLETO"
-      description="Las 48 camisetas publicadas en nuestro catálogo: selecciones 2026, La Celeste, clubes uruguayos y europeos, y clásicos retros. Consultá talle y disponibilidad directa por WhatsApp."
+      description="Camisetas, shorts y remeras de fútbol y basket: selecciones 2026, La Celeste, clubes y clásicos retros. Stock S a XL y todos los talles por encargo por WhatsApp."
     >
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-2">
@@ -25,6 +25,9 @@ export default function TiendaPage() {
               Talle {size}
             </Badge>
           ))}
+          <Badge variant="secondary" className="font-mono-cl">
+            Todos los talles por encargo
+          </Badge>
         </div>
         <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground font-mono-cl">
           <ShieldCheck className="size-4 text-primary" />

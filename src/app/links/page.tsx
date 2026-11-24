@@ -22,7 +22,7 @@ const SITE_PAGES = [
   { href: '/tienda', title: 'Tienda', desc: 'Vista de tienda y catálogo' },
   { href: '/retros', title: 'Retros', desc: 'Colección de camisetas retro' },
   { href: '/como-pedir', title: 'Cómo pedir', desc: 'Paso a paso para consultar por WhatsApp' },
-  { href: '/talles', title: 'Guía de talles', desc: 'Talles S a XL y diferencia Jugador vs. Fan' },
+  { href: '/talles', title: 'Guía de talles', desc: 'Stock S a XL, todos los talles por encargo y Jugador vs. Fan' },
   { href: '/envios', title: 'Envíos y pagos', desc: 'Montevideo, 19 departamentos y medios de pago' },
   { href: '/preguntas', title: 'Preguntas frecuentes', desc: 'Dudas habituales sobre stock, cambios y envíos' },
   { href: '/contacto', title: 'Contacto', desc: 'Canales directos de atención' },
