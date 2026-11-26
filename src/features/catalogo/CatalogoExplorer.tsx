@@ -1,20 +1,9 @@
 'use client';
 
+import { ArrowUpRight, ChevronDown, MessageCircle, Search, X } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useMemo, useState } from 'react';
-import { MessageCircle, Search, X } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import {
   CATALOGO_FILTER_OPTIONS,
   CATALOGO_ITEMS,
@@ -22,10 +11,9 @@ import {
   type JerseySize,
   RETRO_DECADES,
 } from '@/lib/catalogo-utils';
-import { SIZES } from '@/lib/config/brand';
+import { PRICE_REFERENCES, SIZES } from '@/lib/config/brand';
 import type { CatalogCategoryId } from '@/lib/data/modelos';
 import { createWhatsAppUrl } from '@/lib/whatsapp';
-import { cn } from '@/lib/utils';
 
 interface CatalogoExplorerProps {
   lockedCategory?: CatalogCategoryId;
@@ -36,10 +24,11 @@ interface CatalogoExplorerProps {
 const VALID_CATEGORIES = new Set<string>(['actuales', 'retros', 'uruguay', 'clubes']);
 const VERSION_FILTERS = ['Todas', 'Versión Jugador', 'Versión Fan', 'Retro', 'Edición especial'] as const;
 
-function extractDorsalNumber(dorsal?: string): string | null {
-  if (!dorsal) return null;
-  const match = dorsal.match(/\d+/);
-  return match ? match[0] : null;
+function resolvePriceLabel(item: CatalogoItem): string {
+  if (item.priceLabel && item.priceLabel !== 'Consultar precio') return item.priceLabel;
+  if (/jugador/i.test(item.version)) return PRICE_REFERENCES.jugador;
+  if (item.category === 'retros' || /retro/i.test(item.version)) return PRICE_REFERENCES.retro;
+  return PRICE_REFERENCES.fan;
 }
 
 function whatsAppItemHref(item: CatalogoItem) {
@@ -121,235 +110,227 @@ export default function CatalogoExplorer({
   };
 
   return (
-    <div className="flex flex-col gap-7">
+    <div className="flex flex-col gap-6">
       {/* Toolbar */}
-      <div className="glass-panel p-4 md:p-5 flex flex-col gap-4">
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 justify-between">
+      <div className="p-5 rounded-[20px] bg-card border border-border flex flex-col gap-4">
+        <div className="flex flex-col lg:flex-row lg:items-center gap-3 justify-between">
           <div className="relative flex-1 max-w-md">
-            <Search className="size-4 text-muted-foreground absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-            <Input
+            <label htmlFor="catalogo-search" className="sr-only">
+              Buscar camisetas en el catálogo
+            </label>
+            <Search
+              className="w-4 h-4 text-muted-foreground absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"
+              aria-hidden="true"
+            />
+            <input
+              id="catalogo-search"
               type="search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Buscar equipo, jugador, dorsal o año..."
-              aria-label="Buscar camisetas en el catálogo"
-              className="h-10 pl-10 pr-9 rounded-full bg-[#061121]/70 border-[#F5EAD6]/20 text-foreground"
+              className="w-full h-12 pl-10 pr-10 rounded-xl border border-border bg-background text-foreground text-[16px] placeholder:text-muted-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2"
             />
             {query && (
-              <Button
+              <button
                 type="button"
-                variant="ghost"
-                size="icon-xs"
                 onClick={() => setQuery('')}
                 aria-label="Limpiar búsqueda"
-                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full"
+                className="w-8 h-8 rounded-full grid place-items-center text-muted-foreground hover:text-foreground active:translate-y-px absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer focus-visible:outline-2 focus-visible:outline-ring"
               >
-                <X />
-              </Button>
+                <X className="w-4 h-4" aria-hidden="true" />
+              </button>
             )}
           </div>
 
-          <p className="text-xs font-mono-cl text-muted-foreground tabular-nums">
-            <span className="text-primary font-bold">{filteredItems.length}</span>{' '}
-            {filteredItems.length === 1 ? 'camiseta encontrada' : 'camisetas encontradas'}
-          </p>
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="relative">
+              <label htmlFor="filter-version" className="sr-only">
+                Filtrar por versión
+              </label>
+              <select
+                id="filter-version"
+                value={selectedVersion}
+                onChange={(e) => setSelectedVersion(e.target.value)}
+                className="h-12 pl-3.5 pr-9 rounded-xl border border-border bg-background text-foreground text-[14px] appearance-none cursor-pointer focus-visible:outline-2 focus-visible:outline-ring"
+              >
+                {VERSION_FILTERS.map((v) => (
+                  <option key={v} value={v}>
+                    {v === 'Todas' ? 'Todas las versiones' : v}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown
+                aria-hidden="true"
+                className="w-4 h-4 pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+              />
+            </div>
+
+            <div className="relative">
+              <label htmlFor="filter-size" className="sr-only">
+                Filtrar por talle
+              </label>
+              <select
+                id="filter-size"
+                value={selectedSize}
+                onChange={(e) => setSelectedSize(e.target.value as 'Todos' | JerseySize)}
+                className="h-12 pl-3.5 pr-9 rounded-xl border border-border bg-background text-foreground text-[14px] appearance-none cursor-pointer focus-visible:outline-2 focus-visible:outline-ring"
+              >
+                <option value="Todos">Todos los talles</option>
+                {SIZES.map((s) => (
+                  <option key={s} value={s}>
+                    Talle {s}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown
+                aria-hidden="true"
+                className="w-4 h-4 pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+              />
+            </div>
+
+            {showDecadeFilters && (
+              <div className="relative">
+                <label htmlFor="filter-decade" className="sr-only">
+                  Filtrar por década
+                </label>
+                <select
+                  id="filter-decade"
+                  value={selectedDecade}
+                  onChange={(e) => setSelectedDecade(e.target.value)}
+                  className="h-12 pl-3.5 pr-9 rounded-xl border border-border bg-background text-foreground text-[14px] appearance-none cursor-pointer focus-visible:outline-2 focus-visible:outline-ring"
+                >
+                  {RETRO_DECADES.map((d) => (
+                    <option key={d} value={d}>
+                      {d === 'Todas' ? 'Todas las décadas' : d}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown
+                  aria-hidden="true"
+                  className="w-4 h-4 pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+                />
+              </div>
+            )}
+
+            <p className="text-[14px] text-muted-foreground tabular-nums pl-1">
+              <strong className="text-primary font-bold">{filteredItems.length}</strong>{' '}
+              {filteredItems.length === 1 ? 'camiseta' : 'camisetas'}
+            </p>
+          </div>
         </div>
 
         {!hideCategoryFilters && (
-          <div role="group" aria-label="Filtrar por categoría" className="flex flex-wrap items-center gap-2">
-            {CATALOGO_FILTER_OPTIONS.map((option) => (
-              <Button
-                key={option.id}
-                type="button"
-                size="sm"
-                variant={activeCategory === option.id ? 'default' : 'outline'}
-                onClick={() => setSelectedCategory(option.id)}
-                className="rounded-full"
-              >
-                {option.label}
-              </Button>
-            ))}
-          </div>
-        )}
-
-        {showDecadeFilters && (
-          <div role="group" aria-label="Filtrar por década" className="flex flex-wrap items-center gap-2">
-            <span className="text-xs font-mono-cl text-muted-foreground mr-1">Década:</span>
-            {RETRO_DECADES.map((decade) => (
-              <Button
-                key={decade}
-                type="button"
-                size="xs"
-                variant={selectedDecade === decade ? 'default' : 'outline'}
-                onClick={() => setSelectedDecade(decade)}
-                className="rounded-full"
-              >
-                {decade}
-              </Button>
-            ))}
-          </div>
-        )}
-
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 pt-1 border-t border-[#F5EAD6]/10">
-          {!showDecadeFilters && (
-            <div role="group" aria-label="Filtrar por versión" className="flex flex-wrap items-center gap-1.5">
-              <span className="text-xs font-mono-cl text-muted-foreground mr-1">Versión:</span>
-              {VERSION_FILTERS.map((ver) => (
-                <Button
-                  key={ver}
+          <div
+            role="tablist"
+            aria-label="Filtrar por categoría"
+            className="flex flex-wrap items-center gap-2 pt-3 border-t border-border"
+          >
+            {CATALOGO_FILTER_OPTIONS.map((option) => {
+              const active = activeCategory === option.id;
+              return (
+                <button
+                  key={option.id}
                   type="button"
-                  size="xs"
-                  variant={selectedVersion === ver ? 'secondary' : 'ghost'}
-                  onClick={() => setSelectedVersion(ver)}
-                  className="rounded-full"
+                  role="tab"
+                  aria-selected={active}
+                  onClick={() => setSelectedCategory(option.id)}
+                  className={`min-h-10 px-4 rounded-full text-[14px] font-semibold border cursor-pointer transition-colors active:translate-y-px disabled:opacity-55 focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2 ${
+                    active
+                      ? 'bg-primary text-primary-foreground border-primary'
+                      : 'bg-transparent text-foreground border-border hover:border-primary'
+                  }`}
                 >
-                  {ver}
-                </Button>
-              ))}
-            </div>
-          )}
-
-          <div role="group" aria-label="Filtrar por talle" className="flex flex-wrap items-center gap-1.5">
-            <span className="text-xs font-mono-cl text-muted-foreground mr-1">Talle:</span>
-            {(['Todos', ...SIZES] as const).map((size) => (
-              <Button
-                key={size}
-                type="button"
-                size="xs"
-                variant={selectedSize === size ? 'secondary' : 'ghost'}
-                onClick={() => setSelectedSize(size)}
-                className="rounded-full font-mono-cl"
-              >
-                {size}
-              </Button>
-            ))}
+                  {option.label}
+                </button>
+              );
+            })}
           </div>
-        </div>
+        )}
       </div>
 
-      {/* Results Grid or Empty State */}
+      {/* Results */}
       {filteredItems.length === 0 ? (
-        <Card className="glass-panel py-8">
-          <CardHeader className="text-center items-center">
-            <CardTitle className="font-disp text-2xl font-bold">
-              No encontramos camisetas con ese filtro
-            </CardTitle>
-            <CardDescription className="max-w-md">
-              Probá con otro equipo, versión o talle, o consultanos directo por WhatsApp si buscás
-              un modelo puntual.
-            </CardDescription>
-          </CardHeader>
-          <CardFooter className="justify-center gap-3 pt-2">
-            <Button type="button" variant="outline" size="sm" className="rounded-full" onClick={resetFilters}>
-              Ver todo el catálogo
-            </Button>
-            <Button
-              size="sm"
-              className="rounded-full font-semibold"
-              render={
-                <a href={whatsAppCustomHref(query.trim())} target="_blank" rel="noopener noreferrer" />
-              }
+        <div className="p-8 rounded-[20px] bg-card border border-border flex flex-col items-start gap-4">
+          <h2 className="font-disp text-[28px] font-bold text-foreground">
+            Sin coincidencias en el catálogo
+          </h2>
+          <p className="text-[16px] text-muted-foreground max-w-[52ch]">
+            No encontramos modelos con esos filtros. Podés restablecer la búsqueda o consultarnos directo por WhatsApp si buscás un modelo por encargo.
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <button
+              type="button"
+              onClick={resetFilters}
+              className="min-h-12 px-5 rounded-full border border-border text-foreground font-semibold text-[15px] cursor-pointer hover:border-primary active:translate-y-px focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
             >
-              <MessageCircle data-icon="inline-start" />
-              Consultar por WhatsApp
-            </Button>
-          </CardFooter>
-        </Card>
+              Restablecer filtros
+            </button>
+            <a
+              href={whatsAppCustomHref(query.trim())}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="min-h-12 px-6 rounded-full bg-primary text-primary-foreground font-bold text-[15px] inline-flex items-center gap-2 no-underline hover:opacity-90 active:translate-y-px focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2 whitespace-nowrap"
+            >
+              <MessageCircle className="w-4 h-4" aria-hidden="true" />
+              <span>Consultar por WhatsApp</span>
+            </a>
+          </div>
+        </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {filteredItems.map((item) => {
-            const dorsalNum = extractDorsalNumber(item.dorsal);
-            return (
-              <Card
-                key={item.id}
-                className="relative overflow-hidden bg-[#0E213E]/85 border-[#F5EAD6]/16 hover:border-[#A8D6F0]/45 transition-colors flex flex-col justify-between"
-              >
-                {dorsalNum && (
-                  <span
-                    aria-hidden="true"
-                    className="pointer-events-none select-none absolute -right-2 -top-4 font-disp font-black text-[96px] leading-none text-[#F5EAD6]/[0.045]"
+        <div className="divide-y divide-border border-t border-b border-border">
+          {filteredItems.map((item) => (
+            <article
+              key={item.id}
+              className="py-5 grid grid-cols-1 md:grid-cols-[minmax(0,5fr)_minmax(0,3fr)_minmax(0,2fr)_minmax(0,3fr)] gap-3 md:gap-5 items-center"
+            >
+              <div className="min-w-0">
+                <h2 className="font-disp text-[22px] font-bold leading-[1.15] text-foreground">
+                  <Link
+                    href={`/camiseta/${item.slug}`}
+                    className="no-underline hover:text-primary focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
                   >
-                    #{dorsalNum}
-                  </span>
-                )}
+                    {item.title}
+                  </Link>
+                </h2>
+                <p className="text-[14px] text-muted-foreground mt-1">
+                  {item.shortDesc}
+                </p>
+              </div>
 
-                <CardHeader className="relative z-[1]">
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <div className="flex items-center gap-1.5">
-                      <Badge variant="outline" className="font-mono-cl border-[#F5EAD6]/25">
-                        {item.season}
-                      </Badge>
-                      <Badge variant="secondary">{item.version}</Badge>
-                    </div>
-                    <Badge
-                      variant="outline"
-                      className={cn(
-                        'text-[11px] font-mono-cl',
-                        item.status === 'Disponible' && 'border-primary/50 text-primary bg-primary/10',
-                        item.status === 'Agotado' && 'border-destructive/50 text-destructive'
-                      )}
-                    >
-                      {item.status}
-                    </Badge>
-                  </div>
+              <div className="text-[14px] text-muted-foreground flex flex-col gap-0.5">
+                <span className="text-foreground font-medium">
+                  {item.brand ? `${item.brand}, ${item.version}` : item.version}
+                </span>
+                <span>Talles: {item.availableSizes.join(', ')}</span>
+              </div>
 
-                  <CardTitle className="font-disp text-[22px] font-bold pt-1.5 leading-[1.08] tracking-[-0.01em]">
-                    <Link
-                      href={`/camiseta/${item.slug}`}
-                      className="no-underline hover:text-primary transition-colors"
-                    >
-                      {item.title}
-                    </Link>
-                  </CardTitle>
-                  <CardDescription className="text-foreground/80 leading-relaxed">
-                    {item.shortDesc}
-                  </CardDescription>
-                  {item.contextNote && (
-                    <p className="text-xs text-[#A8D6F0]/80 italic pt-1 leading-relaxed">
-                      {item.contextNote}
-                    </p>
-                  )}
-                </CardHeader>
+              <div className="flex flex-col gap-0.5">
+                <span className="font-mono-cl tabular-nums text-[15px] font-bold text-primary">
+                  {resolvePriceLabel(item)}
+                </span>
+                <span className="text-[13px] text-muted-foreground">{item.status}</span>
+              </div>
 
-                <CardContent className="relative z-[1] flex flex-wrap items-center justify-between gap-2">
-                  <div className="flex flex-wrap gap-1.5">
-                    {item.brand && (
-                      <Badge variant="outline" className="text-[11px] border-[#F5EAD6]/20">
-                        {item.brand}
-                      </Badge>
-                    )}
-                    <Badge variant="outline" className="text-[11px] font-mono-cl border-[#F5EAD6]/20">
-                      {item.availableSizes.join(' · ')}
-                    </Badge>
-                  </div>
-                  <span className="text-xs font-mono-cl font-bold text-primary">
-                    {item.priceLabel}
-                  </span>
-                </CardContent>
-
-                <CardFooter className="relative z-[1] justify-between gap-2 pt-3.5 border-t border-[#F5EAD6]/10">
-                  <Button
-                    size="sm"
-                    className="rounded-full font-semibold"
-                    render={
-                      <a href={whatsAppItemHref(item)} target="_blank" rel="noopener noreferrer" />
-                    }
-                  >
-                    <MessageCircle data-icon="inline-start" />
-                    Consultar
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="rounded-full border-[#F5EAD6]/20 hover:border-[#A8D6F0]/50"
-                    render={<Link href={`/camiseta/${item.slug}`} />}
-                  >
-                    Ver ficha
-                  </Button>
-                </CardFooter>
-              </Card>
-            );
-          })}
+              <div className="flex flex-wrap items-center md:justify-end gap-2.5">
+                <Link
+                  href={`/camiseta/${item.slug}`}
+                  className="min-h-10 px-4 rounded-full border border-border text-[14px] font-semibold text-foreground no-underline inline-flex items-center gap-1 hover:border-primary active:translate-y-px focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2 whitespace-nowrap"
+                >
+                  <span>Ver ficha</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
+                </Link>
+                <a
+                  href={whatsAppItemHref(item)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="min-h-10 px-4 rounded-full bg-primary text-primary-foreground text-[14px] font-bold no-underline inline-flex items-center gap-1.5 hover:opacity-90 active:translate-y-px focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2 whitespace-nowrap"
+                >
+                  <MessageCircle className="w-3.5 h-3.5" aria-hidden="true" />
+                  <span>Consultar</span>
+                </a>
+              </div>
+            </article>
+          ))}
         </div>
       )}
     </div>
