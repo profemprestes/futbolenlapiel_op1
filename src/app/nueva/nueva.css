@@ -1,0 +1,230 @@
+/* Hallmark · shape: Editorial Storefront · genre: editorial · theme: DESIGN.md (locked) · posture: Committed · hero: Stage · nav: edge-aligned · footer: mast · imagery: photographs, local 8, natural + 3D WebGL stage · signature: interactive 3D jersey studio beside live catalog prices · redesign: full · v2.0.0 */
+/* Hallmark · pre-emit critique: P5 H5 E5 S5 R4 V5 · weakest: R, kept the 3D stage compact inside the hero grid instead of full-viewport fixed chrome so content and catalog prices lead cleanly */
+/* Hallmark · answered F3 · display heads use Barlow Condensed with overflow-wrap: break-word and balanced lines */
+
+:root {
+  --nh-field: #0A1B33;
+  --nh-shadow-bg: #070F1C;
+  --nh-elevated: #132C52;
+  --nh-parchment: #F5EAD6;
+  --nh-parchment-2: #EDE0C8;
+  --nh-ink: #0A1B33;
+  --nh-muted: #B8C7DC;
+  --nh-celeste: #A8D6F0;
+  --nh-celeste-hover: #8ECBF5;
+  --nh-azul: #1E5AA8;
+  --nh-rule: rgba(245, 234, 214, 0.18);
+  --nh-rule-ink: rgba(10, 27, 51, 0.16);
+  --nh-focus: #A8D6F0;
+
+  --nh-font-display: var(--font-disp), "Barlow Condensed", sans-serif;
+  --nh-font-mark: var(--font-archivo), "Archivo Black", sans-serif;
+  --nh-font-body: var(--font-sans), "Geist", system-ui, sans-serif;
+  --nh-font-mono: var(--font-mono), "JetBrains Mono", ui-monospace, monospace;
+
+  --nh-container: 1400px;
+  --nh-gutter: clamp(16px, 2.4vw, 36px);
+  --nh-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --nh-dur-micro: 120ms;
+  --nh-dur-short: 220ms;
+  --nh-dur-long: 420ms;
+}
+
+html,
+body {
+  overflow-x: clip;
+}
+
+.nueva-shell {
+  min-height: 100dvh;
+  background-color: var(--nh-field);
+  color: var(--nh-parchment);
+  font-family: var(--nh-font-body);
+  font-size: 1rem;
+  line-height: 1.55;
+  overflow-x: clip;
+}
+
+.nueva-container {
+  width: 100%;
+  max-width: var(--nh-container);
+  margin-inline: auto;
+  padding-inline: var(--nh-gutter);
+}
+
+.nueva-display {
+  font-family: var(--nh-font-display);
+  overflow-wrap: break-word;
+  min-width: 0;
+  text-wrap: balance;
+}
+
+.nueva-mark {
+  font-family: var(--nh-font-mark);
+}
+
+.nueva-mono {
+  font-family: var(--nh-font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.nueva-shell a:focus-visible,
+.nueva-shell button:focus-visible,
+.nueva-shell input:focus-visible,
+.nueva-shell select:focus-visible,
+.nueva-shell [tabindex]:focus-visible {
+  outline: 2px solid var(--nh-focus);
+  outline-offset: 3px;
+  transition: none;
+}
+
+.nueva-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 24px;
+  border-radius: 9999px;
+  border: 1px solid var(--nh-celeste);
+  background-color: var(--nh-celeste);
+  color: var(--nh-ink);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--nh-dur-short) var(--nh-ease-out),
+    transform var(--nh-dur-micro) var(--nh-ease-out);
+}
+
+.nueva-btn-primary:hover {
+  background-color: var(--nh-celeste-hover);
+}
+
+.nueva-btn-primary:active {
+  transform: translateY(1px);
+}
+
+.nueva-btn-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.nueva-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 24px;
+  border-radius: 9999px;
+  border: 1px solid var(--nh-rule);
+  background-color: transparent;
+  color: var(--nh-parchment);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color var(--nh-dur-short) var(--nh-ease-out),
+    background-color var(--nh-dur-short) var(--nh-ease-out),
+    color var(--nh-dur-short) var(--nh-ease-out),
+    transform var(--nh-dur-micro) var(--nh-ease-out);
+}
+
+.nueva-btn-secondary:hover {
+  border-color: var(--nh-celeste);
+  color: var(--nh-celeste);
+  background-color: var(--nh-elevated);
+}
+
+.nueva-btn-secondary:active {
+  transform: translateY(1px);
+}
+
+.nueva-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(24px, 4vw, 64px);
+  align-items: center;
+}
+
+.nueva-split-photo {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: clamp(20px, 3vw, 48px);
+  align-items: stretch;
+}
+
+.nueva-form-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(24px, 4vw, 64px);
+  align-items: start;
+}
+
+@media (max-width: 960px) {
+  .nueva-hero-grid,
+  .nueva-split-photo,
+  .nueva-form-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.nueva-stage-surface {
+  background: radial-gradient(75% 65% at 50% 45%, var(--nh-elevated) 0%, var(--nh-shadow-bg) 100%);
+  border: 1px solid var(--nh-rule);
+  border-radius: 24px;
+}
+
+.nueva-photo-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  background-color: var(--nh-shadow-bg);
+  outline: 1px solid var(--nh-rule);
+  outline-offset: -1px;
+}
+
+.nueva-photo-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.nueva-input {
+  width: 100%;
+  height: 48px;
+  padding: 0 16px;
+  border-radius: 12px;
+  border: 1px solid var(--nh-rule);
+  background-color: var(--nh-shadow-bg);
+  color: var(--nh-parchment);
+  font-size: 1rem;
+  transition: border-color var(--nh-dur-micro) var(--nh-ease-out),
+    background-color var(--nh-dur-micro) var(--nh-ease-out);
+}
+
+.nueva-input::placeholder {
+  color: var(--nh-muted);
+  opacity: 0.75;
+}
+
+.nueva-input:focus-visible {
+  outline: 2px solid var(--nh-focus);
+  outline-offset: -2px;
+  border-color: var(--nh-celeste);
+}
+
+.nueva-input[aria-invalid="true"] {
+  border-color: var(--nh-celeste);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nueva-btn-primary,
+  .nueva-btn-secondary,
+  .nueva-input {
+    transition: none;
+  }
+}
